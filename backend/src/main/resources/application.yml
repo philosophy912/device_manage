@@ -1,0 +1,18 @@
+server:
+  port: 8099
+
+logging:
+  level:
+    root: info
+
+spring:
+  datasource:
+    url: jdbc:mysql://10.100.193.82:9999/device?setUnicode=true&characterEncoding=utf8
+    # url: jdbc:mysql://192.168.50.30:3307/caketest?setUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: chinatsp
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
