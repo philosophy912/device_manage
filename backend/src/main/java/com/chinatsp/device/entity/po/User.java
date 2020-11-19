@@ -11,22 +11,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
-/**
- * 商品存放位置
- * @author lizhe
- * @date 2020/11/19 17:57
- **/
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "Position")
-public class Position {
+@Table(name = "User")
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "username", nullable = false)
+    private String username;
+    @Column(name = "password", nullable = false)
+    private String password;
 }
