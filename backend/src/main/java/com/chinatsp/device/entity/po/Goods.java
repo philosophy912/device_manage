@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 /**
  * 商品
+ *
  * @author lizhe
  * @date 2020/11/19 17:51
  **/
@@ -29,5 +30,7 @@ public class Goods {
     private Integer id;
     @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "description", nullable = true)
+    private String description;
 
 }
