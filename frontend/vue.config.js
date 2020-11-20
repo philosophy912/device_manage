@@ -2,6 +2,8 @@
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 
+const server = "http://127.0.0.1:8099";
+
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
