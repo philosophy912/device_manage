@@ -9,6 +9,7 @@ import com.chinatsp.device.utils.Constant;
 import com.chinatsp.device.utils.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,12 +51,14 @@ public class UserController {
     public Response info(@RequestParam String token) {
         Response response = new Response();
         try {
+            log.info("token is{}", token);
             DecodedJWT decodedJWT = JwtTokenUtil.verify(token);
             RolesVo rolesVo = new RolesVo();
             rolesVo.setRoles(Collections.singletonList("admin"));
             rolesVo.setIntroduction("I am a super administrator");
             rolesVo.setAvatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
             rolesVo.setName(decodedJWT.getClaims().get(USERNAME).asString());
+            response.setData(rolesVo);
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("token not ok");
@@ -63,10 +66,20 @@ public class UserController {
         return response;
     }
 
-    @RequestMapping(value = "/info", method = RequestMethod.POST)
-    public Response logout() {
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public Response logout(@RequestHeader("X-Token") String token) {
         Response response = new Response();
-        response.setData("success");
+        DecodedJWT decodedJWT = JwtTokenUtil.verify(token);
+        String username = decodedJWT.getClaims().get(USERNAME).asString();
+        if (username != null) {
+            // 移出session中的登录标记
+            response.setMessage("logout success");
+            response.setData("success");
+        }else{
+            response.setCode(Constant.NOK);
+            response.setMessage("logout success");
+            response.setData("success");
+        }
         return response;
     }
 
