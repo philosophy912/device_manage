@@ -2,6 +2,9 @@ import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import Logger from 'chivy'
+
+const log = new Logger('utils/request')
 
 // create an axios instance
 const service = axios.create({
@@ -14,7 +17,8 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
-
+    log.debug('url is ' + JSON.stringify(config.url))
+    log.debug('data is ' + JSON.stringify(config.data))
     if (store.getters.token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key
@@ -25,7 +29,8 @@ service.interceptors.request.use(
   },
   error => {
     // do something with request error
-    console.log(error) // for debug
+    log.error(error)
+    // console.log(error) // for debug
     return Promise.reject(error)
   }
 )
@@ -44,6 +49,7 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
+    log.debug('res = ' + JSON.stringify(res))
 
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 20000) {
@@ -72,7 +78,8 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
+    log.error('err' + error)
+    // console.log('err' + error)
     Message({
       message: error.message,
       type: 'error',

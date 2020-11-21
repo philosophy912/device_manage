@@ -2,7 +2,7 @@
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 
-const server = "http://127.0.0.1:8099";
+const server = "http://127.0.0.1:8080";
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -37,6 +37,15 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    proxy:{
+      '/dev-api/user/*': {
+        target: server,
+        changeOrigin: true,
+        pathReWtire: {
+          '^/user/*': ''
+        }
+      }
     },
     before: require('./mock/mock-server.js')
   },
