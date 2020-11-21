@@ -38,15 +38,15 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    proxy:{
-      '/dev-api/user/*': {
-        target: server,
-        changeOrigin: true,
-        pathReWtire: {
-          '^/user/*': ''
-        }
-      }
-    },
+    // proxy:{
+    //   '/dev-api/user/*': {
+    //     target: server,
+    //     changeOrigin: true,
+    //     pathReWtire: {
+    //       '^/user/*': ''
+    //     }
+    //   }
+    // },
     before: require('./mock/mock-server.js')
   },
   configureWebpack: {
