@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard-editor-container">
-    <github-corner class="github-corner" />
+    <h1>设备管理系统</h1>
+    <!-- <github-corner class="github-corner" />
 
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
@@ -36,7 +37,7 @@
       <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
         <box-card />
       </el-col>
-    </el-row>
+    </el-row> -->
   </div>
 </template>
 
