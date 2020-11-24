@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 商品
@@ -36,8 +37,23 @@ public class Goods implements Serializable {
     private String name;
     @Column(name = "description")
     private String description;
-    @Column(name = "image")
-    private String image;
+    @Column(name = "imageUrl")
+    private String imageUrl;
+    // 领用状态
+    @Column(name = "recipients_status")
+    private Boolean recipientsStatus;
+    // 物品状态
+    @Column(name = "goods_status")
+    private Boolean goodsStatus;
+    // 入库时间
+    @Column(name = "in_time")
+    private Date inTime;
+    // 领用时间
+    @Column(name = "recipients_time")
+    private Date recipientsTime;
+    // 归还时间
+    @Column(name = "return_time")
+    private Date returnTime;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     @JoinColumn(name = "employee_id")
     private Employee employee;

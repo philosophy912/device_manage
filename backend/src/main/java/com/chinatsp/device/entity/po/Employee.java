@@ -1,6 +1,5 @@
 package com.chinatsp.device.entity.po;
 
-import com.chinatsp.device.dao.GoodsDao;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
