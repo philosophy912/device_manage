@@ -39,6 +39,8 @@ public class Employee implements Serializable {
     private Integer id;
     @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "sex", nullable = false)
+    private Boolean sex;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     @JoinColumn(name = "department_id")
     private Department department;

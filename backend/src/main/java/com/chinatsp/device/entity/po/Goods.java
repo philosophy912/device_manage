@@ -36,6 +36,8 @@ public class Goods implements Serializable {
     private String name;
     @Column(name = "description")
     private String description;
+    @Column(name = "image")
+    private String image;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     @JoinColumn(name = "employee_id")
     private Employee employee;
