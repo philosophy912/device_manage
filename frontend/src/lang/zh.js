@@ -171,5 +171,18 @@ export default {
     tagsView: '开启 Tags-View',
     fixedHeader: '固定 Header',
     sidebarLogo: '侧边栏 Logo'
+  },
+  project: {
+    id: '序号',
+    name: '项目名称',
+    need: '项目名称不能为空',
+    date: '添加时间'
+  },
+  employee: {
+    id: '序号',
+    name: '姓名',
+    sex: '性别',
+    department: '所属部门',
+    date: '添加时间'
   }
 }
