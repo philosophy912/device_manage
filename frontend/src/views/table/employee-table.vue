@@ -51,7 +51,12 @@
           <span>{{ row.author }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.date')" width="150px" align="center">
+      <el-table-column :label="$t('employee.department')" width="110px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.author }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('employee.date')" width="150px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
@@ -106,10 +111,13 @@
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
         </el-form-item> -->
-        <el-form-item :label="$t('employee.name')" prop="title">
+        <el-form-item :label="$t('employee.name')" prop="name">
           <el-input v-model="temp.title" />
         </el-form-item>
-        <el-form-item :label="$t('employee.sex')" prop="author">
+        <el-form-item :label="$t('employee.sex')" prop="sex">
+          <el-input v-model="temp.author" />
+        </el-form-item>
+        <el-form-item :label="$t('employee.department')" prop="department">
           <el-input v-model="temp.author" />
         </el-form-item>
         <el-form-item :label="$t('employee.date')" prop="timestamp">

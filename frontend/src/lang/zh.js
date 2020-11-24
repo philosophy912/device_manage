@@ -175,7 +175,6 @@ export default {
   project: {
     id: '序号',
     name: '项目名称',
-    need: '项目名称不能为空',
     date: '添加时间'
   },
   employee: {
@@ -183,6 +182,23 @@ export default {
     name: '姓名',
     sex: '性别',
     department: '所属部门',
+    date: '添加时间',
+  },
+  department: {
+    id: '序号',
+    name: '部门名称',
     date: '添加时间'
+  },
+  goods: {
+    id: '序号',
+    name: '物品名称',
+    employee: '领用人',
+    in_time: '入库时间',
+    project: '项目名称',
+    recipients_time: '领用时间',
+    return_time: '归还时间',
+    recipients_status: '领用状态',
+    goods_status: '物品状态',
+    image: '缩略图'
   }
 }
