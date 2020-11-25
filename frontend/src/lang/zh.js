@@ -182,7 +182,7 @@ export default {
     name: '姓名',
     sex: '性别',
     department: '所属部门',
-    date: '添加时间',
+    date: '添加时间'
   },
   department: {
     id: '序号',
@@ -199,6 +199,7 @@ export default {
     return_time: '归还时间',
     recipients_status: '领用状态',
     goods_status: '物品状态',
-    image: '缩略图'
+    image: '缩略图',
+    code: '物品编号'
   }
 }
