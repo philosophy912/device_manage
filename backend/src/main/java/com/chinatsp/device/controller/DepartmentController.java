@@ -34,7 +34,7 @@ public class DepartmentController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Response fetchList(@RequestParam int page, @RequestParam int limit) {
         Response response = new Response();
-        Pageable pageable = PageRequest.of(page, limit, Sort.Direction.DESC, "id");
+        Pageable pageable = PageRequest.of(page - 1, limit, Sort.Direction.DESC, "id");
         try {
             List<DepartmentVo> departments = departmentService.findDepartment(pageable);
             long count = departmentService.findAllDepartmentCount();
@@ -70,7 +70,7 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public Response update(@RequestBody DepartmentVo departmentVo){
+    public Response update(@RequestBody DepartmentVo departmentVo) {
         Response response = new Response();
         try {
             DepartmentVo vo = departmentService.updateDepartment(departmentVo);
@@ -89,7 +89,7 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Response delete(@RequestBody DepartmentVo departmentVo){
+    public Response delete(@RequestBody DepartmentVo departmentVo) {
         Response response = new Response();
         try {
             DepartmentVo vo = departmentService.deleteDepartment(departmentVo);
