@@ -27,8 +27,8 @@
       </el-table-column>
       <el-table-column :label="$t('department.name')" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
-          <el-tag>{{ row.type | typeFilter }}</el-tag>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
+          <!-- <el-tag>{{ row.type | typeFilter }}</el-tag> -->
         </template>
       </el-table-column>
       <el-table-column :label="$t('department.date')" width="150px" align="center">
@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+import { fetchList, createDepartment, updateDepartment, deleteDepartment } from '@/api/department'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -174,13 +174,13 @@ export default {
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
-
+        this.list = response.data
+        this.total = response.data.totalRows
+        this.listLoading = false
         // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
+        // setTimeout(() => {
+        //   this.listLoading = false
+        // }, 1.5 * 1000)
       })
     },
     handleFilter() {
@@ -237,7 +237,8 @@ export default {
         if (valid) {
           // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
           // this.temp.author = 'vue-element-admin'
-          createArticle(this.temp).then(() => {
+          this.temp.timestamp = +new Date(this.temp.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          createDepartment(this.temp).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -263,8 +264,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          // tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
+          updateDepartment(tempData).then(() => {
             const index = this.list.findIndex(v => v.id === this.temp.id)
             this.list.splice(index, 1, this.temp)
             this.dialogFormVisible = false
@@ -284,21 +284,34 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$notify({
-          title: '成功',
-          message: '删除成功',
-          type: 'success',
-          duration: 2000
+        const data = {
+          'id': row.id,
+          'name': row.name
+        }
+        deleteDepartment(data).then(() => {
+          this.$notify({
+            title: '成功',
+            message: '删除成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.list.splice(index, 1)
+        }).catch(() => {
+          this.$notify({
+            title: '失败',
+            message: '删除失败',
+            type: 'error',
+            duration: 2000
+          })
         })
-        this.list.splice(index, 1)
       }).catch(() => {
       })
     },
     handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
-        this.dialogPvVisible = true
-      })
+      // fetchPv(pv).then(response => {
+      //   this.pvData = response.data.pvData
+      //   this.dialogPvVisible = true
+      // })
     },
     handleDownload() {
       this.downloadLoading = true

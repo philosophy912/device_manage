@@ -39,12 +39,19 @@ module.exports = {
       errors: true
     },
     // proxy:{
-    //   '/dev-api/user/*': {
+    //   '/user/*': {
     //     target: server,
     //     changeOrigin: true,
     //     pathReWtire: {
     //       '^/user/*': ''
     //     }
+    //   },
+    //   "/department/*": {
+    //     target: server,
+    //     changeOrigin: true,
+    //     pathReWtire: {
+    //       '^/department/*': ''
+    //     } 
     //   }
     // },
     before: require('./mock/mock-server.js')
