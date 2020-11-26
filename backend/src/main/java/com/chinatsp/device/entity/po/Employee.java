@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,6 +41,8 @@ public class Employee implements Serializable {
     private String name;
     @Column(name = "sex", nullable = false)
     private Boolean sex;
+    @Column(name = "createDate")
+    private Long createDate;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     @JoinColumn(name = "department_id")
     private Department department;

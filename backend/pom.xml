@@ -25,6 +25,11 @@
             <version>3.8.2</version>
         </dependency>
         <dependency>
+            <groupId>com.philosophy</groupId>
+            <artifactId>sophia</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
             <version>3.4.0</version>
@@ -91,30 +96,52 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <!--exec-maven-plugin插件可以执行cmd命令-->
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
                 <executions>
                     <execution>
-                        <id>main-class-placement</id>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <target>
-                                <copy todir="src/main/resources/static">
-                                    <fileset dir="../frontend/dist/static">
-                                        <exclude name="*.html"/>
-                                    </fileset>
-                                </copy>
-                                <copy todir="src/main/resources/static">
-                                    <fileset dir="../frontend/dist">
-                                        <include name="*.html"/>
-                                        <include name="*.ico"/>
-                                    </fileset>
-                                </copy>
-                            </target>
-                        </configuration>
+                        <id>exec-npm-run-build</id>
+                        <phase>prepare-package</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>exec</goal>
                         </goals>
+                        <configuration>
+                            <!--程序名称-->
+                            <executable>npm</executable>
+                            <arguments>
+                                <!-- 程序所执行的命令-->
+                                <argument>run</argument>
+                                <argument>build</argument>
+                            </arguments>
+                            <!--${basedir}项目根目录-->
+                            <!--前端代码地址-->
+                            <workingDirectory>${basedir}/../frontend</workingDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <!--maven-resources-plugin：maven复制文件插件-->
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resource</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <!--输出文件路径-->
+                            <outputDirectory>${basedir}\src\main\resources\static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <!--前端代码地址-->
+                                    <directory>${basedir}/../frontend/dist</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

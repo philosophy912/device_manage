@@ -35,6 +35,8 @@ public class Goods implements Serializable {
     private Integer id;
     @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "code", nullable = false)
+    private String code;
     @Column(name = "description")
     private String description;
     @Column(name = "imageUrl")
@@ -47,13 +49,13 @@ public class Goods implements Serializable {
     private Boolean goodsStatus;
     // 入库时间
     @Column(name = "in_time")
-    private Date inTime;
+    private Long inTime;
     // 领用时间
     @Column(name = "recipients_time")
-    private Date recipientsTime;
+    private Long recipientsTime;
     // 归还时间
     @Column(name = "return_time")
-    private Date returnTime;
+    private Long returnTime;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     @JoinColumn(name = "employee_id")
     private Employee employee;

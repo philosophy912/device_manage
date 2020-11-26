@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,6 +37,8 @@ public class Department implements Serializable {
     private Integer id;
     @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "createDate")
+    private Long createDate;
     // 双向一对多，一个部门有多个员工
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Employee> employees = new HashSet<>();

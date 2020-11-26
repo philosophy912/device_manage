@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,6 +36,8 @@ public class Project implements Serializable {
     private Integer id;
     @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "createDate")
+    private Long createDate;
     // 双向一对多，一个员工可以持有多个设备
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Goods> goods = new HashSet<>();
