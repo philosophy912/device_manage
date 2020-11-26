@@ -36,7 +36,7 @@ public class Project implements Serializable {
     private Integer id;
     @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "createDate")
+    @Column(name = "createDate", nullable = false)
     private Long createDate;
     // 双向一对多，一个员工可以持有多个设备
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

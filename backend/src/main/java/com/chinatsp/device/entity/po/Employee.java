@@ -41,7 +41,7 @@ public class Employee implements Serializable {
     private String name;
     @Column(name = "sex", nullable = false)
     private Boolean sex;
-    @Column(name = "createDate")
+    @Column(name = "createDate", nullable = false)
     private Long createDate;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     @JoinColumn(name = "department_id")

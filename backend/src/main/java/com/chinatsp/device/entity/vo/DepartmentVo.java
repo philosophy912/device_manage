@@ -18,8 +18,6 @@ public class DepartmentVo {
 
     private Integer id;
     private String name;
-    private Long createDate;
-    private Integer pageNo;
-    private Integer size;
+    private Long timestamp;
 
 }
