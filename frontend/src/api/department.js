@@ -24,3 +24,11 @@ export function updateDepartment(data) {
     data
   })
 }
+
+export function deleteDepartment(data) {
+    return request({
+      url: '/department/delete',
+      method: 'post',
+      data
+    })
+  }
