@@ -19,8 +19,6 @@ public class Response {
     private Integer code = Constant.OK;
     private String message;
     private Object data;
-    private int pageSize = 20;
-    private int totalRows = 0;
-    private int totalPages = 0;
+
 
 }

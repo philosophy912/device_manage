@@ -1,6 +1,7 @@
 package com.chinatsp.device.controller;
 
 import com.chinatsp.device.entity.vo.DepartmentVo;
+import com.chinatsp.device.entity.vo.PageResponse;
 import com.chinatsp.device.entity.vo.Response;
 import com.chinatsp.device.service.DepartmentService;
 import com.chinatsp.device.utils.Constant;
@@ -32,20 +33,35 @@ public class DepartmentController {
     @Resource
     private DepartmentService departmentService;
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public Response fetchList(@RequestParam int page,
-                              @RequestParam int limit,
-                              @RequestParam(required = false) String name,
-                              @RequestParam(required = false) String sort) {
+    @RequestMapping(value = "/findall", method = RequestMethod.GET)
+    public Response findAll() {
         Response response = new Response();
+        try {
+            List<DepartmentVo> departments = departmentService.findAllDepartment();
+            response.setMessage("query success");
+            response.setData(departments);
+        } catch (Exception e) {
+            response.setCode(Constant.NOK);
+            response.setMessage("query failed");
+        }
+        return response;
+    }
+
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public PageResponse fetchList(@RequestParam int page,
+                                  @RequestParam int limit,
+                                  @RequestParam(required = false) String name,
+                                  @RequestParam(required = false) String sort) {
+        PageResponse response = new PageResponse();
         Pageable pageable;
-        if (Strings.isNotEmpty(sort)){
+        if (Strings.isNotEmpty(sort)) {
             if (sort.equalsIgnoreCase(Constant.DESC)) {
                 pageable = PageRequest.of(page - 1, limit, Sort.Direction.DESC, "id");
             } else {
                 pageable = PageRequest.of(page - 1, limit, Sort.Direction.ASC, "id");
             }
-        }else {
+        } else {
             pageable = PageRequest.of(page - 1, limit, Sort.Direction.ASC, "id");
         }
         try {

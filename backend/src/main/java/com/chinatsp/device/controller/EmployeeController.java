@@ -3,6 +3,7 @@ package com.chinatsp.device.controller;
 import com.chinatsp.device.entity.vo.DepartmentVo;
 import com.chinatsp.device.entity.vo.EmployeeVo;
 import com.chinatsp.device.entity.vo.PageResponse;
+import com.chinatsp.device.entity.vo.Response;
 import com.chinatsp.device.service.EmployeeService;
 import com.chinatsp.device.utils.Constant;
 import com.chinatsp.device.utils.PageUtils;
@@ -11,12 +12,14 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -57,5 +60,26 @@ public class EmployeeController {
         }
         return response;
     }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public Response create(@RequestBody EmployeeVo employeeVo) {
+        Response response = new Response();
+        try {
+            EmployeeVo vo = employeeService.addEmployee(employeeVo);
+            if (vo != null) {
+                response.setData(Collections.singletonList(vo));
+                response.setMessage("create success");
+            } else {
+                response.setCode(Constant.NOK);
+                response.setMessage(employeeVo.getName() + "is already in database, so create failed");
+            }
+        } catch (Exception e) {
+            response.setCode(Constant.NOK);
+            response.setMessage("create failed");
+        }
+        return response;
+    }
+
+
 
 }

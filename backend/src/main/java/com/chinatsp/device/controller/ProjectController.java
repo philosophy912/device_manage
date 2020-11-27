@@ -1,5 +1,6 @@
 package com.chinatsp.device.controller;
 
+import com.chinatsp.device.entity.vo.PageResponse;
 import com.chinatsp.device.entity.vo.ProjectVo;
 import com.chinatsp.device.entity.vo.Response;
 import com.chinatsp.device.service.ProjectService;
@@ -35,11 +36,11 @@ public class ProjectController {
 
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public Response fetchList(@RequestParam int page,
-                              @RequestParam int limit,
-                              @RequestParam(required = false) String name,
-                              @RequestParam(required = false) String sort) {
-        Response response = new Response();
+    public PageResponse fetchList(@RequestParam int page,
+                                  @RequestParam int limit,
+                                  @RequestParam(required = false) String name,
+                                  @RequestParam(required = false) String sort) {
+        PageResponse response = new PageResponse();
         Pageable pageable;
         if (Strings.isNotEmpty(sort)){
             if (sort.equalsIgnoreCase(Constant.DESC)) {

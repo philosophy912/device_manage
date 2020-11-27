@@ -9,4 +9,6 @@ public interface EmployeeService {
     List<EmployeeVo> findEmployee(Pageable pageable, String name);
 
     long findAllEmployeeCount();
+
+    EmployeeVo addEmployee(EmployeeVo employeeVo);
 }

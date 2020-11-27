@@ -15,4 +15,6 @@ public class Constant {
     public static final String CREATE = "CREATE";
     public static final String DESC = "-id";
     public static final String ASC = "+id";
+    public static final String MAN = "男";
+    public static final String WOMEN = "女";
 }

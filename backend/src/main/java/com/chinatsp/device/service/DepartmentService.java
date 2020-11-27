@@ -1,6 +1,5 @@
 package com.chinatsp.device.service;
 
-import com.chinatsp.device.entity.po.Department;
 import com.chinatsp.device.entity.vo.DepartmentVo;
 import org.springframework.data.domain.Pageable;
 

@@ -1,7 +1,6 @@
 package com.chinatsp.device.dao;
 
 import com.chinatsp.device.entity.po.Department;
-import com.chinatsp.device.entity.po.Project;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
