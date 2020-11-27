@@ -2,15 +2,16 @@ import request from '@/utils/request'
 
 export function fetchList(query) {
   return request({
-    url: '/department/list',
+    url: '/employee/list',
     method: 'get',
     params: query
   })
 }
 
+
 export function createDepartment(data) {
   return request({
-    url: '/department/create',
+    url: '/employee/create',
     method: 'post',
     data
   })
@@ -18,7 +19,7 @@ export function createDepartment(data) {
 
 export function updateDepartment(data) {
   return request({
-    url: '/department/update',
+    url: '/employee/update',
     method: 'post',
     data
   })
@@ -26,7 +27,7 @@ export function updateDepartment(data) {
 
 export function deleteDepartment(data) {
   return request({
-    url: '/department/delete',
+    url: '/employee/delete',
     method: 'post',
     data
   })

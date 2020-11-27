@@ -2,31 +2,31 @@ import request from '@/utils/request'
 
 export function fetchList(query) {
   return request({
-    url: '/department/list',
+    url: '/project/list',
     method: 'get',
     params: query
   })
 }
 
-export function createDepartment(data) {
+export function createProject(data) {
   return request({
-    url: '/department/create',
+    url: '/project/create',
     method: 'post',
     data
   })
 }
 
-export function updateDepartment(data) {
+export function updateProject(data) {
   return request({
-    url: '/department/update',
+    url: '/project/update',
     method: 'post',
     data
   })
 }
 
-export function deleteDepartment(data) {
+export function deleteProject(data) {
   return request({
-    url: '/department/delete',
+    url: '/project/delete',
     method: 'post',
     data
   })

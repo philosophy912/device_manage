@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.title" :placeholder="$t('table.title')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.title" :placeholder="$t('department.name')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
       </el-button>
@@ -28,7 +28,6 @@
       <el-table-column :label="$t('department.name')" min-width="150px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
-          <!-- <el-tag>{{ row.type | typeFilter }}</el-tag> -->
         </template>
       </el-table-column>
       <el-table-column :label="$t('department.date')" width="150px" align="center">
@@ -55,9 +54,6 @@
         <el-form-item :label="$t('department.name')" prop="name">
           <el-input v-model="temp.name" />
         </el-form-item>
-        <!-- <el-form-item :label="$t('department.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
@@ -126,7 +122,7 @@ export default {
       // 列表查询
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 10
         // importance: undefined,
         // title: undefined,
         // type: undefined,
@@ -175,12 +171,8 @@ export default {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
         this.list = response.data
-        this.total = response.data.totalRows
+        this.total = response.totalRows
         this.listLoading = false
-        // Just to simulate the time of the request
-        // setTimeout(() => {
-        //   this.listLoading = false
-        // }, 1.5 * 1000)
       })
     },
     handleFilter() {
@@ -214,15 +206,6 @@ export default {
         name: '',
         timestamp: new Date()
       }
-      // this.temp = {
-      //   id: undefined,
-      //   importance: 1,
-      //   remark: '',
-      //   timestamp: new Date(),
-      //   title: '',
-      //   status: 'published',
-      //   type: ''
-      // }
     },
     handleCreate() {
       this.resetTemp()
