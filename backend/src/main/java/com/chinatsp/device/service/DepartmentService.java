@@ -14,7 +14,7 @@ public interface DepartmentService {
 
     List<DepartmentVo> findAllDepartment();
 
-    List<DepartmentVo> findDepartment(Pageable pageable);
+    List<DepartmentVo> findDepartment(Pageable pageable, String name);
 
     Long findAllDepartmentCount();
 

@@ -4,12 +4,15 @@ import com.chinatsp.device.dao.DepartmentDao;
 import com.chinatsp.device.entity.po.Department;
 import com.chinatsp.device.entity.vo.DepartmentVo;
 import com.chinatsp.device.utils.Constant;
+import com.philosophy.base.util.StringsUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -60,9 +63,18 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<DepartmentVo> findDepartment(Pageable pageable) {
+    public List<DepartmentVo> findDepartment(Pageable pageable, String name) {
         List<DepartmentVo> departmentVos = new ArrayList<>();
-        Page<Department> departments = departmentDao.findAll(pageable);
+        Page<Department> departments = departmentDao.findAll((Specification<Department>) (root, query, criteriaBuilder) -> {
+            // 1. 创建集合 存储查询条件
+            List<Predicate> queryList = new ArrayList<>();
+            // 2. 添加查询条件
+            if (StringsUtils.isNotEmpty(name)) {
+                queryList.add(criteriaBuilder.like(root.<String>get("name"), "%" + name + "%"));
+            }
+            query.where(queryList.toArray(new Predicate[0]));
+            return null;
+        }, pageable);
         for (Department department : departments) {
             DepartmentVo vo = convert(department);
             departmentVos.add(vo);

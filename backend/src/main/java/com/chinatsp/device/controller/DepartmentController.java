@@ -6,6 +6,7 @@ import com.chinatsp.device.service.DepartmentService;
 import com.chinatsp.device.utils.Constant;
 import com.chinatsp.device.utils.PageUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -32,11 +33,23 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public Response fetchList(@RequestParam int page, @RequestParam int limit) {
+    public Response fetchList(@RequestParam int page,
+                              @RequestParam int limit,
+                              @RequestParam(required = false) String name,
+                              @RequestParam(required = false) String sort) {
         Response response = new Response();
-        Pageable pageable = PageRequest.of(page - 1, limit, Sort.Direction.DESC, "id");
+        Pageable pageable;
+        if (Strings.isNotEmpty(sort)){
+            if (sort.equalsIgnoreCase(Constant.DESC)) {
+                pageable = PageRequest.of(page - 1, limit, Sort.Direction.DESC, "id");
+            } else {
+                pageable = PageRequest.of(page - 1, limit, Sort.Direction.ASC, "id");
+            }
+        }else {
+            pageable = PageRequest.of(page - 1, limit, Sort.Direction.ASC, "id");
+        }
         try {
-            List<DepartmentVo> departments = departmentService.findDepartment(pageable);
+            List<DepartmentVo> departments = departmentService.findDepartment(pageable, name);
             long count = departmentService.findAllDepartmentCount();
             response.setMessage("query success");
             response.setData(departments);

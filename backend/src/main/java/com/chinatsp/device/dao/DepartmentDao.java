@@ -1,10 +1,12 @@
 package com.chinatsp.device.dao;
 
 import com.chinatsp.device.entity.po.Department;
+import com.chinatsp.device.entity.po.Project;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
@@ -13,7 +15,7 @@ import java.util.List;
  * @author lizhe
  * @date 2020/11/19 18:02
  **/
-public interface DepartmentDao extends JpaRepository<Department, Integer> {
+public interface DepartmentDao extends JpaRepository<Department, Integer>, JpaSpecificationExecutor<Department> {
 
     @NotNull
     Page<Department> findAll(@NotNull Pageable pageable);
