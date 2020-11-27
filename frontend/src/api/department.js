@@ -8,6 +8,14 @@ export function fetchList(query) {
   })
 }
 
+export function fetchAll() {
+  return request({
+    url: '/department/findall',
+    method: 'get'
+  })
+}
+
+
 export function createDepartment(data) {
   return request({
     url: '/department/create',

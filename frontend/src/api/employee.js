@@ -9,7 +9,7 @@ export function fetchList(query) {
 }
 
 
-export function createDepartment(data) {
+export function createEmployee(data) {
   return request({
     url: '/employee/create',
     method: 'post',
@@ -17,7 +17,7 @@ export function createDepartment(data) {
   })
 }
 
-export function updateDepartment(data) {
+export function updateEmployee(data) {
   return request({
     url: '/employee/update',
     method: 'post',
@@ -25,7 +25,7 @@ export function updateDepartment(data) {
   })
 }
 
-export function deleteDepartment(data) {
+export function deleteEmployee(data) {
   return request({
     url: '/employee/delete',
     method: 'post',

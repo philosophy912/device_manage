@@ -10,16 +10,7 @@
       </el-button>
     </div>
 
-    <el-table
-      :key="tableKey"
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;"
-      @sort-change="sortChange"
-    >
+    <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;" @sort-change="sortChange">
       <el-table-column :label="$t('employee.id')" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
@@ -28,7 +19,6 @@
       <el-table-column :label="$t('employee.name')" min-width="150px" align="center">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
-          <el-tag>{{ row.type | typeFilter }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('employee.sex')" width="110px" align="center">
@@ -39,11 +29,6 @@
       <el-table-column :label="$t('employee.department')" width="110px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('employee.date')" width="150px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
@@ -66,13 +51,13 @@
           <el-input v-model="temp.title" />
         </el-form-item>
         <el-form-item :label="$t('employee.sex')" prop="sex">
-          <el-input v-model="temp.author" />
+          <el-switch v-model="temp.sex" active-text="男" inactive-text="女" />
         </el-form-item>
         <el-form-item :label="$t('employee.department')" prop="department">
-          <el-input v-model="temp.author" />
-        </el-form-item>
-        <el-form-item :label="$t('employee.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
+          <el-select v-model="temp.department" placeholder="请选择">
+            <!-- label是文字，value是值 -->
+            <el-option v-for="item in departments" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -99,6 +84,7 @@
 
 <script>
 import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+// import { fetchAll } from '@/api/department'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -135,6 +121,7 @@ export default {
   },
   data() {
     return {
+      departments: [],
       tableKey: 0,
       list: null,
       total: 0,

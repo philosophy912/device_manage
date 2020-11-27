@@ -155,7 +155,7 @@ export default {
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
-        log.debug("total = " + JSON.stringify(response.totalRows))
+        log.debug('total = ' + JSON.stringify(response.totalRows))
         this.list = response.data
         this.total = response.totalRows
         this.listLoading = false
