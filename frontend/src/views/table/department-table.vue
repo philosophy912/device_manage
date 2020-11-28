@@ -222,7 +222,7 @@ export default {
           // this.temp.author = 'vue-element-admin'
           this.temp.timestamp = +new Date(this.temp.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           createDepartment(this.temp).then(() => {
-            this.list.unshift(this.temp)
+            // this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -230,6 +230,7 @@ export default {
               type: 'success',
               duration: 2000
             })
+            this.getList()
           })
         }
       })
@@ -248,8 +249,8 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           updateDepartment(tempData).then(() => {
-            const index = this.list.findIndex(v => v.id === this.temp.id)
-            this.list.splice(index, 1, this.temp)
+            // const index = this.list.findIndex(v => v.id === this.temp.id)
+            // this.list.splice(index, 1, this.temp)
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -257,6 +258,7 @@ export default {
               type: 'success',
               duration: 2000
             })
+            this.getList()
           })
         }
       })
@@ -278,7 +280,7 @@ export default {
             type: 'success',
             duration: 2000
           })
-          this.list.splice(index, 1)
+          this.getList()
         }).catch(() => {
           this.$notify({
             title: '失败',

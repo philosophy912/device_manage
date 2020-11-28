@@ -8,7 +8,6 @@ export function fetchList(query) {
   })
 }
 
-
 export function createEmployee(data) {
   return request({
     url: '/employee/create',

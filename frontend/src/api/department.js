@@ -15,7 +15,6 @@ export function fetchAll() {
   })
 }
 
-
 export function createDepartment(data) {
   return request({
     url: '/department/create',
