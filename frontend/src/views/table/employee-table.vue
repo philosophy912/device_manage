@@ -52,7 +52,7 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('employee.name')" prop="name">
+        <el-form-item :label="$t('employee.name')" prop="title">
           <el-input v-model="temp.name" />
         </el-form-item>
         <el-form-item :label="$t('employee.sex')" prop="sex">
@@ -110,6 +110,11 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 export default {
   name: 'EmployeeTable',
   components: { Pagination },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.getList()
+    })
+  },
   directives: { waves },
   filters: {
     statusFilter(status) {
@@ -159,9 +164,9 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+        department: [{ type: 'array', required: true, message: 'department is required', trigger: 'change' }],
+        sex: [{ required: true, message: 'sex is required', trigger: 'change' }],
+        title: [{ required: true, message: '姓名不能为空', trigger: 'blur' }]
       },
       downloadLoading: false
     }

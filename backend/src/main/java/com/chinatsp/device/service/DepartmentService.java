@@ -22,4 +22,6 @@ public interface DepartmentService {
     DepartmentVo updateDepartment(DepartmentVo departmentVo);
 
     DepartmentVo deleteDepartment(DepartmentVo departmentVo);
+
+    List<DepartmentVo> findDepartmentByName(DepartmentVo departmentVo);
 }

@@ -8,6 +8,7 @@ import com.chinatsp.device.utils.Constant;
 import com.chinatsp.device.utils.PageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,16 +34,30 @@ public class DepartmentController {
     @Resource
     private DepartmentService departmentService;
 
-    @RequestMapping(value = "/findall", method = RequestMethod.GET)
+    @RequestMapping(value = "/findAll", method = RequestMethod.GET)
     public Response findAll() {
         Response response = new Response();
         try {
             List<DepartmentVo> departments = departmentService.findAllDepartment();
-            response.setMessage("query success");
+            response.setMessage("查询成功");
             response.setData(departments);
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("query failed");
+            response.setMessage("查询失败");
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/fetchName", method = RequestMethod.GET)
+    public Response fetchName(@RequestBody DepartmentVo departmentVo) {
+        Response response = new Response();
+        try {
+            List<DepartmentVo> departments = departmentService.findDepartmentByName(departmentVo);
+            response.setMessage("查询成功");
+            response.setData(departments);
+        } catch (Exception e) {
+            response.setCode(Constant.NOK);
+            response.setMessage("查询失败");
         }
         return response;
     }
@@ -67,14 +82,14 @@ public class DepartmentController {
         try {
             List<DepartmentVo> departments = departmentService.findDepartment(pageable, name);
             long count = departmentService.findAllDepartmentCount();
-            response.setMessage("query success");
+            response.setMessage("查询成功");
             response.setData(departments);
             response.setPageSize(pageable.getPageSize());
             response.setTotalRows((int) count);
             response.setTotalPages(PageUtils.get(count, pageable.getPageSize()));
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("query failed");
+            response.setMessage("查询失败");
         }
         return response;
     }
@@ -82,6 +97,7 @@ public class DepartmentController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public Response create(@RequestBody DepartmentVo departmentVo) {
         Response response = new Response();
+        String name = departmentVo.getName();
         try {
             DepartmentVo vo = departmentService.addDepartment(departmentVo);
             if (vo != null) {
@@ -89,11 +105,11 @@ public class DepartmentController {
                 response.setMessage("create success");
             } else {
                 response.setCode(Constant.NOK);
-                response.setMessage(departmentVo.getName() + "is already in database, so create failed");
+                response.setMessage(name + "已经在数据库中存在，无法添加");
             }
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("create failed");
+            response.setMessage("创建失败");
         }
         return response;
     }
@@ -101,18 +117,19 @@ public class DepartmentController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public Response update(@RequestBody DepartmentVo departmentVo) {
         Response response = new Response();
+        String name = departmentVo.getName();
         try {
             DepartmentVo vo = departmentService.updateDepartment(departmentVo);
             if (vo != null) {
                 response.setData(Collections.singletonList(vo));
-                response.setMessage("update success");
+                response.setMessage("更新成功");
             } else {
                 response.setCode(Constant.NOK);
-                response.setMessage(departmentVo.getName() + "is not in database, so update failed");
+                response.setMessage(name + "在数据库中未查询到，请检查");
             }
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("update failed");
+            response.setMessage("更新失败");
         }
         return response;
     }
@@ -120,18 +137,22 @@ public class DepartmentController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Response delete(@RequestBody DepartmentVo departmentVo) {
         Response response = new Response();
+        String name = departmentVo.getName();
         try {
             DepartmentVo vo = departmentService.deleteDepartment(departmentVo);
             if (vo != null) {
                 response.setData(Collections.singletonList(vo));
-                response.setMessage("update success");
+                response.setMessage("删除成功");
             } else {
                 response.setCode(Constant.NOK);
-                response.setMessage(departmentVo.getName() + "is not in database, so delete failed");
+                response.setMessage(name + "不在数据库中，无法删除");
             }
+        } catch (DataIntegrityViolationException e) {
+            response.setCode(Constant.NOK);
+            response.setMessage("删除失败，部门" + name + "中仍然存在雇员");
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("update failed, reason is " + e.getMessage());
+            response.setMessage("删除失败, 原因是" + e.getMessage());
         }
         return response;
     }

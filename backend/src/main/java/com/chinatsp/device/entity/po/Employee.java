@@ -1,9 +1,11 @@
 package com.chinatsp.device.entity.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,19 +19,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * 雇员
+ *
  * @author lizhe
  * @date 2020/11/19 17:55
  **/
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "Employee")
 public class Employee implements Serializable {
@@ -43,10 +45,28 @@ public class Employee implements Serializable {
     private Boolean sex;
     @Column(name = "createDate", nullable = false)
     private Long createDate;
+    @JsonIgnoreProperties(value = {"employees"})
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     @JoinColumn(name = "department_id")
     private Department department;
     // 双向一对多，一个员工可以持有多个设备
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"employee"})
+    @OneToMany(mappedBy = "employee", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private Set<Goods> goods = new HashSet<>();
+
+    @Override
+    public String toString() {
+        goods.forEach(g -> {
+            goods.add(null);
+        });
+
+        return "Employee{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", sex=" + sex +
+                ", createDate=" + createDate +
+                ", department=" + department +
+                ", goods=" + goods +
+                '}';
+    }
 }

@@ -1,8 +1,11 @@
 package com.chinatsp.device.entity.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.CascadeType;
@@ -15,7 +18,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 商品
@@ -23,10 +25,10 @@ import java.util.Date;
  * @author lizhe
  * @date 2020/11/19 17:51
  **/
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "Goods")
 public class Goods implements Serializable {
@@ -56,9 +58,11 @@ public class Goods implements Serializable {
     // 归还时间
     @Column(name = "return_time")
     private Long returnTime;
+    @JsonIgnoreProperties(value = {"goods"})
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     @JoinColumn(name = "employee_id")
     private Employee employee;
+    @JsonIgnoreProperties(value = {"goods"})
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     @JoinColumn(name = "project_id")
     private Project project;

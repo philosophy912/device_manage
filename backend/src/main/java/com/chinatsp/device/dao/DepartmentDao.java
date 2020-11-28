@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -14,6 +15,7 @@ import java.util.List;
  * @author lizhe
  * @date 2020/11/19 18:02
  **/
+@Transactional
 public interface DepartmentDao extends JpaRepository<Department, Integer>, JpaSpecificationExecutor<Department> {
 
     @NotNull

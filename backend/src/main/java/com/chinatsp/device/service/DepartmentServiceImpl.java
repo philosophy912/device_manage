@@ -115,7 +115,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentVo deleteDepartment(DepartmentVo departmentVo) {
-        Optional<Department> optionalDepartment = departmentDao.findById(departmentVo.getId());
+        int id = departmentVo.getId();
+        log.debug("department id = " + id);
+        Optional<Department> optionalDepartment = departmentDao.findById(id);
         if (optionalDepartment.isPresent()) {
             Department dpt = optionalDepartment.get();
             departmentDao.delete(dpt);
@@ -123,5 +125,17 @@ public class DepartmentServiceImpl implements DepartmentService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<DepartmentVo> findDepartmentByName(DepartmentVo departmentVo) {
+        String name = departmentVo.getName();
+        List<Department> departments = departmentDao.findByName(name);
+        List<DepartmentVo> departmentVos = new ArrayList<>();
+        for (Department department : departments) {
+            DepartmentVo vo = convert(department);
+            departmentVos.add(vo);
+        }
+        return departmentVos;
     }
 }

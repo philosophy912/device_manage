@@ -10,22 +10,13 @@
       </el-button>
     </div>
 
-    <el-table
-      :key="tableKey"
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;"
-      @sort-change="sortChange"
-    >
+    <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;" @sort-change="sortChange">
       <el-table-column :label="$t('department.id')" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('department.name')" min-width="150px">
+      <el-table-column :label="$t('department.name')" align="center" min-width="150px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
         </template>
@@ -51,7 +42,7 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('department.name')" prop="name">
+        <el-form-item :label="$t('department.name')" prop="title">
           <el-input v-model="temp.name" />
         </el-form-item>
       </el-form>
@@ -78,7 +69,7 @@
 </template>
 
 <script>
-import { fetchList, createDepartment, updateDepartment, deleteDepartment } from '@/api/department'
+import { fetchList, createDepartment, updateDepartment, deleteDepartment, fetchName } from '@/api/department'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -100,6 +91,11 @@ export default {
   name: 'DepartmentTable',
   components: { Pagination },
   directives: { waves },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.getList()
+    })
+  },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -133,15 +129,6 @@ export default {
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
-      tempBak: {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
-      },
       temp: {
         id: undefined,
         name: '',

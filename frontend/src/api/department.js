@@ -10,8 +10,16 @@ export function fetchList(query) {
 
 export function fetchAll() {
   return request({
-    url: '/department/findall',
+    url: '/department/findAll',
     method: 'get'
+  })
+}
+
+export function fetchName(data) {
+  return request({
+    url: '/department/findName',
+    method: 'post',
+    data
   })
 }
 

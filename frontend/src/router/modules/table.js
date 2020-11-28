@@ -40,25 +40,25 @@ const tableRouter = {
       path: 'project-table',
       component: () => import('@/views/table/project-table'),
       name: 'ProjectTable',
-      meta: { title: '项目' }
+      meta: { title: '项目管理' }
     },
     {
       path: 'employee-table',
       component: () => import('@/views/table/employee-table'),
       name: 'EmployeeTable',
-      meta: { title: '雇员' }
+      meta: { title: '雇员管理' }
     },
     {
       path: 'department-table',
       component: () => import('@/views/table/department-table'),
       name: 'DepartmentTable',
-      meta: { title: '部门' }
+      meta: { title: '部门管理' }
     },
     {
       path: 'goods-table',
       component: () => import('@/views/table/goods-table'),
       name: 'GoodsTable',
-      meta: { title: '物品' }
+      meta: { title: '物品管理' }
     }
   ]
 }
