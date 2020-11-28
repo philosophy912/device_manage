@@ -4,7 +4,6 @@ import com.chinatsp.device.dao.DepartmentDao;
 import com.chinatsp.device.dao.EmployeeDao;
 import com.chinatsp.device.entity.po.Department;
 import com.chinatsp.device.entity.po.Employee;
-import com.chinatsp.device.entity.vo.DepartmentVo;
 import com.chinatsp.device.entity.vo.EmployeeVo;
 import com.chinatsp.device.utils.Constant;
 import com.philosophy.base.util.StringsUtils;
@@ -95,6 +94,40 @@ public class EmployeeServiceImpl implements EmployeeService {
             return convert(dpt);
         }
         return null;
+    }
+
+    @Override
+    public EmployeeVo updateEmployee(EmployeeVo employeeVo) {
+        int dptId = employeeVo.getDepartmentId();
+        Optional<Department> optionalDepartment = departmentDao.findById(dptId);
+        Employee employee = convert(employeeVo, Constant.UPDATE);
+        Optional<Employee> optional = employeeDao.findById(employee.getId());
+        if (optional.isPresent()) {
+            Employee dpt = optional.get();
+            dpt.setName(employee.getName());
+            if(optionalDepartment.isPresent()){
+                Department department = optionalDepartment.get();
+                dpt.setDepartment(department);
+                employeeDao.saveAndFlush(dpt);
+                return employeeVo;
+            }else{
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public EmployeeVo deleteEmployee(EmployeeVo employeeVo) {
+        Optional<Employee> optional = employeeDao.findById(employeeVo.getId());
+        if (optional.isPresent()) {
+            Employee dpt = optional.get();
+            employeeDao.delete(dpt);
+            return employeeVo;
+        } else {
+            return null;
+        }
     }
 
 

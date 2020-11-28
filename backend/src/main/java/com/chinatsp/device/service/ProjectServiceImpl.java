@@ -101,8 +101,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectVo deleteProject(ProjectVo projectVo) {
-        Project project = convert(projectVo, Constant.UPDATE);
-        Optional<Project> optionalDepartment = projectDao.findById(project.getId());
+        Optional<Project> optionalDepartment = projectDao.findById(projectVo.getId());
         if (optionalDepartment.isPresent()) {
             Project dpt = optionalDepartment.get();
             projectDao.delete(dpt);

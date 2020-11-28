@@ -119,7 +119,7 @@ public class ProjectController {
             }
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("update failed");
+            response.setMessage("update failed , reason is " + e.getMessage());
         }
         return response;
     }

@@ -115,8 +115,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentVo deleteDepartment(DepartmentVo departmentVo) {
-        Department department = convert(departmentVo, Constant.UPDATE);
-        Optional<Department> optionalDepartment = departmentDao.findById(department.getId());
+        Optional<Department> optionalDepartment = departmentDao.findById(departmentVo.getId());
         if (optionalDepartment.isPresent()) {
             Department dpt = optionalDepartment.get();
             departmentDao.delete(dpt);

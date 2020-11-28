@@ -80,6 +80,43 @@ public class EmployeeController {
         return response;
     }
 
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public Response update(@RequestBody EmployeeVo employeeVo) {
+        Response response = new Response();
+        try {
+            EmployeeVo vo = employeeService.updateEmployee(employeeVo);
+            if (vo != null) {
+                response.setData(Collections.singletonList(vo));
+                response.setMessage("update success");
+            } else {
+                response.setCode(Constant.NOK);
+                response.setMessage(employeeVo.getName() + "is not in database, so update failed");
+            }
+        } catch (Exception e) {
+            response.setCode(Constant.NOK);
+            response.setMessage("update failed");
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public Response delete(@RequestBody EmployeeVo employeeVo) {
+        Response response = new Response();
+        try {
+            EmployeeVo vo = employeeService.deleteEmployee(employeeVo);
+            if (vo != null) {
+                response.setData(Collections.singletonList(vo));
+                response.setMessage("update success");
+            } else {
+                response.setCode(Constant.NOK);
+                response.setMessage(employeeVo.getName() + "is not in database, so delete failed");
+            }
+        } catch (Exception e) {
+            response.setCode(Constant.NOK);
+            response.setMessage("update failed, reason is " + e.getMessage());
+        }
+        return response;
+    }
 
 
 }

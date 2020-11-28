@@ -11,4 +11,8 @@ public interface EmployeeService {
     long findAllEmployeeCount();
 
     EmployeeVo addEmployee(EmployeeVo employeeVo);
+
+    EmployeeVo updateEmployee(EmployeeVo employeeVo);
+
+    EmployeeVo deleteEmployee(EmployeeVo employeeVo);
 }
