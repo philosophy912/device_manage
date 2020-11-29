@@ -2,7 +2,6 @@ package com.chinatsp.device.entity.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,7 +42,7 @@ public class Employee implements Serializable {
     private String name;
     @Column(name = "sex", nullable = false)
     private Boolean sex;
-    @Column(name = "createDate", nullable = false)
+    @Column(name = "create_date", nullable = false)
     private Long createDate;
     @JsonIgnoreProperties(value = {"employees"})
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
@@ -56,9 +55,7 @@ public class Employee implements Serializable {
 
     @Override
     public String toString() {
-        goods.forEach(g -> {
-            goods.add(null);
-        });
+        goods.forEach(g -> goods.add(null));
 
         return "Employee{" +
                 "id=" + id +
@@ -69,4 +66,5 @@ public class Employee implements Serializable {
                 ", goods=" + goods +
                 '}';
     }
+
 }

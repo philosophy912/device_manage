@@ -2,7 +2,6 @@ package com.chinatsp.device.entity.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,13 +31,13 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "Project")
-public class Project implements Serializable {
+public class Project implements Serializable, Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "createDate", nullable = false)
+    @Column(name = "create_date", nullable = false)
     private Long createDate;
     // 双向一对多，一个员工可以持有多个设备
     @JsonIgnoreProperties(value = {"project"})
@@ -47,9 +46,7 @@ public class Project implements Serializable {
 
     @Override
     public String toString() {
-        goods.forEach(g -> {
-            goods.add(null);
-        });
+        goods.forEach(g -> goods.add(null));
         return "Project{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
@@ -57,4 +54,5 @@ public class Project implements Serializable {
                 ", goods=" + goods +
                 '}';
     }
+
 }

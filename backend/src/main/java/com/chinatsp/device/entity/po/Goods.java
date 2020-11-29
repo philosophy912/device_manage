@@ -2,11 +2,9 @@ package com.chinatsp.device.entity.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,7 +39,7 @@ public class Goods implements Serializable {
     private String code;
     @Column(name = "description")
     private String description;
-    @Column(name = "imageUrl")
+    @Column(name = "image_url")
     private String imageUrl;
     // 领用状态
     @Column(name = "recipients_status")
@@ -67,4 +65,19 @@ public class Goods implements Serializable {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @Override
+    public String toString() {
+        return "Goods{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", description='" + description + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", recipientsStatus=" + recipientsStatus +
+                ", goodsStatus=" + goodsStatus +
+                ", inTime=" + inTime +
+                ", recipientsTime=" + recipientsTime +
+                ", returnTime=" + returnTime +
+                '}';
+    }
 }

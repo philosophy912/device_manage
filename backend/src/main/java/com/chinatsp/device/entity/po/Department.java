@@ -2,7 +2,6 @@ package com.chinatsp.device.entity.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,7 +37,7 @@ public class Department implements Serializable {
     private Integer id;
     @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "createDate", nullable = false)
+    @Column(name = "create_date", nullable = false)
     private Long createDate;
     // 双向一对多，一个部门有多个员工
     @JsonIgnoreProperties(value = {"department"})
@@ -47,9 +46,7 @@ public class Department implements Serializable {
 
     @Override
     public String toString() {
-        employees.forEach(employee -> {
-            employees.add(null);
-        });
+        employees.forEach(employee -> employees.add(null));
         return "Department{" +
                 "id=" + id +
                 ", name='" + name + '\'' +

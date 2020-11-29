@@ -10,6 +10,7 @@ import com.chinatsp.device.entity.vo.GoodsVo;
 import com.chinatsp.device.utils.Constant;
 import com.philosophy.base.util.StringsUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -40,16 +41,31 @@ public class GoodsServiceImpl implements GoodsService {
         if (null != goods.getCode()) {
             goodsVo.setCode(goods.getCode());
         }
+        goodsVo.setImage(goods.getImageUrl());
         goodsVo.setName(goods.getName());
         goodsVo.setEmployeeId(employee.getId());
-        goodsVo.setEmployeeName(employee.getName());
+        if (employee.getName() != null) {
+            goodsVo.setEmployeeName(employee.getName());
+        }
         goodsVo.setProjectId(project.getId());
-        goodsVo.setProjectName(project.getName());
-        goodsVo.setRecipientsStatus(goods.getRecipientsStatus() ? Constant.NORMAL : Constant.BREAK);
-        goodsVo.setGoodsStatus(goods.getGoodsStatus() ? Constant.NORMAL : Constant.BREAK);
-        goodsVo.setInTime(goods.getInTime());
-        goodsVo.setRecipientsTime(goods.getRecipientsTime());
-        goodsVo.setReturnTime(goods.getReturnTime());
+        if (project.getName() != null) {
+            goodsVo.setProjectName(project.getName());
+        }
+        if (goods.getRecipientsStatus() != null) {
+            goodsVo.setRecipientsStatus(goods.getRecipientsStatus() ? Constant.NORMAL : Constant.BREAK);
+        }
+        if (goods.getGoodsStatus() != null) {
+            goodsVo.setGoodsStatus(goods.getGoodsStatus() ? Constant.NORMAL : Constant.BREAK);
+        }
+        if (goods.getInTime() != null) {
+            goodsVo.setInTime(goods.getInTime());
+        }
+        if (goods.getRecipientsTime() != null) {
+            goodsVo.setRecipientsTime(goods.getRecipientsTime());
+        }
+        if (goods.getReturnTime() != null) {
+            goodsVo.setReturnTime(goods.getReturnTime());
+        }
         return goodsVo;
     }
 
@@ -75,6 +91,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
         goods.setCode(goodsVo.getCode());
         goods.setName(goodsVo.getName());
+        goods.setImageUrl(goodsVo.getImage());
         if (goodsVo.getRecipientsStatus() != null) {
             goods.setRecipientsStatus(goodsVo.getRecipientsStatus().equals(Constant.NORMAL));
         }
@@ -131,15 +148,22 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<GoodsVo> addGoods(GoodsVo goodsVo) {
+        log.debug("goodsVo = {}", goodsVo);
         String name = goodsVo.getName();
         List<GoodsVo> goodsVos = new ArrayList<>();
         List<Goods> goodsList = goodsDao.findByName(name);
         if (goodsList.size() == 0) {
             Goods goods = convert(goodsVo, Constant.CREATE);
             int count = goodsVo.getCount();
+            Project project = new Project();
+            Employee employee = new Employee();
+            project.setId(goodsVo.getProjectId());
+            employee.setId(goodsVo.getEmployeeId());
             for (int i = 0; i < count; i++) {
                 goods.setCode(UUID.randomUUID().toString());
-                Goods dpt = goodsDao.saveAndFlush(goods);
+                Goods gds = SerializationUtils.clone(goods);
+                Goods dpt = goodsDao.saveAndFlush(gds);
+                log.debug("goods = {}", dpt);
                 goodsVos.add(convert(dpt));
             }
             return goodsVos;

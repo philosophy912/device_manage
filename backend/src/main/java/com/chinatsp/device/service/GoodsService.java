@@ -12,7 +12,7 @@ public interface GoodsService {
 
     List<GoodsVo> findGoodsByName(GoodsVo goodsVo);
 
-    List<GoodsVo> addGoods(GoodsVo goodsVo);
+    List<GoodsVo> addGoods(GoodsVo goodsVo) throws CloneNotSupportedException;
 
     GoodsVo updateGoods(GoodsVo goodsVo);
 

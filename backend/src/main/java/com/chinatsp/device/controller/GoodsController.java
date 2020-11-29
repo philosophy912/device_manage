@@ -80,8 +80,13 @@ public class GoodsController {
         Response response = new Response();
         try {
             List<GoodsVo> goodsVos = goodsService.addGoods(goodsVo);
-            response.setData(goodsVos);
-            response.setMessage("create success");
+            if(goodsVos != null){
+                response.setData(goodsVos);
+                response.setMessage("create success");
+            }else{
+                response.setCode(Constant.NOK);
+                response.setMessage("create failed, reason is " + goodsVo.getName() + " exist");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             response.setCode(Constant.NOK);

@@ -44,13 +44,11 @@
       <el-table-column :label="$t('goods.recipients_status')" min-width="80px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.recipientsStatus }}</span>
-          <el-tag>{{ row.type | typeFilter }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.goods_status')" min-width="80px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.goodsStatus }}</span>
-          <el-tag>{{ row.type | typeFilter }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.in_time')" width="100px" align="center">
@@ -132,7 +130,7 @@
 </template>
 
 <script>
-import { fetchGoodsList, fetchGoodsName, createGoods, updateGoods, deleteGoods } from '@/api/goods'
+import { fetchGoodsList, createGoods, updateGoods, deleteGoods } from '@/api/goods'
 import { fetchAllEmployee } from '@/api/employee'
 import { fetchAllProject } from '@/api/project'
 import waves from '@/directive/waves' // waves directive
@@ -315,6 +313,7 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          const tempData = Object.assign({}, this.temp)
           updateGoods(tempData).then(() => {
             const index = this.list.findIndex(v => v.id === this.temp.id)
             this.list.splice(index, 1, this.temp)
@@ -330,13 +329,33 @@ export default {
       })
     },
     handleDelete(row, index) {
-      this.$notify({
-        title: '成功',
-        message: '删除成功',
-        type: 'success',
-        duration: 2000
+      this.$confirm('此操作将永久删除部门【' + row.name + '】, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const data = {
+          'id': row.id,
+          'name': row.name
+        }
+        deleteGoods(data).then(() => {
+          this.$notify({
+            title: '成功',
+            message: '删除成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.getList()
+        }).catch(() => {
+          this.$notify({
+            title: '失败',
+            message: '删除失败',
+            type: 'error',
+            duration: 2000
+          })
+        })
+      }).catch(() => {
       })
-      this.list.splice(index, 1)
     },
     handleFetchPv(pv) {
       // fetchPv(pv).then(response => {

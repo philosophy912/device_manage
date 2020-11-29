@@ -8,6 +8,13 @@ export function fetchProjectList(query) {
   })
 }
 
+export function fetchAllProject() {
+  return request({
+    url: '/project/findAll',
+    method: 'get'
+  })
+}
+
 export function fetchProjectName(data) {
   return request({
     url: '/project/findName',

@@ -1,10 +1,10 @@
 server:
   port: 8080
-  connectionTimeout: 180000
 
 logging:
   level:
     root: info
+    com.chinatsp.device.service: debug
 
 spring:
   datasource:
