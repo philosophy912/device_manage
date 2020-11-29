@@ -1,7 +1,11 @@
 package com.chinatsp.device.service;
 
 import com.chinatsp.device.dao.ProjectDao;
+import com.chinatsp.device.entity.po.Department;
+import com.chinatsp.device.entity.po.Employee;
 import com.chinatsp.device.entity.po.Project;
+import com.chinatsp.device.entity.vo.DepartmentVo;
+import com.chinatsp.device.entity.vo.EmployeeVo;
 import com.chinatsp.device.entity.vo.ProjectVo;
 import com.chinatsp.device.utils.Constant;
 import com.philosophy.base.util.StringsUtils;
@@ -56,7 +60,7 @@ public class ProjectServiceImpl implements ProjectService {
             List<Predicate> queryList = new ArrayList<>();
             // 2. 添加查询条件
             if (StringsUtils.isNotEmpty(name)) {
-                queryList.add(criteriaBuilder.like(root.<String>get("name"), "%" + name + "%"));
+                queryList.add(criteriaBuilder.like(root.get("name"), "%" + name + "%"));
             }
             query.where(queryList.toArray(new Predicate[0]));
             return null;
@@ -109,5 +113,28 @@ public class ProjectServiceImpl implements ProjectService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<ProjectVo> findProjectByName(ProjectVo projectVo) {
+        String name = projectVo.getName();
+        List<Project> projects = projectDao.findByName(name);
+        List<ProjectVo> projectVos = new ArrayList<>();
+        for (Project project : projects) {
+            ProjectVo vo = convert(project);
+            projectVos.add(vo);
+        }
+        return projectVos;
+    }
+
+    @Override
+    public List<ProjectVo> findAllProject() {
+        List<ProjectVo> projectVos = new ArrayList<>();
+        List<Project> projects = projectDao.findAll();
+        for (Project project : projects) {
+            ProjectVo vo = convert(project);
+            projectVos.add(vo);
+        }
+        return projectVos;
     }
 }

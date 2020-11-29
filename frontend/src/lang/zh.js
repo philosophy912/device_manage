@@ -200,6 +200,7 @@ export default {
     recipients_status: '领用状态',
     goods_status: '物品状态',
     image: '缩略图',
-    code: '物品编号'
+    code: '物品编号',
+    count: '数量'
   }
 }

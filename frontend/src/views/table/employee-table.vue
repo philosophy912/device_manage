@@ -88,8 +88,8 @@
 </template>
 
 <script>
-import { fetchList, createEmployee, updateEmployee, deleteEmployee } from '@/api/employee'
-import { fetchAll } from '@/api/department'
+import { fetchEmployeeList, createEmployee, updateEmployee, deleteEmployee } from '@/api/employee'
+import { fetchAllDepartment } from '@/api/department'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -139,7 +139,6 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        importance: undefined,
         name: undefined,
         sort: '+id'
       },
@@ -164,7 +163,7 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        department: [{ type: 'array', required: true, message: 'department is required', trigger: 'change' }],
+        department: [{ type: 'array', required: true, message: '必须选择部门', trigger: 'change' }],
         sex: [{ required: true, message: 'sex is required', trigger: 'change' }],
         title: [{ required: true, message: '姓名不能为空', trigger: 'blur' }]
       },
@@ -177,7 +176,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      fetchEmployeeList(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.totalRows
         this.listLoading = false
@@ -218,7 +217,7 @@ export default {
     },
     handleCreate() {
       this.resetTemp()
-      fetchAll().then(response => {
+      fetchAllDepartment().then(response => {
         this.departments = response.data
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
@@ -246,7 +245,7 @@ export default {
       })
     },
     handleUpdate(row) {
-      fetchAll().then(response => {
+      fetchAllDepartment().then(response => {
         this.departments = response.data
         this.temp = Object.assign({}, row) // copy obj
         // this.temp.timestamp = new Date(this.temp.timestamp)

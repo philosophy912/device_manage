@@ -42,7 +42,7 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('department.name')" prop="title">
+        <el-form-item :label="$t('department.name')" prop="name">
           <el-input v-model="temp.name" />
         </el-form-item>
       </el-form>
@@ -69,7 +69,8 @@
 </template>
 
 <script>
-import { fetchList, createDepartment, updateDepartment, deleteDepartment, fetchName } from '@/api/department'
+import { isDepartmentNameValid } from '@/utils/validates'
+import { fetchDepartmentList, createDepartment, updateDepartment, deleteDepartment } from '@/api/department'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -118,11 +119,9 @@ export default {
       // 列表查询
       listQuery: {
         page: 1,
-        limit: 10
-        // importance: undefined,
-        // title: undefined,
-        // type: undefined,
-        // sort: '+id'
+        limit: 10,
+        name: undefined,
+        sort: '+id'
       },
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
@@ -143,9 +142,10 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: '部门名称必须填写', trigger: 'blur' }]
+        // type: [{ required: true, message: 'type is required', trigger: 'change' }],
+        // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
+        name: [{ required: true, trigger: 'blur', validator: isDepartmentNameValid }]
+        // title: [{ required: true, message: '部门名称必须填写', trigger: 'blur', validator: isDepartmentNameValid}]
       },
       downloadLoading: false
     }
@@ -156,7 +156,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      fetchDepartmentList(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.totalRows
         this.listLoading = false

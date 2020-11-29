@@ -61,6 +61,35 @@ public class EmployeeController {
         return response;
     }
 
+    @RequestMapping(value = "/findAll", method = RequestMethod.GET)
+    public Response findAll() {
+        Response response = new Response();
+        try {
+            List<EmployeeVo> departments = employeeService.findAllEmployee();
+            response.setMessage("查询成功");
+            response.setData(departments);
+        } catch (Exception e) {
+            response.setCode(Constant.NOK);
+            response.setMessage("查询失败");
+        }
+        return response;
+    }
+
+
+    @RequestMapping(value = "/findName", method = RequestMethod.POST)
+    public Response fetchName(@RequestBody EmployeeVo employeeVo) {
+        Response response = new Response();
+        try {
+            List<EmployeeVo> employeeVos = employeeService.findEmployeeByName(employeeVo);
+            response.setMessage("查询成功");
+            response.setData(employeeVos);
+        } catch (Exception e) {
+            response.setCode(Constant.NOK);
+            response.setMessage("查询失败");
+        }
+        return response;
+    }
+
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public Response create(@RequestBody EmployeeVo employeeVo) {
         Response response = new Response();

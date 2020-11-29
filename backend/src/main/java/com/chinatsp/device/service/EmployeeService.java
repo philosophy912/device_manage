@@ -15,4 +15,8 @@ public interface EmployeeService {
     EmployeeVo updateEmployee(EmployeeVo employeeVo);
 
     EmployeeVo deleteEmployee(EmployeeVo employeeVo);
+
+    List<EmployeeVo> findEmployeeByName(EmployeeVo employeeVo);
+
+    List<EmployeeVo> findAllEmployee();
 }

@@ -18,59 +18,54 @@
       </el-table-column>
       <el-table-column :label="$t('goods.name')" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.author }}</span>
-          <el-tag>{{ row.type | typeFilter }}</el-tag>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.code')" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.author }}</span>
-          <el-tag>{{ row.type | typeFilter }}</el-tag>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.code }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.employee')" min-width="100px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.author }}</span>
-          <el-tag>{{ row.type | typeFilter }}</el-tag>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.employeeName }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.project')" min-width="100px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.author }}</span>
-          <el-tag>{{ row.type | typeFilter }}</el-tag>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.projectName }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.image')" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
-          <el-tag>{{ row.type | typeFilter }}</el-tag>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.image }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.recipients_status')" min-width="80px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.author }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.recipientsStatus }}</span>
           <el-tag>{{ row.type | typeFilter }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.goods_status')" min-width="80px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.author }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.goodsStatus }}</span>
           <el-tag>{{ row.type | typeFilter }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.in_time')" width="100px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ row.inTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.recipients_time')" width="100px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ row.recipientsTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.return_time')" width="100px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ row.returnTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
@@ -89,32 +84,29 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('goods.name')" prop="title">
+        <el-form-item :label="$t('goods.name')" prop="name">
           <el-input v-model="temp.author" />
         </el-form-item>
-        <el-form-item :label="$t('goods.image')" prop="title">
+        <el-form-item :label="$t('goods.image')" prop="image">
           <el-input v-model="temp.author" />
         </el-form-item>
-        <el-form-item :label="$t('goods.employee')" prop="title">
-          <el-input v-model="temp.author" />
+        <el-form-item :label="$t('goods.goods_status')" prop="goodsStatus">
+          <el-switch v-model="temp.goodsStatus" active-text="好" inactive-text="坏" />
         </el-form-item>
-        <el-form-item :label="$t('goods.project')" prop="title">
-          <el-input v-model="temp.author" />
+        <el-form-item :label="$t('goods.employee')" prop="employeeName">
+          <el-select v-model="temp.employeeId" placeholder="请选择">
+            <!-- label是文字，value是值 -->
+            <el-option v-for="item in employees" :key="item.id" :label="item.name" :value="item.id" />
+          </el-select>
         </el-form-item>
-        <el-form-item :label="$t('goods.recipients_status')" prop="title">
-          <el-input v-model="temp.title" />
+        <el-form-item :label="$t('goods.project')" prop="projectName">
+          <el-select v-model="temp.projectId" placeholder="请选择">
+            <!-- label是文字，value是值 -->
+            <el-option v-for="item in projects" :key="item.id" :label="item.name" :value="item.id" />
+          </el-select>
         </el-form-item>
-        <el-form-item :label="$t('goods.goods_status')" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item :label="$t('goods.in_time')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-        </el-form-item>
-        <el-form-item :label="$t('goods.recipients_time')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-        </el-form-item>
-        <el-form-item :label="$t('goods.return_time')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
+        <el-form-item v-if="dialogStatus==='create'" :label="$t('goods.count')" prop="count">
+          <el-input v-model="temp.count" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -140,7 +132,9 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+import { fetchGoodsList, fetchGoodsName, createGoods, updateGoods, deleteGoods } from '@/api/goods'
+import { fetchAllEmployee } from '@/api/employee'
+import { fetchAllProject } from '@/api/project'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -182,16 +176,16 @@ export default {
   },
   data() {
     return {
+      projects: [],
+      employees: [],
       tableKey: 0,
       list: null,
       total: 0,
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
+        limit: 10,
+        name: undefined,
         sort: '+id'
       },
       importanceOptions: [1, 2, 3],
@@ -201,25 +195,30 @@ export default {
       showReviewer: false,
       temp: {
         id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
+        name: '',
+        code: '',
+        image: '',
+        employeeId: undefined,
+        projectId: undefined,
+        count: '',
+        goodsStatus: true,
+        inTime: new Date()
       },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: 'Edit',
-        create: 'Create'
+        update: '编辑',
+        create: '添加'
       },
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+        image: [{ required: true, message: 'sex is required', trigger: 'change' }],
+        goodsStatus: [{ required: true, message: 'type is required', trigger: 'change' }],
+        employeeName: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
+        projectName: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
+        name: [{ required: true, message: 'title is required', trigger: 'blur' }],
+        count: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
       downloadLoading: false
     }
@@ -230,14 +229,10 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
-
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
+      fetchGoodsList(this.listQuery).then(response => {
+        this.list = response.data
+        this.total = response.totalRows
+        this.listLoading = false
       })
     },
     handleFilter() {
@@ -268,29 +263,34 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        status: 'published',
-        type: ''
+        name: '',
+        code: '',
+        image: '',
+        employeeId: undefined,
+        projectId: undefined,
+        count: '',
+        goodsStatus: true,
+        inTime: new Date()
       }
     },
     handleCreate() {
       this.resetTemp()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+      fetchAllEmployee().then(response => {
+        this.employees = response.data
+        fetchAllProject().then(response => {
+          this.projects = response.data
+          this.dialogStatus = 'create'
+          this.dialogFormVisible = true
+          this.$nextTick(() => {
+            this.$refs['dataForm'].clearValidate()
+          })
+        })
       })
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          this.temp.author = 'vue-element-admin'
-          createArticle(this.temp).then(() => {
-            this.list.unshift(this.temp)
+          createGoods(this.temp).then(() => {
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -298,6 +298,7 @@ export default {
               type: 'success',
               duration: 2000
             })
+            this.getList()
           })
         }
       })
@@ -314,9 +315,7 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
+          updateGoods(tempData).then(() => {
             const index = this.list.findIndex(v => v.id === this.temp.id)
             this.list.splice(index, 1, this.temp)
             this.dialogFormVisible = false
@@ -340,10 +339,10 @@ export default {
       this.list.splice(index, 1)
     },
     handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
-        this.dialogPvVisible = true
-      })
+      // fetchPv(pv).then(response => {
+      //   this.pvData = response.data.pvData
+      //   this.dialogPvVisible = true
+      // })
     },
     handleDownload() {
       this.downloadLoading = true

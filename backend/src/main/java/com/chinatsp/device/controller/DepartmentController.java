@@ -48,7 +48,7 @@ public class DepartmentController {
         return response;
     }
 
-    @RequestMapping(value = "/fetchName", method = RequestMethod.GET)
+    @RequestMapping(value = "/findName", method = RequestMethod.POST)
     public Response fetchName(@RequestBody DepartmentVo departmentVo) {
         Response response = new Response();
         try {

@@ -42,7 +42,7 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('project.name')" prop="title">
+        <el-form-item :label="$t('project.name')" prop="name">
           <el-input v-model="temp.name" />
         </el-form-item>
       </el-form>
@@ -69,7 +69,8 @@
 </template>
 
 <script>
-import { fetchList, createProject, updateProject, deleteProject } from '@/api/project'
+import { isProjectNameValid } from '@/utils/validates'
+import { fetchProjectList, createProject, updateProject, deleteProject } from '@/api/project'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -121,11 +122,8 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        name: undefined
-        // importance: undefined,
-        // title: undefined,
-        // type: undefined,
-        // sort: '+id'
+        name: undefined,
+        sort: '+id'        
       },
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
@@ -146,9 +144,9 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: '项目名称必须填写', trigger: 'blur' }]
+        // type: [{ required: true, message: 'type is required', trigger: 'change' }],
+        // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
+        name: [{ required: true, trigger: 'blur', validator: isProjectNameValid }]
       },
       downloadLoading: false
     }
@@ -159,7 +157,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      fetchProjectList(this.listQuery).then(response => {
         log.debug('total = ' + JSON.stringify(response.totalRows))
         this.list = response.data
         this.total = response.totalRows

@@ -1,10 +1,26 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+export function fetchEmployeeList(query) {
   return request({
     url: '/employee/list',
     method: 'get',
     params: query
+  })
+}
+
+export function fetchAllEmployee() {
+  return request({
+    url: '/employee/findAll',
+    method: 'get'
+  })
+}
+
+
+export function fetchEmployeeName(data) {
+  return request({
+    url: '/employee/findName',
+    method: 'post',
+    data
   })
 }
 

@@ -70,7 +70,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             List<Predicate> queryList = new ArrayList<>();
             // 2. 添加查询条件
             if (StringsUtils.isNotEmpty(name)) {
-                queryList.add(criteriaBuilder.like(root.<String>get("name"), "%" + name + "%"));
+                queryList.add(criteriaBuilder.like(root.get("name"), "%" + name + "%"));
             }
             query.where(queryList.toArray(new Predicate[0]));
             return null;

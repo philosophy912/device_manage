@@ -1,10 +1,18 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+export function fetchProjectList(query) {
   return request({
     url: '/project/list',
     method: 'get',
     params: query
+  })
+}
+
+export function fetchProjectName(data) {
+  return request({
+    url: '/project/findName',
+    method: 'post',
+    data
   })
 }
 

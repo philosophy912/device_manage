@@ -1,6 +1,5 @@
 package com.chinatsp.device.service;
 
-import com.chinatsp.device.entity.vo.DepartmentVo;
 import com.chinatsp.device.entity.vo.ProjectVo;
 import org.springframework.data.domain.Pageable;
 
@@ -21,4 +20,8 @@ public interface ProjectService {
     ProjectVo updateProject(ProjectVo projectVo);
 
     ProjectVo deleteProject(ProjectVo projectVo);
+
+    List<ProjectVo> findProjectByName(ProjectVo projectVo);
+
+    List<ProjectVo> findAllProject();
 }

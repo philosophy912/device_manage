@@ -17,4 +17,6 @@ public class Constant {
     public static final String ASC = "+id";
     public static final String MAN = "男";
     public static final String WOMEN = "女";
+    public static final String NORMAL = "好";
+    public static final String BREAK = "坏";
 }

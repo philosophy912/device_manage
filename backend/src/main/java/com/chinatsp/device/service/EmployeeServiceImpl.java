@@ -4,6 +4,7 @@ import com.chinatsp.device.dao.DepartmentDao;
 import com.chinatsp.device.dao.EmployeeDao;
 import com.chinatsp.device.entity.po.Department;
 import com.chinatsp.device.entity.po.Employee;
+import com.chinatsp.device.entity.vo.DepartmentVo;
 import com.chinatsp.device.entity.vo.EmployeeVo;
 import com.chinatsp.device.utils.Constant;
 import com.philosophy.base.util.StringsUtils;
@@ -68,7 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             List<Predicate> queryList = new ArrayList<>();
             // 2. 添加查询条件
             if (StringsUtils.isNotEmpty(name)) {
-                queryList.add(criteriaBuilder.like(root.<String>get("name"), "%" + name + "%"));
+                queryList.add(criteriaBuilder.like(root.get("name"), "%" + name + "%"));
             }
             query.where(queryList.toArray(new Predicate[0]));
             return null;
@@ -128,6 +129,29 @@ public class EmployeeServiceImpl implements EmployeeService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<EmployeeVo> findEmployeeByName(EmployeeVo employeeVo) {
+        String name = employeeVo.getName();
+        List<Employee> employees = employeeDao.findByName(name);
+        List<EmployeeVo> employeeVos = new ArrayList<>();
+        for (Employee employee : employees) {
+            EmployeeVo vo = convert(employee);
+            employeeVos.add(vo);
+        }
+        return employeeVos;
+    }
+
+    @Override
+    public List<EmployeeVo> findAllEmployee() {
+        List<EmployeeVo> employeeVos = new ArrayList<>();
+        List<Employee> employees = employeeDao.findAll();
+        for (Employee employee : employees) {
+            EmployeeVo vo = convert(employee);
+            employeeVos.add(vo);
+        }
+        return employeeVos;
     }
 
 

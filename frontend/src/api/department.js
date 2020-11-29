@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+export function fetchDepartmentList(query) {
   return request({
     url: '/department/list',
     method: 'get',
@@ -8,14 +8,14 @@ export function fetchList(query) {
   })
 }
 
-export function fetchAll() {
+export function fetchAllDepartment() {
   return request({
     url: '/department/findAll',
     method: 'get'
   })
 }
 
-export function fetchName(data) {
+export function fetchDepartmentName(data) {
   return request({
     url: '/department/findName',
     method: 'post',
