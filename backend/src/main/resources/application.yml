@@ -7,6 +7,20 @@ logging:
     com.chinatsp.device.service: debug
 
 spring:
+  servlet:
+    multipart:
+      # 是否开启文件上传自动配置，默认开启。
+      enabled: true
+      # 上传文件的临时目录。
+      location: /images
+      # 最大文件大小，以字节为单位，默认为1M。
+      max-file-size: 10MB
+      # 整个请求的最大容量，默认为10M。
+      max-request-size: 10MB
+      # 文件大小达到该阈值，将写入临时目录，默认为0，即所有文件都会直接写入磁盘临时文件中。
+      file-size-threshold: 0
+      # 是否惰性处理请求，默认为false
+      resolve-lazily: false
   datasource:
     # url: jdbc:mysql://10.100.193.82:9999/device?setUnicode=true&characterEncoding=utf8
     url: jdbc:mysql://192.168.50.247:3306/device?setUnicode=true&characterEncoding=utf8

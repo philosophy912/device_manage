@@ -52,10 +52,10 @@ public class GoodsServiceImpl implements GoodsService {
             goodsVo.setProjectName(project.getName());
         }
         if (goods.getRecipientsStatus() != null) {
-            goodsVo.setRecipientsStatus(goods.getRecipientsStatus() ? Constant.NORMAL : Constant.BREAK);
+            goodsVo.setRecipientsStatus(goods.getRecipientsStatus() ? Constant.RECIPIENTS : Constant.NOT_RECIPIENTS);
         }
         if (goods.getGoodsStatus() != null) {
-            goodsVo.setGoodsStatus(goods.getGoodsStatus() ? Constant.NORMAL : Constant.BREAK);
+            goodsVo.setGoodsStatus(goods.getGoodsStatus() ? Constant.GOOD : Constant.BAD);
         }
         if (goods.getInTime() != null) {
             goodsVo.setInTime(goods.getInTime());
@@ -93,10 +93,10 @@ public class GoodsServiceImpl implements GoodsService {
         goods.setName(goodsVo.getName());
         goods.setImageUrl(goodsVo.getImage());
         if (goodsVo.getRecipientsStatus() != null) {
-            goods.setRecipientsStatus(goodsVo.getRecipientsStatus().equals(Constant.NORMAL));
+            goods.setRecipientsStatus(goodsVo.getRecipientsStatus().equals(Constant.RECIPIENTS));
         }
         if (goodsVo.getGoodsStatus() != null) {
-            goods.setGoodsStatus(goodsVo.getGoodsStatus().equals(Constant.NORMAL));
+            goods.setGoodsStatus(goodsVo.getGoodsStatus().equals(Constant.GOOD));
         }
         // 创建的时候需要时间
         if (type.equalsIgnoreCase(Constant.CREATE)) {
@@ -192,8 +192,13 @@ public class GoodsServiceImpl implements GoodsService {
         Optional<Goods> optionalGoods = goodsDao.findById(id);
         if (optionalGoods.isPresent()) {
             Goods dpt = optionalGoods.get();
-            goodsDao.delete(dpt);
-            return goodsVo;
+            Employee employee = dpt.getEmployee();
+            if(employee!=null){
+                goodsDao.delete(dpt);
+                return goodsVo;
+            }else{
+                return null;
+            }
         } else {
             return null;
         }

@@ -38,8 +38,11 @@
       </el-table-column>
       <el-table-column :label="$t('goods.image')" min-width="150px">
         <template slot-scope="{row}">
+              <img :src="row.image" alt="">
+         </template>
+        <!-- <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.image }}</span>
-        </template>
+        </template> -->
       </el-table-column>
       <el-table-column :label="$t('goods.recipients_status')" min-width="80px">
         <template slot-scope="{row}">
@@ -83,19 +86,18 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 400px; margin-left:50px;">
         <el-form-item :label="$t('goods.name')" prop="name">
-          <el-input v-model="temp.author" />
+          <el-input v-model="temp.name" />
         </el-form-item>
         <el-form-item :label="$t('goods.image')" prop="image">
-          <el-input v-model="temp.author" />
+          <!-- <el-input v-model="temp.author" /> -->
+          <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
         </el-form-item>
         <el-form-item :label="$t('goods.goods_status')" prop="goodsStatus">
           <el-switch v-model="temp.goodsStatus" active-text="好" inactive-text="坏" />
-        </el-form-item>
-        <el-form-item :label="$t('goods.employee')" prop="employeeName">
-          <el-select v-model="temp.employeeId" placeholder="请选择">
-            <!-- label是文字，value是值 -->
-            <el-option v-for="item in employees" :key="item.id" :label="item.name" :value="item.id" />
-          </el-select>
         </el-form-item>
         <el-form-item :label="$t('goods.project')" prop="projectName">
           <el-select v-model="temp.projectId" placeholder="请选择">
@@ -131,7 +133,6 @@
 
 <script>
 import { fetchGoodsList, createGoods, updateGoods, deleteGoods } from '@/api/goods'
-import { fetchAllEmployee } from '@/api/employee'
 import { fetchAllProject } from '@/api/project'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
@@ -196,9 +197,9 @@ export default {
         name: '',
         code: '',
         image: '',
-        employeeId: undefined,
         projectId: undefined,
         count: '',
+        recipients_status: false,
         goodsStatus: true,
         inTime: new Date()
       },
@@ -211,12 +212,12 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        image: [{ required: true, message: 'sex is required', trigger: 'change' }],
-        goodsStatus: [{ required: true, message: 'type is required', trigger: 'change' }],
-        employeeName: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        projectName: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        name: [{ required: true, message: 'title is required', trigger: 'blur' }],
-        count: [{ required: true, message: 'title is required', trigger: 'blur' }]
+        image: [{ required: false, message: 'sex is required', trigger: 'change' }],
+        goodsStatus: [{ required: false, message: 'type is required', trigger: 'change' }],
+        employeeName: [{ type: 'date', required: false, message: 'timestamp is required', trigger: 'change' }],
+        projectName: [{ type: 'date', required: false, message: 'timestamp is required', trigger: 'change' }],
+        name: [{ required: false, message: 'title is required', trigger: 'blur' }],
+        count: [{ required: false, message: '数量不能为空', trigger: 'blur' }]
       },
       downloadLoading: false
     }
@@ -264,24 +265,21 @@ export default {
         name: '',
         code: '',
         image: '',
-        employeeId: undefined,
         projectId: undefined,
         count: '',
+        recipients_status: false,
         goodsStatus: true,
         inTime: new Date()
       }
     },
     handleCreate() {
       this.resetTemp()
-      fetchAllEmployee().then(response => {
-        this.employees = response.data
-        fetchAllProject().then(response => {
-          this.projects = response.data
-          this.dialogStatus = 'create'
-          this.dialogFormVisible = true
-          this.$nextTick(() => {
-            this.$refs['dataForm'].clearValidate()
-          })
+      fetchAllProject().then(response => {
+        this.projects = response.data
+        this.dialogStatus = 'create'
+        this.dialogFormVisible = true
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
         })
       })
     },
