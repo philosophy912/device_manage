@@ -27,7 +27,7 @@ public class FileUploadController {
      * 允许的文件类型
      */
     private static final String[] ALLOWED_EXTENSIONS = {
-            "jpg", "img", "png", "gif", "bmp"
+            "jpg", "png", "gif", "bmp"
     };
 
 
@@ -58,6 +58,7 @@ public class FileUploadController {
                 }
                 try {
                     file.transferTo(serverFile);
+                    response.setData(serverFile.getFileName().toString());
                     response.setMessage("upload file success");
                 } catch (IOException | IllegalStateException e) {
                     response.setCode(Constant.SERVER_ERROR);

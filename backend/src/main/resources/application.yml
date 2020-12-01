@@ -9,6 +9,8 @@ logging:
     com.chinatsp.device.controller: debug
 
 spring:
+  application:
+    name: springfox-swagger
   servlet:
     multipart:
       # 是否开启文件上传自动配置，默认开启。
@@ -31,8 +33,15 @@ spring:
     password: chinatsp
     # password: root
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate:
       ddl-auto: update
 
 upload_file: D:/Workspace/github/device_manage/backend/upload_file/
+
+swagger:
+  enabled: true
+  application-name: ${spring.application.name}
+  application-version: 1.0.0
+  application-description: 设备管理系统
+  try-host: http://localhost:${server.port}

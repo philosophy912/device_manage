@@ -48,7 +48,7 @@ public class Employee implements Serializable {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     @JoinColumn(name = "department_id")
     private Department department;
-    // 双向一对多，一个员工可以持有多个设备
+    // 单向一对多，一个员工可以持有多个设备
     @JsonIgnoreProperties(value = {"employee"})
     @OneToMany(mappedBy = "employee", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private Set<Goods> goods = new HashSet<>();

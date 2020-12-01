@@ -123,7 +123,7 @@ export default {
         page: 1,
         limit: 10,
         name: undefined,
-        sort: '+id'        
+        sort: '+id'
       },
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,

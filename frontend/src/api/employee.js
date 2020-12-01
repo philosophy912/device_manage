@@ -15,7 +15,6 @@ export function fetchAllEmployee() {
   })
 }
 
-
 export function fetchEmployeeName(data) {
   return request({
     url: '/employee/findName',

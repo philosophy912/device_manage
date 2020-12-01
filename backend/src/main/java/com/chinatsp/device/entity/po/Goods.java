@@ -57,12 +57,12 @@ public class Goods implements Serializable {
     @Column(name = "return_time")
     private Long returnTime;
     @JsonIgnoreProperties(value = {"goods"})
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "employee_id")
     private Employee employee;
     @JsonIgnoreProperties(value = {"goods"})
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
     @Override

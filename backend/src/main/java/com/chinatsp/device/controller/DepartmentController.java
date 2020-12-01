@@ -6,6 +6,9 @@ import com.chinatsp.device.entity.vo.Response;
 import com.chinatsp.device.service.DepartmentService;
 import com.chinatsp.device.utils.Constant;
 import com.chinatsp.device.utils.PageUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -29,12 +32,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/department")
 @Slf4j
+@Api(value = "部门管理接口", tags = {"部门管理"})
 public class DepartmentController {
 
     @Resource
     private DepartmentService departmentService;
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET)
+    @ApiOperation(value = "查找所有的部门信息")
     public Response findAll() {
         Response response = new Response();
         try {
@@ -48,8 +53,9 @@ public class DepartmentController {
         return response;
     }
 
+    @ApiOperation(value = "根据用户名查找部门", notes = "以departmentVo为参数，其中name不能为空")
     @RequestMapping(value = "/findName", method = RequestMethod.POST)
-    public Response fetchName(@RequestBody DepartmentVo departmentVo) {
+    public Response fetchName(@ApiParam(name = "departmentVo", value = "部门模型，用于前端显示") @RequestBody DepartmentVo departmentVo) {
         Response response = new Response();
         try {
             List<DepartmentVo> departments = departmentService.findDepartmentByName(departmentVo);

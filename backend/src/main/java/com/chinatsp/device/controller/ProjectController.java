@@ -53,7 +53,6 @@ public class ProjectController {
         }else {
             pageable = PageRequest.of(page - 1, limit, Sort.Direction.ASC, "id");
         }
-
         try {
             List<ProjectVo> departments = projectService.findProject(pageable, name);
             long count = projectService.findAllProjectCount();

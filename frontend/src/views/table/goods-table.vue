@@ -38,11 +38,8 @@
       </el-table-column>
       <el-table-column :label="$t('goods.image')" min-width="150px">
         <template slot-scope="{row}">
-              <img :src="row.image" alt="">
-         </template>
-        <!-- <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.image }}</span>
-        </template> -->
+          <img :src="row.image" alt="" class="link-type" @click="handleUpdate(row)"><img>
+        </template>
       </el-table-column>
       <el-table-column :label="$t('goods.recipients_status')" min-width="80px">
         <template slot-scope="{row}">
@@ -89,15 +86,29 @@
           <el-input v-model="temp.name" />
         </el-form-item>
         <el-form-item :label="$t('goods.image')" prop="image">
-          <!-- <el-input v-model="temp.author" /> -->
-          <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
-            <i class="el-icon-upload"></i>
+          <el-upload
+            class="upload-demo"
+            drag
+            action="http://127.0.0.1:8080/upload"
+            list-type="picture"
+            accept="image/png, image/jpeg, image/gif, image/bmp"
+            :file-list="temp.images"
+            :limit="1"
+            :on-success="handleUploadSuccess()"
+          >
+            <i class="el-icon-upload" />
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+            <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
           </el-upload>
         </el-form-item>
         <el-form-item :label="$t('goods.goods_status')" prop="goodsStatus">
           <el-switch v-model="temp.goodsStatus" active-text="好" inactive-text="坏" />
+        </el-form-item>
+        <el-form-item :label="$t('goods.employee')" prop="employeeName">
+          <el-select v-model="temp.employeeId" placeholder="请选择">
+            <!-- label是文字，value是值 -->
+            <el-option v-for="item in employees" :key="item.id" :label="item.name" :value="item.id" />
+          </el-select>
         </el-form-item>
         <el-form-item :label="$t('goods.project')" prop="projectName">
           <el-select v-model="temp.projectId" placeholder="请选择">
@@ -134,9 +145,13 @@
 <script>
 import { fetchGoodsList, createGoods, updateGoods, deleteGoods } from '@/api/goods'
 import { fetchAllProject } from '@/api/project'
+import { fetchAllEmployee } from '@/api/employee'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import Logger from 'chivy'
+
+const log = new Logger('views/table/good-table')
 
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
@@ -197,6 +212,8 @@ export default {
         name: '',
         code: '',
         image: '',
+        images: [],
+        employeeId: undefined,
         projectId: undefined,
         count: '',
         recipients_status: false,
@@ -265,6 +282,8 @@ export default {
         name: '',
         code: '',
         image: '',
+        images: [],
+        employeeId: undefined,
         projectId: undefined,
         count: '',
         recipients_status: false,
@@ -276,16 +295,20 @@ export default {
       this.resetTemp()
       fetchAllProject().then(response => {
         this.projects = response.data
-        this.dialogStatus = 'create'
-        this.dialogFormVisible = true
-        this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
+        fetchAllEmployee().then(response => {
+          this.employees = response.data
+          this.dialogStatus = 'create'
+          this.dialogFormVisible = true
+          this.$nextTick(() => {
+            this.$refs['dataForm'].clearValidate()
+          })
         })
       })
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          this.temp.inTime = +new Date(this.temp.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           createGoods(this.temp).then(() => {
             this.dialogFormVisible = false
             this.$notify({
@@ -387,6 +410,14 @@ export default {
     getSortClass: function(key) {
       const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
+    },
+    handleUploadSuccess(response, file, fileList) {
+      this.temp.images = fileList
+      log.debug('file = ' + JSON.stringify(file))
+      log.debug('fileList = ' + JSON.stringify(fileList))
+      log.debug('response = ' + JSON.stringify(response))
+      log.debug('images = ' + JSON.stringify(this.temp.images))
+      this.temp.image = response.data
     }
   }
 }
