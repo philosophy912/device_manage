@@ -10,6 +10,7 @@ public class Constant {
     public static final Integer OTHER_CLIENTS_LOGGED_IN = 50012;
     public static final Integer TOKEN_EXPIRED = 50012;
     public static final Integer NOK = 40000;
+    public static final Integer SERVER_ERROR = 50003;
 
     public static final String UPDATE = "UPDATE";
     public static final String CREATE = "CREATE";
@@ -21,5 +22,6 @@ public class Constant {
     public static final String BAD = "坏";
     public static final String RECIPIENTS = "已领用";
     public static final String NOT_RECIPIENTS = "未领用";
+
 
 }

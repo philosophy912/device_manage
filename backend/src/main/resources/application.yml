@@ -1,10 +1,12 @@
 server:
   port: 8080
 
+
 logging:
   level:
     root: info
     com.chinatsp.device.service: debug
+    com.chinatsp.device.controller: debug
 
 spring:
   servlet:
@@ -22,13 +24,15 @@ spring:
       # 是否惰性处理请求，默认为false
       resolve-lazily: false
   datasource:
-    # url: jdbc:mysql://10.100.193.82:9999/device?setUnicode=true&characterEncoding=utf8
-    url: jdbc:mysql://192.168.50.247:3306/device?setUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://10.100.193.82:9999/device?setUnicode=true&characterEncoding=utf8
+    # url: jdbc:mysql://192.168.50.247:3306/device?setUnicode=true&characterEncoding=utf8
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    # password: chinatsp
-    password: root
+    password: chinatsp
+    # password: root
   jpa:
     show-sql: false
     hibernate:
       ddl-auto: update
+
+upload_file: D:/Workspace/github/device_manage/backend/upload_file/
