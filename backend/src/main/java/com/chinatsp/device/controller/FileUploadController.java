@@ -62,7 +62,7 @@ public class FileUploadController {
                 }
                 try {
                     file.transferTo(serverFile);
-                    response.setData(serverFile.getFileName().toString());
+                    response.setData("/images/" + serverFile.getFileName().toString());
                     response.setMessage("upload file success");
                 } catch (IOException | IllegalStateException e) {
                     response.setCode(Constant.SERVER_ERROR);

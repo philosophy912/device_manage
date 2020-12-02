@@ -38,7 +38,7 @@
       </el-table-column>
       <el-table-column :label="$t('goods.image')" min-width="150px">
         <template slot-scope="{row}">
-          <img :src="row.image" alt="" class="link-type" @click="handleUpdate(row)"><img>
+          <img :src="row.image" alt="" class="link-type" @click="handleShowImage(row)"><img>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.recipients_status')" min-width="80px">
@@ -87,18 +87,22 @@
         </el-form-item>
         <el-form-item :label="$t('goods.image')" prop="image">
           <el-upload
-            class="upload-demo"
+            ref="upload"
+            class="avatar-uploader"
             drag
             action="http://127.0.0.1:8080/upload"
             list-type="picture"
             accept="image/png, image/jpeg, image/gif, image/bmp"
+            :show-file-list="false"
             :file-list="temp.images"
             :limit="1"
-            :on-success="handleUploadSuccess()"
+            :on-success="handleOnSuccess"
           >
-            <i class="el-icon-upload" />
-            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-            <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+            <img v-if="temp.image" :src="temp.image" class="avatar" @click="clearFiles">
+            <div v-else>
+              <i class="el-icon-upload" />
+              <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            </div>
           </el-upload>
         </el-form-item>
         <el-form-item :label="$t('goods.goods_status')" prop="goodsStatus">
@@ -152,6 +156,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import Logger from 'chivy'
 
 const log = new Logger('views/table/good-table')
+const testUrl = 'http://127.0.0.1:8080'
 
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
@@ -293,15 +298,18 @@ export default {
     },
     handleCreate() {
       this.resetTemp()
+      this.getProjectAndEmployee()
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    getProjectAndEmployee() {
       fetchAllProject().then(response => {
         this.projects = response.data
         fetchAllEmployee().then(response => {
           this.employees = response.data
-          this.dialogStatus = 'create'
-          this.dialogFormVisible = true
-          this.$nextTick(() => {
-            this.$refs['dataForm'].clearValidate()
-          })
         })
       })
     },
@@ -323,6 +331,7 @@ export default {
       })
     },
     handleUpdate(row) {
+      this.getProjectAndEmployee()
       this.temp = Object.assign({}, row) // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update'
@@ -411,13 +420,23 @@ export default {
       const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
-    handleUploadSuccess(response, file, fileList) {
+    handleShowImage(row) {
+      log.debug('row.image = ' + JSON.stringify(row.image))
+      this.$alert('<img src=' + row.image + '>', '', {
+        dangerouslyUseHTMLString: true,
+        showConfirmButton: false
+      })
+    },
+    handleOnSuccess(response, file, fileList) {
       this.temp.images = fileList
       log.debug('file = ' + JSON.stringify(file))
       log.debug('fileList = ' + JSON.stringify(fileList))
       log.debug('response = ' + JSON.stringify(response))
       log.debug('images = ' + JSON.stringify(this.temp.images))
-      this.temp.image = response.data
+      this.temp.image = testUrl + response.data
+    },
+    clearFiles() {
+      this.$refs.upload.clearFiles()
     }
   }
 }
