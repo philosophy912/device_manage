@@ -6,6 +6,9 @@ import com.chinatsp.device.entity.vo.Response;
 import com.chinatsp.device.service.GoodsService;
 import com.chinatsp.device.utils.Constant;
 import com.chinatsp.device.utils.PageUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.domain.PageRequest;
@@ -24,16 +27,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/goods")
 @Slf4j
+@Api(value = "设备管理接口", tags = {"设备管理"})
 public class GoodsController {
 
     @Resource
     private GoodsService goodsService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public PageResponse fetchList(@RequestParam int page,
-                                  @RequestParam int limit,
-                                  @RequestParam(required = false) String name,
-                                  @RequestParam(required = false) String sort) {
+    @ApiOperation(value = "查找所有设备")
+    public PageResponse fetchList(@ApiParam(value = "页数", required = true, example = "1") @RequestParam int page,
+                                  @ApiParam(value = "每页数量", required = true, example = "10") @RequestParam int limit,
+                                  @ApiParam(value = "查询的名字", example = "电脑") @RequestParam(required = false) String name,
+                                  @ApiParam(value = "排序方式", example = "+id/-id") @RequestParam(required = false) String sort) {
         PageResponse response = new PageResponse();
         Pageable pageable;
         if (Strings.isNotEmpty(sort)) {
@@ -61,6 +66,7 @@ public class GoodsController {
     }
 
     @RequestMapping(value = "/findName", method = RequestMethod.POST)
+    @ApiOperation(value = "根据名字查找设备", notes = "根据名字查找设备goodsVo中的name必填")
     public Response fetchName(@RequestBody GoodsVo goodsVo) {
         Response response = new Response();
         try {
@@ -76,6 +82,7 @@ public class GoodsController {
 
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @ApiOperation(value = "创建设备", notes = "创建设备")
     public Response create(@RequestBody GoodsVo goodsVo) {
         Response response = new Response();
         try {
@@ -96,6 +103,7 @@ public class GoodsController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ApiOperation(value = "更新设备", notes = "更新设备信息")
     public Response update(@RequestBody GoodsVo goodsVo) {
         Response response = new Response();
         try {
@@ -115,6 +123,7 @@ public class GoodsController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @ApiOperation(value = "删除设备", notes = "根据员工ID删除设备")
     public Response delete(@RequestBody GoodsVo goodsVo) {
         Response response = new Response();
         try {

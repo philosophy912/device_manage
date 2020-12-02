@@ -1,6 +1,8 @@
 package com.chinatsp.device.entity.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,17 +33,22 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "Department")
+@ApiModel(value = "部门")
 public class Department implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(value = "序号")
     private Integer id;
     @Column(name = "name", nullable = false)
+    @ApiModelProperty(value = "部门名称")
     private String name;
     @Column(name = "create_date", nullable = false)
+    @ApiModelProperty(value = "创建日期")
     private Long createDate;
     // 双向一对多，一个部门有多个员工
     @JsonIgnoreProperties(value = {"department"})
     @OneToMany(mappedBy = "department", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ApiModelProperty(value = "部门下的所有雇员")
     private Set<Employee> employees = new HashSet<>();
 
     @Override

@@ -3,6 +3,8 @@ package com.chinatsp.device.controller;
 import com.chinatsp.device.entity.vo.Response;
 import com.chinatsp.device.utils.Constant;
 import com.philosophy.base.util.FilesUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,7 @@ import java.util.Arrays;
 
 @RestController
 @Slf4j
+@Api(value = "文件上传接口", tags = {"文件上传"})
 public class FileUploadController {
 
     private static final Path CURRENT_PATH = Paths.get(FilesUtils.getCurrentPath() + File.separator + "upload_file");
@@ -33,6 +36,7 @@ public class FileUploadController {
 
     @SneakyThrows
     @PostMapping("/upload")
+    @ApiOperation(value = "上传文件")
     public Response singleFileUpload(@RequestParam("file") MultipartFile file) {
         Response response = new Response();
         String originFileName = file.getOriginalFilename();

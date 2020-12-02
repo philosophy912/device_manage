@@ -53,9 +53,10 @@ public class DepartmentController {
         return response;
     }
 
-    @ApiOperation(value = "根据用户名查找部门", notes = "以departmentVo为参数，其中name不能为空")
+
     @RequestMapping(value = "/findName", method = RequestMethod.POST)
-    public Response fetchName(@ApiParam(name = "departmentVo", value = "部门模型，用于前端显示") @RequestBody DepartmentVo departmentVo) {
+    @ApiOperation(value = "根据用户名查找部门", notes = "以departmentVo为参数，其中name不能为空")
+    public Response fetchName(@ApiParam(name = "departmentVo", value = "部门模型，用于前端显示", required = true) @RequestBody DepartmentVo departmentVo) {
         Response response = new Response();
         try {
             List<DepartmentVo> departments = departmentService.findDepartmentByName(departmentVo);
@@ -70,10 +71,11 @@ public class DepartmentController {
 
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public PageResponse fetchList(@RequestParam int page,
-                                  @RequestParam int limit,
-                                  @RequestParam(required = false) String name,
-                                  @RequestParam(required = false) String sort) {
+    @ApiOperation(value = "分页查找部门的列表")
+    public PageResponse fetchList(@ApiParam(value = "页数", required = true, example = "1") @RequestParam int page,
+                                  @ApiParam(value = "每页数量", required = true, example = "10") @RequestParam int limit,
+                                  @ApiParam(value = "查询的名字", example = "部门1") @RequestParam(required = false) String name,
+                                  @ApiParam(value = "排序方式", example = "+id/-id") @RequestParam(required = false) String sort) {
         PageResponse response = new PageResponse();
         Pageable pageable;
         if (Strings.isNotEmpty(sort)) {
@@ -101,6 +103,7 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @ApiOperation(value = "添加部门", notes = "其中name和timestamp不能为空")
     public Response create(@RequestBody DepartmentVo departmentVo) {
         Response response = new Response();
         String name = departmentVo.getName();
@@ -121,6 +124,7 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ApiOperation(value = "更新部门", notes = "仅能更新部门名称")
     public Response update(@RequestBody DepartmentVo departmentVo) {
         Response response = new Response();
         String name = departmentVo.getName();
@@ -141,6 +145,7 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @ApiOperation(value = "删除部门", notes = "删除部门，该部门下不能允许有员工存在")
     public Response delete(@RequestBody DepartmentVo departmentVo) {
         Response response = new Response();
         String name = departmentVo.getName();
@@ -155,7 +160,7 @@ public class DepartmentController {
             }
         } catch (DataIntegrityViolationException e) {
             response.setCode(Constant.NOK);
-            response.setMessage("删除失败，部门" + name + "中仍然存在雇员");
+            response.setMessage("删除失败，部门" + name + "中仍然存在员工");
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("删除失败, 原因是" + e.getMessage());

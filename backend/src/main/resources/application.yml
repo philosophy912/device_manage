@@ -40,7 +40,7 @@ spring:
 upload_file: D:/Workspace/github/device_manage/backend/upload_file/
 
 swagger:
-  enabled: true
+  enable: true
   application-name: ${spring.application.name}
   application-version: 1.0.0
   application-description: 设备管理系统

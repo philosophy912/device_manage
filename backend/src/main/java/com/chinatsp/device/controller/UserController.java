@@ -7,6 +7,8 @@ import com.chinatsp.device.entity.vo.TokenVo;
 import com.chinatsp.device.entity.vo.UserVo;
 import com.chinatsp.device.utils.Constant;
 import com.chinatsp.device.utils.JwtTokenUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -26,6 +28,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 @Slf4j
+@Api(value = "登陆接口", tags = {"登陆管理"})
 public class UserController {
 
     private static final String USERNAME = "username";
@@ -34,6 +37,7 @@ public class UserController {
 
     // 登陆接口，假登陆，只是为了生成token
     @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ApiOperation(value = "登陆")
     public Response login(@RequestBody UserVo userVo) {
         Response response = new Response();
         log.info("user[{}] try to login", userVo.getUsername());
@@ -48,6 +52,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @ApiOperation(value = "获取token信息")
     public Response info(@RequestParam String token) {
         Response response = new Response();
         try {
@@ -67,6 +72,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @ApiOperation(value = "注销")
     public Response logout(@RequestHeader("X-Token") String token) {
         Response response = new Response();
         DecodedJWT decodedJWT = JwtTokenUtil.verify(token);

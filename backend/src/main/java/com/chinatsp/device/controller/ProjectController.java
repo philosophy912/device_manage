@@ -7,6 +7,9 @@ import com.chinatsp.device.entity.vo.Response;
 import com.chinatsp.device.service.ProjectService;
 import com.chinatsp.device.utils.Constant;
 import com.chinatsp.device.utils.PageUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.domain.PageRequest;
@@ -29,28 +32,27 @@ import java.util.List;
 @RestController
 @RequestMapping("/project")
 @Slf4j
+@Api(value = "项目管理接口", tags = {"项目管理"})
 public class ProjectController {
 
     @Resource
     private ProjectService projectService;
 
-
-
-
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public PageResponse fetchList(@RequestParam int page,
-                                  @RequestParam int limit,
-                                  @RequestParam(required = false) String name,
-                                  @RequestParam(required = false) String sort) {
+    @ApiOperation(value = "查找所有项目")
+    public PageResponse fetchList(@ApiParam(value = "页数", required = true, example = "1") @RequestParam int page,
+                                  @ApiParam(value = "每页数量", required = true, example = "10") @RequestParam int limit,
+                                  @ApiParam(value = "查询的名字", example = "xx项目") @RequestParam(required = false) String name,
+                                  @ApiParam(value = "排序方式", example = "+id/-id") @RequestParam(required = false) String sort) {
         PageResponse response = new PageResponse();
         Pageable pageable;
-        if (Strings.isNotEmpty(sort)){
+        if (Strings.isNotEmpty(sort)) {
             if (sort.equalsIgnoreCase(Constant.DESC)) {
                 pageable = PageRequest.of(page - 1, limit, Sort.Direction.DESC, "id");
             } else {
                 pageable = PageRequest.of(page - 1, limit, Sort.Direction.ASC, "id");
             }
-        }else {
+        } else {
             pageable = PageRequest.of(page - 1, limit, Sort.Direction.ASC, "id");
         }
         try {

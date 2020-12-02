@@ -1,12 +1,14 @@
 package com.chinatsp.device.controller;
 
-import com.chinatsp.device.entity.vo.DepartmentVo;
 import com.chinatsp.device.entity.vo.EmployeeVo;
 import com.chinatsp.device.entity.vo.PageResponse;
 import com.chinatsp.device.entity.vo.Response;
 import com.chinatsp.device.service.EmployeeService;
 import com.chinatsp.device.utils.Constant;
 import com.chinatsp.device.utils.PageUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.domain.PageRequest;
@@ -25,16 +27,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/employee")
 @Slf4j
+@Api(value = "员工管理接口", tags = {"员工管理"})
 public class EmployeeController {
 
     @Resource
     private EmployeeService employeeService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public PageResponse fetchList(@RequestParam int page,
-                                  @RequestParam int limit,
-                                  @RequestParam(required = false) String name,
-                                  @RequestParam(required = false) String sort) {
+    @ApiOperation(value = "查找所有的员工信息")
+    public PageResponse fetchList(@ApiParam(value = "页数", required = true, example = "1") @RequestParam int page,
+                                  @ApiParam(value = "每页数量", required = true, example = "10") @RequestParam int limit,
+                                  @ApiParam(value = "查询的名字", example = "张三") @RequestParam(required = false) String name,
+                                  @ApiParam(value = "排序方式", example = "+id/-id") @RequestParam(required = false) String sort) {
         PageResponse response = new PageResponse();
         Pageable pageable;
         if (Strings.isNotEmpty(sort)) {
@@ -62,6 +66,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET)
+    @ApiOperation(value = "查找所有的员工", notes = "查找所有的员工")
     public Response findAll() {
         Response response = new Response();
         try {
@@ -77,6 +82,7 @@ public class EmployeeController {
 
 
     @RequestMapping(value = "/findName", method = RequestMethod.POST)
+    @ApiOperation(value = "根据员工姓名查找员工", notes = "以employeeVo中的name查找")
     public Response fetchName(@RequestBody EmployeeVo employeeVo) {
         Response response = new Response();
         try {
@@ -91,6 +97,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @ApiOperation(value = "创建员工", notes = "创建员工")
     public Response create(@RequestBody EmployeeVo employeeVo) {
         Response response = new Response();
         try {
@@ -110,6 +117,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ApiOperation(value = "更新员工", notes = "更新员工信息")
     public Response update(@RequestBody EmployeeVo employeeVo) {
         Response response = new Response();
         try {
@@ -129,6 +137,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @ApiOperation(value = "删除员工", notes = "根据员工ID删除员工")
     public Response delete(@RequestBody EmployeeVo employeeVo) {
         Response response = new Response();
         try {
