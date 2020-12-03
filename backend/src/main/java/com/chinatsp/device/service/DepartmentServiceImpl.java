@@ -4,6 +4,7 @@ import com.chinatsp.device.dao.DepartmentDao;
 import com.chinatsp.device.entity.po.Department;
 import com.chinatsp.device.entity.vo.DepartmentVo;
 import com.chinatsp.device.utils.Constant;
+import com.chinatsp.device.utils.ObjectUtils;
 import com.philosophy.base.util.StringsUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -92,7 +93,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         List<Department> departments = departmentDao.findByName(departmentVo.getName());
         if (departments.size() == 0) {
             Department department = convert(departmentVo, Constant.CREATE);
-
             Department dpt = departmentDao.saveAndFlush(department);
             return convert(dpt);
         }
@@ -105,7 +105,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         Optional<Department> optionalDepartment = departmentDao.findById(department.getId());
         if (optionalDepartment.isPresent()) {
             Department dpt = optionalDepartment.get();
-            dpt.setName(department.getName());
+            ObjectUtils.copyFiledValue(department, dpt);
             departmentDao.saveAndFlush(dpt);
             return departmentVo;
         } else {

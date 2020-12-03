@@ -8,6 +8,7 @@ import com.chinatsp.device.entity.vo.DepartmentVo;
 import com.chinatsp.device.entity.vo.EmployeeVo;
 import com.chinatsp.device.entity.vo.ProjectVo;
 import com.chinatsp.device.utils.Constant;
+import com.chinatsp.device.utils.ObjectUtils;
 import com.philosophy.base.util.StringsUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -95,7 +96,7 @@ public class ProjectServiceImpl implements ProjectService {
         Optional<Project> optionalDepartment = projectDao.findById(project.getId());
         if (optionalDepartment.isPresent()) {
             Project dpt = optionalDepartment.get();
-            dpt.setName(project.getName());
+            ObjectUtils.copyFiledValue(project, dpt);
             projectDao.saveAndFlush(dpt);
             return projectVo;
         } else {

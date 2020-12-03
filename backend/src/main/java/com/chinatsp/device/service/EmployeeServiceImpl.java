@@ -7,6 +7,7 @@ import com.chinatsp.device.entity.po.Employee;
 import com.chinatsp.device.entity.vo.DepartmentVo;
 import com.chinatsp.device.entity.vo.EmployeeVo;
 import com.chinatsp.device.utils.Constant;
+import com.chinatsp.device.utils.ObjectUtils;
 import com.philosophy.base.util.StringsUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -108,7 +109,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             dpt.setName(employee.getName());
             if(optionalDepartment.isPresent()){
                 Department department = optionalDepartment.get();
-                dpt.setDepartment(department);
+                ObjectUtils.copyFiledValue(department, dpt);
                 employeeDao.saveAndFlush(dpt);
                 return employeeVo;
             }else{
