@@ -234,12 +234,12 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        image: [{ required: false, message: 'sex is required', trigger: 'change' }],
-        goodsStatus: [{ required: false, message: 'type is required', trigger: 'change' }],
-        employeeName: [{ type: 'date', required: false, message: 'timestamp is required', trigger: 'change' }],
-        projectName: [{ type: 'date', required: false, message: 'timestamp is required', trigger: 'change' }],
-        name: [{ required: false, message: 'title is required', trigger: 'blur' }],
-        count: [{ required: false, message: '数量不能为空', trigger: 'blur' }]
+        // image: [{ required: false, message: 'sex is required', trigger: 'change' }],
+        // goodsStatus: [{ required: false, message: 'type is required', trigger: 'change' }],
+        // employeeName: [{ type: 'date', required: false, message: 'timestamp is required', trigger: 'change' }],
+        // projectName: [{ type: 'date', required: false, message: 'timestamp is required', trigger: 'change' }],
+        // name: [{ required: false, message: 'title is required', trigger: 'blur' }],
+        // count: [{ required: false, message: '数量不能为空', trigger: 'blur' }]
       },
       downloadLoading: false
     }
@@ -316,7 +316,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.temp.inTime = +new Date(this.temp.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          this.temp.inTime = +new Date(this.temp.inTime) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           createGoods(this.temp).then(() => {
             this.dialogFormVisible = false
             this.$notify({
@@ -333,7 +333,7 @@ export default {
     handleUpdate(row) {
       this.getProjectAndEmployee()
       this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
+      this.temp.inTime = +new Date(this.temp.inTime)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -342,11 +342,16 @@ export default {
     },
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
+        log.debug("validate is successed")
         if (valid) {
           const tempData = Object.assign({}, this.temp)
+          // todo 特殊处理
+          if(tempData.image !== null){
+            log.info('tempData.image is not null and value is' + JSON.stringify(tempData.image))
+            tempData.image = tempData.image.replace(testUrl, '')
+          } 
+          log.info("tempData = " + JSON.stringify(tempData))
           updateGoods(tempData).then(() => {
-            const index = this.list.findIndex(v => v.id === this.temp.id)
-            this.list.splice(index, 1, this.temp)
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -354,6 +359,7 @@ export default {
               type: 'success',
               duration: 2000
             })
+            this.getList()
           })
         }
       })

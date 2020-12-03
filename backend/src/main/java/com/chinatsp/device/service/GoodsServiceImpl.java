@@ -8,6 +8,7 @@ import com.chinatsp.device.entity.po.Goods;
 import com.chinatsp.device.entity.po.Project;
 import com.chinatsp.device.entity.vo.GoodsVo;
 import com.chinatsp.device.utils.Constant;
+import com.chinatsp.device.utils.ObjectUtils;
 import com.philosophy.base.util.StringsUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
@@ -34,6 +35,7 @@ public class GoodsServiceImpl implements GoodsService {
     private ProjectDao projectDao;
 
     private GoodsVo convert(Goods goods) {
+        log.debug("goods value is {}", goods);
         GoodsVo goodsVo = new GoodsVo();
         Employee employee = goods.getEmployee();
         Project project = goods.getProject();
@@ -70,6 +72,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     private Goods convert(GoodsVo goodsVo, String type) {
+        log.debug("goodsVo is {} and type is {}", goodsVo, type);
         Goods goods = new Goods();
         int employeeId = goodsVo.getEmployeeId();
         int projectId = goodsVo.getProjectId();
@@ -105,6 +108,7 @@ public class GoodsServiceImpl implements GoodsService {
         goods.setInTime(goodsVo.getInTime());
         goods.setRecipientsTime(goodsVo.getRecipientsTime());
         goods.setReturnTime(goodsVo.getReturnTime());
+        log.debug("goods is {}", goods);
         return goods;
     }
 
@@ -177,7 +181,8 @@ public class GoodsServiceImpl implements GoodsService {
         Optional<Goods> optionalGoods = goodsDao.findById(goodsVo.getId());
         if (optionalGoods.isPresent()) {
             Goods dpt = optionalGoods.get();
-            dpt.setName(goods.getName());
+            ObjectUtils.copyFiledValue(goods, dpt);
+            log.debug("dpt is {}", dpt);
             goodsDao.saveAndFlush(dpt);
             return goodsVo;
         } else {
