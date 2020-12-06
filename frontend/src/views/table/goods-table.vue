@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.title" :placeholder="$t('table.title')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.name" :placeholder="$t('table.title')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
       </el-button>
@@ -21,12 +21,12 @@
           <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.code')" min-width="150px">
+      <el-table-column :label="$t('goods.code')" min-width="200px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.code }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.employee')" min-width="100px">
+      <el-table-column :label="$t('goods.employee')" min-width="70px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.employeeName }}</span>
         </template>
@@ -36,19 +36,19 @@
           <span class="link-type" @click="handleUpdate(row)">{{ row.projectName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.image')" min-width="150px">
+      <el-table-column :label="$t('goods.image')" min-width="150px" align="center">
         <template slot-scope="{row}">
-          <img :src="row.image" alt="" class="link-type" @click="handleShowImage(row)"><img>
+          <img :src="row.image" alt="" class="link-type" width="100px" height="100px" @click="handleShowImage(row)"><img>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.recipients_status')" min-width="80px">
+      <el-table-column :label="$t('goods.recipients_status')" min-width="70px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.recipientsStatus }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ handleRecipientsStatus(row.recipientsStatus) }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.goods_status')" min-width="80px">
+      <el-table-column :label="$t('goods.goods_status')" min-width="50px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.goodsStatus }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ handleGoodsStatus(row.goodsStatus) }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.in_time')" width="100px" align="center">
@@ -56,7 +56,7 @@
           <span>{{ row.inTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.recipients_time')" width="100px" align="center">
+      <!-- <el-table-column :label="$t('goods.recipients_time')" width="100px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.recipientsTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
@@ -65,7 +65,7 @@
         <template slot-scope="{row}">
           <span>{{ row.returnTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
@@ -108,12 +108,11 @@
         <el-form-item :label="$t('goods.goods_status')" prop="goodsStatus">
           <el-switch v-model="temp.goodsStatus" active-text="好" inactive-text="坏" />
         </el-form-item>
-        <el-form-item :label="$t('goods.employee')" prop="employeeName">
+        <!-- <el-form-item :label="$t('goods.employee')" prop="employeeName">
           <el-select v-model="temp.employeeId" placeholder="请选择">
-            <!-- label是文字，value是值 -->
             <el-option v-for="item in employees" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label="$t('goods.project')" prop="projectName">
           <el-select v-model="temp.projectId" placeholder="请选择">
             <!-- label是文字，value是值 -->
@@ -149,7 +148,7 @@
 <script>
 import { fetchGoodsList, createGoods, updateGoods, deleteGoods } from '@/api/goods'
 import { fetchAllProject } from '@/api/project'
-import { fetchAllEmployee } from '@/api/employee'
+// import { fetchAllEmployee } from '@/api/employee'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -196,7 +195,7 @@ export default {
   data() {
     return {
       projects: [],
-      employees: [],
+      // employees: [],
       tableKey: 0,
       list: null,
       total: 0,
@@ -308,9 +307,9 @@ export default {
     getProjectAndEmployee() {
       fetchAllProject().then(response => {
         this.projects = response.data
-        fetchAllEmployee().then(response => {
-          this.employees = response.data
-        })
+        // fetchAllEmployee().then(response => {
+        //   this.employees = response.data
+        // })
       })
     },
     createData() {
@@ -342,15 +341,15 @@ export default {
     },
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
-        log.debug("validate is successed")
+        log.debug('validate is successed')
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           // todo 特殊处理
-          if(tempData.image !== null){
+          if (tempData.image !== null) {
             log.info('tempData.image is not null and value is' + JSON.stringify(tempData.image))
             tempData.image = tempData.image.replace(testUrl, '')
-          } 
-          log.info("tempData = " + JSON.stringify(tempData))
+          }
+          log.info('tempData = ' + JSON.stringify(tempData))
           updateGoods(tempData).then(() => {
             this.dialogFormVisible = false
             this.$notify({
@@ -443,6 +442,12 @@ export default {
     },
     clearFiles() {
       this.$refs.upload.clearFiles()
+    },
+    handleGoodsStatus(status) {
+      return status ? '好' : '坏'
+    },
+    handleRecipientsStatus(status) {
+      return status ? '已领用' : '未领用'
     }
   }
 }

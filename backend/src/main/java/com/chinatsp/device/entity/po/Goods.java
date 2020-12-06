@@ -50,15 +50,15 @@ public class Goods implements Serializable {
     @ApiModelProperty(value = "设备图片")
     private String imageUrl;
     // 领用状态
-    @Column(name = "recipients_status")
+    @Column(name = "recipients_status", nullable = false)
     @ApiModelProperty(value = "设备领用状态")
     private Boolean recipientsStatus;
     // 物品状态
-    @Column(name = "goods_status")
+    @Column(name = "goods_status", nullable = false)
     @ApiModelProperty(value = "设备状态")
     private Boolean goodsStatus;
     // 入库时间
-    @Column(name = "in_time")
+    @Column(name = "in_time", nullable = false)
     @ApiModelProperty(value = "设备入库时间")
     private Long inTime;
     // 领用时间
@@ -69,14 +69,12 @@ public class Goods implements Serializable {
     @Column(name = "return_time")
     @ApiModelProperty(value = "设备归还时间")
     private Long returnTime;
-    @JsonIgnoreProperties(value = {"goods"})
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "employee_id")
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @ApiModelProperty(value = "领用人")
     private Employee employee;
-    @JsonIgnoreProperties(value = {"goods"})
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     @JoinColumn(name = "project_id", nullable = false)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     @ApiModelProperty(value = "所属项目")
     private Project project;
 

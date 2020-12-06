@@ -36,78 +36,89 @@ public class GoodsServiceImpl implements GoodsService {
 
     private GoodsVo convert(Goods goods) {
         log.debug("goods value is {}", goods);
-        GoodsVo goodsVo = new GoodsVo();
+        GoodsVo vo = new GoodsVo();
+        // name/code/recipientsStatus/goodsStatus/inTime/employee/project
         Employee employee = goods.getEmployee();
         Project project = goods.getProject();
-        goodsVo.setId(goods.getId());
-        if (null != goods.getCode()) {
-            goodsVo.setCode(goods.getCode());
+        // 设置必填项目
+        vo.setId(goods.getId());
+        vo.setName(goods.getName());
+        vo.setCode(goods.getCode());
+        vo.setRecipientsStatus(goods.getRecipientsStatus());
+        vo.setGoodsStatus(goods.getGoodsStatus());
+        vo.setInTime(goods.getInTime());
+        if (null != goods.getEmployee()) {
+            vo.setEmployeeId(employee.getId());
+            vo.setEmployeeName(employee.getName());
         }
-        goodsVo.setImage(goods.getImageUrl());
-        goodsVo.setName(goods.getName());
-        goodsVo.setEmployeeId(employee.getId());
-        if (employee.getName() != null) {
-            goodsVo.setEmployeeName(employee.getName());
+        vo.setProjectId(project.getId());
+        vo.setProjectName(project.getName());
+        // 设置非必填项目
+        // description/image/recipientsTime/returnTime
+        if (null != goods.getDescription()) {
+            vo.setDescription(goods.getDescription());
         }
-        goodsVo.setProjectId(project.getId());
-        if (project.getName() != null) {
-            goodsVo.setProjectName(project.getName());
+        if (null != goods.getImageUrl()) {
+            vo.setImage(goods.getImageUrl());
         }
-        if (goods.getRecipientsStatus() != null) {
-            goodsVo.setRecipientsStatus(goods.getRecipientsStatus() ? Constant.RECIPIENTS : Constant.NOT_RECIPIENTS);
+        if (null != goods.getRecipientsTime()) {
+            vo.setRecipientsTime(goods.getRecipientsTime());
         }
-        if (goods.getGoodsStatus() != null) {
-            goodsVo.setGoodsStatus(goods.getGoodsStatus() ? Constant.GOOD : Constant.BAD);
+        if (null != goods.getReturnTime()) {
+            vo.setReturnTime(goods.getReturnTime());
         }
-        if (goods.getInTime() != null) {
-            goodsVo.setInTime(goods.getInTime());
-        }
-        if (goods.getRecipientsTime() != null) {
-            goodsVo.setRecipientsTime(goods.getRecipientsTime());
-        }
-        if (goods.getReturnTime() != null) {
-            goodsVo.setReturnTime(goods.getReturnTime());
-        }
-        return goodsVo;
+        return vo;
     }
 
-    private Goods convert(GoodsVo goodsVo, String type) {
-        log.debug("goodsVo is {} and type is {}", goodsVo, type);
+    private Goods convert(GoodsVo vo, String type) {
+        log.debug("goodsVo is {} and type is {}", vo, type);
         Goods goods = new Goods();
-        int employeeId = goodsVo.getEmployeeId();
-        int projectId = goodsVo.getProjectId();
-        Employee employee;
-        Project project;
-        Optional<Employee> employeeOptional = employeeDao.findById(employeeId);
-        if (employeeOptional.isPresent()) {
-            employee = employeeOptional.get();
-            goods.setEmployee(employee);
-        }
-        Optional<Project> projectOptional = projectDao.findById(projectId);
-        if (projectOptional.isPresent()) {
-            project = projectOptional.get();
-            goods.setProject(project);
-        }
         // 更新的时候需要ID
         if (type.equalsIgnoreCase(Constant.UPDATE)) {
-            goods.setId(goodsVo.getId());
-        }
-        goods.setCode(goodsVo.getCode());
-        goods.setName(goodsVo.getName());
-        goods.setImageUrl(goodsVo.getImage());
-        if (goodsVo.getRecipientsStatus() != null) {
-            goods.setRecipientsStatus(goodsVo.getRecipientsStatus().equals(Constant.RECIPIENTS));
-        }
-        if (goodsVo.getGoodsStatus() != null) {
-            goods.setGoodsStatus(goodsVo.getGoodsStatus().equals(Constant.GOOD));
+            goods.setId(vo.getId());
         }
         // 创建的时候需要时间
         if (type.equalsIgnoreCase(Constant.CREATE)) {
-            goods.setInTime(goodsVo.getInTime());
+            goods.setInTime(vo.getInTime());
         }
-        goods.setInTime(goodsVo.getInTime());
-        goods.setRecipientsTime(goodsVo.getRecipientsTime());
-        goods.setReturnTime(goodsVo.getReturnTime());
+        if (null != vo.getProjectId()) {
+            int projectId = vo.getProjectId();
+            Optional<Project> projectOptional = projectDao.findById(projectId);
+            Project project = projectOptional.orElseGet(projectOptional::get);
+            goods.setProject(project);
+        }
+        if (null != vo.getEmployeeId()) {
+            int employeeId = vo.getEmployeeId();
+            Optional<Employee> employeeOptional = employeeDao.findById(employeeId);
+            Employee employee = employeeOptional.orElseGet(employeeOptional::get);
+            goods.setEmployee(employee);
+        }
+        if (null != vo.getCode()) {
+            goods.setCode(vo.getCode());
+        }
+        if (null != vo.getName()) {
+            goods.setName(vo.getName());
+        }
+        if (null != vo.getRecipientsStatus()) {
+            goods.setRecipientsStatus(vo.getRecipientsStatus());
+        }else{
+            goods.setRecipientsStatus(false);
+        }
+        if (null != vo.getGoodsStatus()) {
+            goods.setGoodsStatus(vo.getGoodsStatus());
+        }
+        if (null != vo.getDescription()) {
+            goods.setDescription(vo.getDescription());
+        }
+        if (null != vo.getImage()) {
+            goods.setImageUrl(vo.getImage());
+        }
+        if (null != vo.getRecipientsTime()) {
+            goods.setRecipientsTime(vo.getRecipientsTime());
+        }
+        if (null != vo.getReturnTime()) {
+            goods.setReturnTime(vo.getReturnTime());
+        }
         log.debug("goods is {}", goods);
         return goods;
     }
@@ -139,6 +150,11 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    public int findGoodsCountByName(String name) {
+        return goodsDao.findByNameLike(name).size();
+    }
+
+    @Override
     public List<GoodsVo> findGoodsByName(GoodsVo goodsVo) {
         String name = goodsVo.getName();
         List<Goods> goodsList = goodsDao.findByName(name);
@@ -160,9 +176,7 @@ public class GoodsServiceImpl implements GoodsService {
             Goods goods = convert(goodsVo, Constant.CREATE);
             int count = goodsVo.getCount();
             Project project = new Project();
-            Employee employee = new Employee();
             project.setId(goodsVo.getProjectId());
-            employee.setId(goodsVo.getEmployeeId());
             for (int i = 0; i < count; i++) {
                 goods.setCode(UUID.randomUUID().toString());
                 Goods gds = SerializationUtils.clone(goods);
@@ -197,13 +211,8 @@ public class GoodsServiceImpl implements GoodsService {
         Optional<Goods> optionalGoods = goodsDao.findById(id);
         if (optionalGoods.isPresent()) {
             Goods dpt = optionalGoods.get();
-            Employee employee = dpt.getEmployee();
-            if(employee!=null){
-                goodsDao.delete(dpt);
-                return goodsVo;
-            }else{
-                return null;
-            }
+            goodsDao.delete(dpt);
+            return goodsVo;
         } else {
             return null;
         }

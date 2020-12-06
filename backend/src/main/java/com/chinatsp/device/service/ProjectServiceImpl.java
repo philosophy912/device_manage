@@ -49,6 +49,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (type.equalsIgnoreCase(Constant.CREATE)) {
             project.setCreateDate(vo.getTimestamp());
         }
+
         return project;
     }
 
@@ -79,6 +80,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public int findProjectCountByName(String name) {
+        return projectDao.findByNameLike(name).size();
+    }
+
+    @Override
     public ProjectVo addProject(ProjectVo projectVo) {
         List<Project> projects = projectDao.findByName(projectVo.getName());
         if (projects.size() == 0) {
@@ -92,28 +98,21 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectVo updateProject(ProjectVo projectVo) {
-        Project project = convert(projectVo, Constant.UPDATE);
-        Optional<Project> optionalDepartment = projectDao.findById(project.getId());
-        if (optionalDepartment.isPresent()) {
-            Project dpt = optionalDepartment.get();
-            ObjectUtils.copyFiledValue(project, dpt);
-            projectDao.saveAndFlush(dpt);
-            return projectVo;
-        } else {
-            return null;
-        }
+        int projectId = projectVo.getId();
+        Project originProject = convert(projectVo, Constant.UPDATE);
+        Optional<Project> optionalProject = projectDao.findById(projectId);
+        Project project = optionalProject.orElseGet(optionalProject::get);
+        ObjectUtils.copyFiledValue(originProject, project);
+        projectDao.saveAndFlush(project);
+        return projectVo;
     }
 
     @Override
     public ProjectVo deleteProject(ProjectVo projectVo) {
-        Optional<Project> optionalDepartment = projectDao.findById(projectVo.getId());
-        if (optionalDepartment.isPresent()) {
-            Project dpt = optionalDepartment.get();
-            projectDao.delete(dpt);
-            return projectVo;
-        } else {
-            return null;
-        }
+        Optional<Project> optionalProject = projectDao.findById(projectVo.getId());
+        Project project = optionalProject.orElseGet(optionalProject::get);
+        projectDao.delete(project);
+        return projectVo;
     }
 
     @Override

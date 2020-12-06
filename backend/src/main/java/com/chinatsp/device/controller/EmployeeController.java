@@ -6,6 +6,7 @@ import com.chinatsp.device.entity.vo.Response;
 import com.chinatsp.device.service.EmployeeService;
 import com.chinatsp.device.utils.Constant;
 import com.chinatsp.device.utils.PageUtils;
+import com.philosophy.base.util.StringsUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -52,7 +53,12 @@ public class EmployeeController {
         }
         try {
             List<EmployeeVo> employeeVos = employeeService.findEmployee(pageable, name);
-            long count = employeeService.findAllEmployeeCount();
+            long count;
+            if (StringsUtils.isEmpty(name)) {
+                count = employeeService.findAllEmployeeCount();
+            } else {
+                count = employeeService.findEmployeeCountByName("%" + name + "%");
+            }
             response.setMessage("query success");
             response.setData(employeeVos);
             response.setPageSize(pageable.getPageSize());

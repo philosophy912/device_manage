@@ -20,12 +20,10 @@ class DepartmentDaoTest {
 
     @Test
     void testDelete() {
-        Optional<Department> departmentOptional = dao.findById(2);
-        if (departmentOptional.isPresent()) {
-            Department department = departmentOptional.get();
-            log.debug("department = {}", department);
-            dao.delete(department);
-        }
+        Optional<Department> optionalDepartment = dao.findById(2);
+        Department department = optionalDepartment.orElseGet(optionalDepartment::get);
+        log.debug("department = {}", department);
+        //dao.delete(department);
     }
 
 }

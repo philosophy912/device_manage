@@ -46,7 +46,6 @@ public class Department implements Serializable {
     @ApiModelProperty(value = "创建日期")
     private Long createDate;
     // 双向一对多，一个部门有多个员工
-    @JsonIgnoreProperties(value = {"department"})
     @OneToMany(mappedBy = "department", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @ApiModelProperty(value = "部门下的所有雇员")
     private Set<Employee> employees = new HashSet<>();

@@ -10,6 +10,8 @@ public interface EmployeeService {
 
     long findAllEmployeeCount();
 
+    int findEmployeeCountByName(String name);
+
     EmployeeVo addEmployee(EmployeeVo employeeVo);
 
     EmployeeVo updateEmployee(EmployeeVo employeeVo);

@@ -17,6 +17,8 @@ public interface DepartmentService {
 
     Long findAllDepartmentCount();
 
+    int findDepartmentCountByName(String name);
+
     DepartmentVo addDepartment(DepartmentVo departmentVo);
 
     DepartmentVo updateDepartment(DepartmentVo departmentVo);

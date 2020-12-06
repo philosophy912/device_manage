@@ -13,4 +13,6 @@ import java.util.List;
 public interface GoodsDao extends JpaRepository<Goods, Integer>, JpaSpecificationExecutor<Goods> {
     List<Goods> findByName(String name);
 
+    List<Goods> findByNameLike(String name);
+
 }

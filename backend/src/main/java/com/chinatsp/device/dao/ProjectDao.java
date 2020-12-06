@@ -19,4 +19,6 @@ public interface ProjectDao extends JpaRepository<Project, Integer>, JpaSpecific
 
     List<Project> findByName(String name);
 
+    List<Project> findByNameLike(String name);
+
 }

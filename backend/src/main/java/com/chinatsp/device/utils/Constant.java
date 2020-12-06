@@ -18,10 +18,6 @@ public class Constant {
     public static final String ASC = "+id";
     public static final String MAN = "男";
     public static final String WOMEN = "女";
-    public static final String GOOD = "好";
-    public static final String BAD = "坏";
-    public static final String RECIPIENTS = "已领用";
-    public static final String NOT_RECIPIENTS = "未领用";
 
 
 }

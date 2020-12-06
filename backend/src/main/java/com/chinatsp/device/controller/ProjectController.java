@@ -7,6 +7,7 @@ import com.chinatsp.device.entity.vo.Response;
 import com.chinatsp.device.service.ProjectService;
 import com.chinatsp.device.utils.Constant;
 import com.chinatsp.device.utils.PageUtils;
+import com.philosophy.base.util.StringsUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -56,10 +57,15 @@ public class ProjectController {
             pageable = PageRequest.of(page - 1, limit, Sort.Direction.ASC, "id");
         }
         try {
-            List<ProjectVo> departments = projectService.findProject(pageable, name);
-            long count = projectService.findAllProjectCount();
+            List<ProjectVo> projectVos = projectService.findProject(pageable, name);
+            long count;
+            if (StringsUtils.isEmpty(name)) {
+                count = projectService.findAllProjectCount();
+            } else {
+                count = projectService.findProjectCountByName("%" + name + "%");
+            }
             response.setMessage("query success");
-            response.setData(departments);
+            response.setData(projectVos);
             response.setPageSize(pageable.getPageSize());
             response.setTotalRows((int) count);
             response.setTotalPages(PageUtils.get(count, pageable.getPageSize()));

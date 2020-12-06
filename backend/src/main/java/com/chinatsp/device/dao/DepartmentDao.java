@@ -23,4 +23,5 @@ public interface DepartmentDao extends JpaRepository<Department, Integer>, JpaSp
 
     List<Department> findByName(String name);
 
+    List<Department> findByNameLike(String name);
 }

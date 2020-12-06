@@ -6,6 +6,7 @@ import com.chinatsp.device.entity.vo.Response;
 import com.chinatsp.device.service.DepartmentService;
 import com.chinatsp.device.utils.Constant;
 import com.chinatsp.device.utils.PageUtils;
+import com.philosophy.base.util.StringsUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -89,7 +90,12 @@ public class DepartmentController {
         }
         try {
             List<DepartmentVo> departments = departmentService.findDepartment(pageable, name);
-            long count = departmentService.findAllDepartmentCount();
+            long count;
+            if (StringsUtils.isEmpty(name)) {
+                count = departmentService.findAllDepartmentCount();
+            } else {
+                count = departmentService.findDepartmentCountByName("%" + name + "%");
+            }
             response.setMessage("查询成功");
             response.setData(departments);
             response.setPageSize(pageable.getPageSize());

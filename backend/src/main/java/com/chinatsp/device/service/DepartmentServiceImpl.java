@@ -89,6 +89,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    public int findDepartmentCountByName(String name) {
+        return departmentDao.findByNameLike(name).size();
+    }
+
+    @Override
     public DepartmentVo addDepartment(DepartmentVo departmentVo) {
         List<Department> departments = departmentDao.findByName(departmentVo.getName());
         if (departments.size() == 0) {
@@ -101,16 +106,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentVo updateDepartment(DepartmentVo departmentVo) {
-        Department department = convert(departmentVo, Constant.UPDATE);
-        Optional<Department> optionalDepartment = departmentDao.findById(department.getId());
-        if (optionalDepartment.isPresent()) {
-            Department dpt = optionalDepartment.get();
-            ObjectUtils.copyFiledValue(department, dpt);
-            departmentDao.saveAndFlush(dpt);
-            return departmentVo;
-        } else {
-            return null;
-        }
+        Department originDepartment = convert(departmentVo, Constant.UPDATE);
+        Optional<Department> optionalDepartment = departmentDao.findById(departmentVo.getId());
+        Department department = optionalDepartment.orElseGet(optionalDepartment::get);
+        ObjectUtils.copyFiledValue(originDepartment, department);
+        log.debug("update department and department is {}", department);
+        departmentDao.saveAndFlush(department);
+        return departmentVo;
     }
 
     @Override
@@ -118,13 +120,9 @@ public class DepartmentServiceImpl implements DepartmentService {
         int id = departmentVo.getId();
         log.debug("department id = " + id);
         Optional<Department> optionalDepartment = departmentDao.findById(id);
-        if (optionalDepartment.isPresent()) {
-            Department dpt = optionalDepartment.get();
-            departmentDao.delete(dpt);
-            return departmentVo;
-        } else {
-            return null;
-        }
+        Department department = optionalDepartment.orElseGet(optionalDepartment::get);
+        departmentDao.delete(department);
+        return departmentVo;
     }
 
     @Override

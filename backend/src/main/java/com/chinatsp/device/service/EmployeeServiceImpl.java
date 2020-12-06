@@ -4,7 +4,6 @@ import com.chinatsp.device.dao.DepartmentDao;
 import com.chinatsp.device.dao.EmployeeDao;
 import com.chinatsp.device.entity.po.Department;
 import com.chinatsp.device.entity.po.Employee;
-import com.chinatsp.device.entity.vo.DepartmentVo;
 import com.chinatsp.device.entity.vo.EmployeeVo;
 import com.chinatsp.device.utils.Constant;
 import com.chinatsp.device.utils.ObjectUtils;
@@ -51,13 +50,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee.setCreateDate(vo.getTimestamp());
         }
         employee.setSex(vo.getSex().equalsIgnoreCase(Constant.MAN));
-        Optional<Department> optional = departmentDao.findById(vo.getDepartmentId());
-        if (optional.isPresent()) {
-            Department department = optional.get();
-            employee.setDepartment(department);
-        } else {
-            throw new RuntimeException("not found department by id" + vo.getDepartmentId());
-        }
+        Optional<Department> optionalDepartment = departmentDao.findById(vo.getDepartmentId());
+        employee.setDepartment(optionalDepartment.orElseGet(employee::getDepartment));
         return employee;
     }
 
@@ -75,7 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             query.where(queryList.toArray(new Predicate[0]));
             return null;
         }, pageable);
-        for(Employee employee: employees){
+        for (Employee employee : employees) {
             EmployeeVo vo = convert(employee);
             employeeVos.add(vo);
         }
@@ -85,6 +79,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public long findAllEmployeeCount() {
         return employeeDao.count();
+    }
+
+    @Override
+    public int findEmployeeCountByName(String name) {
+        return employeeDao.findByNameLike(name).size();
     }
 
     @Override
@@ -100,36 +99,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeVo updateEmployee(EmployeeVo employeeVo) {
-        int dptId = employeeVo.getDepartmentId();
-        Optional<Department> optionalDepartment = departmentDao.findById(dptId);
-        Employee employee = convert(employeeVo, Constant.UPDATE);
-        Optional<Employee> optional = employeeDao.findById(employee.getId());
-        if (optional.isPresent()) {
-            Employee dpt = optional.get();
-            dpt.setName(employee.getName());
-            if(optionalDepartment.isPresent()){
-                Department department = optionalDepartment.get();
-                ObjectUtils.copyFiledValue(department, dpt);
-                employeeDao.saveAndFlush(dpt);
-                return employeeVo;
-            }else{
-                return null;
-            }
-        } else {
-            return null;
-        }
+        Employee originEmployee = convert(employeeVo, Constant.UPDATE);
+        Optional<Employee> optionalEmployee = employeeDao.findById(employeeVo.getId());
+        Employee employee = optionalEmployee.orElseGet(optionalEmployee::get);
+        ObjectUtils.copyFiledValue(originEmployee, employee);
+        employeeDao.saveAndFlush(employee);
+        return employeeVo;
+
     }
 
     @Override
     public EmployeeVo deleteEmployee(EmployeeVo employeeVo) {
-        Optional<Employee> optional = employeeDao.findById(employeeVo.getId());
-        if (optional.isPresent()) {
-            Employee dpt = optional.get();
-            employeeDao.delete(dpt);
-            return employeeVo;
-        } else {
-            return null;
-        }
+        Optional<Employee> optionalEmployee = employeeDao.findById(employeeVo.getId());
+        Employee employee = optionalEmployee.orElseGet(optionalEmployee::get);
+        employeeDao.delete(employee);
+        return employeeVo;
     }
 
     @Override

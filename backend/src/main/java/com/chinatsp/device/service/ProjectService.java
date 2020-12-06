@@ -15,6 +15,8 @@ public interface ProjectService {
 
     long findAllProjectCount();
 
+    int findProjectCountByName(String name);
+
     ProjectVo addProject(ProjectVo projectVo);
 
     ProjectVo updateProject(ProjectVo projectVo);

@@ -1,6 +1,5 @@
 package com.chinatsp.device.dao;
 
-import com.chinatsp.device.entity.po.Department;
 import com.chinatsp.device.entity.po.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -14,4 +13,7 @@ import java.util.List;
 public interface EmployeeDao extends JpaRepository<Employee, Integer>, JpaSpecificationExecutor<Employee> {
 
     List<Employee> findByName(String name);
+
+    List<Employee> findByNameLike(String name);
+
 }

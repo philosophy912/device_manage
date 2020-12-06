@@ -10,9 +10,11 @@ public interface GoodsService {
 
     long findAllGoodsCount();
 
+    int findGoodsCountByName(String name);
+
     List<GoodsVo> findGoodsByName(GoodsVo goodsVo);
 
-    List<GoodsVo> addGoods(GoodsVo goodsVo) throws CloneNotSupportedException;
+    List<GoodsVo> addGoods(GoodsVo goodsVo);
 
     GoodsVo updateGoods(GoodsVo goodsVo);
 

@@ -9,23 +9,32 @@ import java.lang.reflect.Field;
  * @date 2020/12/3 17:49
  **/
 public final class ObjectUtils {
-
+    /**
+     * 把origin的非null的值拷贝的哦target中
+     *
+     * @param origin 原始类
+     * @param target 目标类
+     */
     @SneakyThrows
-    public static void copyFiledValue(Object o1, Object o2) {
-        if (o1.getClass() != o2.getClass()) {
+    public static void copyFiledValue(Object origin, Object target) {
+        if (origin.getClass() != target.getClass()) {
             throw new RuntimeException("class o1 is not equal o2");
         }
-        Class<?> clazz1 = o1.getClass();
-        Class<?> clazz2 = o2.getClass();
-        Field[] fields1 = clazz1.getDeclaredFields();
-        Field[] fields2 = clazz2.getDeclaredFields();
-        for (Field f1 : fields1) {
-            f1.setAccessible(true);
-            for (Field f2 : fields2) {
-                f2.setAccessible(true);
-                if (f1.getName().equals(f2.getName())) {
-                    Object value = f1.get(o1);
-                    f2.set(o2, value);
+        Class<?> originClass = origin.getClass();
+        Class<?> targetClass = target.getClass();
+        Field[] originClassDeclaredFields = originClass.getDeclaredFields();
+        Field[] targetClassDeclaredFields = targetClass.getDeclaredFields();
+        for (Field originField : originClassDeclaredFields) {
+            String originFieldName = originField.getName();
+            originField.setAccessible(true);
+            for (Field targetField : targetClassDeclaredFields) {
+                String targetFieldName = targetField.getName();
+                targetField.setAccessible(true);
+                if (originFieldName.equals(targetFieldName)) {
+                    Object value = originField.get(origin);
+                    if (null != value) {
+                        targetField.set(target, value);
+                    }
                 }
             }
         }

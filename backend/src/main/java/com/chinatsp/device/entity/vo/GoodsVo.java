@@ -21,9 +21,9 @@ public class GoodsVo {
     private String code;
     @ApiModelProperty(value = "设备图片")
     private String image;
-    @ApiModelProperty(value = "设备所属雇员ID", required = true)
+    @ApiModelProperty(value = "设备所属员工ID", required = true)
     private Integer employeeId;
-    @ApiModelProperty(value = "设备所属雇员名称")
+    @ApiModelProperty(value = "设备所属员工姓名")
     private String employeeName;
     @ApiModelProperty(value = "设备所属项目ID", required = true)
     private Integer projectId;
@@ -32,13 +32,15 @@ public class GoodsVo {
     @ApiModelProperty(value = "设备数量", notes = "仅添加使用")
     private Integer count;
     @ApiModelProperty(value = "设备领用状态", required = true)
-    private String recipientsStatus;
+    private Boolean recipientsStatus;
     @ApiModelProperty(value = "设备自身状态", required = true)
-    private String goodsStatus;
+    private Boolean goodsStatus;
     @ApiModelProperty(value = "设备入库时间", required = true)
     private Long inTime;
     @ApiModelProperty(value = "设备领用时间")
     private Long recipientsTime;
     @ApiModelProperty(value = "设备归还时间")
     private Long returnTime;
+    @ApiModelProperty(value = "描述")
+    private String description;
 }

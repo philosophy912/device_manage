@@ -6,6 +6,7 @@ import com.chinatsp.device.entity.vo.Response;
 import com.chinatsp.device.service.GoodsService;
 import com.chinatsp.device.utils.Constant;
 import com.chinatsp.device.utils.PageUtils;
+import com.philosophy.base.util.StringsUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -52,7 +53,12 @@ public class GoodsController {
         }
         try {
             List<GoodsVo> goodsVos = goodsService.findGoods(pageable, name);
-            long count = goodsService.findAllGoodsCount();
+            long count;
+            if (StringsUtils.isEmpty(name)) {
+                count = goodsService.findAllGoodsCount();
+            } else {
+                count = goodsService.findGoodsCountByName("%" + name + "%");
+            }
             response.setMessage("查询成功");
             response.setData(goodsVos);
             response.setPageSize(pageable.getPageSize());
@@ -87,10 +93,10 @@ public class GoodsController {
         Response response = new Response();
         try {
             List<GoodsVo> goodsVos = goodsService.addGoods(goodsVo);
-            if(goodsVos != null){
+            if (goodsVos != null) {
                 response.setData(goodsVos);
                 response.setMessage("create success");
-            }else{
+            } else {
                 response.setCode(Constant.NOK);
                 response.setMessage("create failed, reason is " + goodsVo.getName() + " exist");
             }

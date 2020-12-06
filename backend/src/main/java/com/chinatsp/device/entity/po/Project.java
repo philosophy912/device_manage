@@ -46,7 +46,6 @@ public class Project implements Serializable, Cloneable {
     @ApiModelProperty(value = "创建日期")
     private Long createDate;
     // 双向一对多，一个员工可以持有多个设备
-    @JsonIgnoreProperties(value = {"project"})
     @OneToMany(mappedBy = "project", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @ApiModelProperty(value = "项目下所有设备")
     private Set<Goods> goods = new HashSet<>();
