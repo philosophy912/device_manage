@@ -18,7 +18,7 @@ public class EmployeeVo {
     @ApiModelProperty(value = "雇员名称", required = true )
     private String name;
     @ApiModelProperty(value = "雇员性别", required = true)
-    private String sex;
+    private Boolean sex;
     @ApiModelProperty(value = "雇员创建时间")
     private Long timestamp;
     @ApiModelProperty(value = "雇员所属部门ID", required = true)

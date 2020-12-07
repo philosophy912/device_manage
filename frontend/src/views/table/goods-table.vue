@@ -16,7 +16,7 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.name')" min-width="150px">
+      <el-table-column :label="$t('goods.name')" min-width="100px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
         </template>
@@ -28,7 +28,8 @@
       </el-table-column>
       <el-table-column :label="$t('goods.employee')" min-width="70px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.employeeName }}</span>
+          <span v-if="row.employeeName" class="link-type" @click="handleUpdate(row)">{{ row.employeeName }}</span>
+          <span v-if="!row.employeeName" class="link-type" @click="handleUpdate(row)">无</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.project')" min-width="100px">
@@ -36,9 +37,10 @@
           <span class="link-type" @click="handleUpdate(row)">{{ row.projectName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.image')" min-width="150px" align="center">
+      <el-table-column :label="$t('goods.image')" min-width="120px" align="center">
         <template slot-scope="{row}">
-          <img :src="row.image" alt="" class="link-type" width="100px" height="100px" @click="handleShowImage(row)"><img>
+          <img v-if="row.image" :src="row.image" alt="" class="link-type" width="100%" height="100%" @click="handleShowImage(row)"><img>
+          <span v-if="!row.image" class="link-type" @click="handleUpdate(row)">无</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.recipients_status')" min-width="70px">
@@ -98,7 +100,7 @@
             :limit="1"
             :on-success="handleOnSuccess"
           >
-            <img v-if="temp.image" :src="temp.image" class="avatar" @click="clearFiles">
+            <img v-if="temp.image" width="100%" height="100%" :src="temp.image" class="avatar" @click="clearFiles">
             <div v-else>
               <i class="el-icon-upload" />
               <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -427,7 +429,7 @@ export default {
     },
     handleShowImage(row) {
       log.debug('row.image = ' + JSON.stringify(row.image))
-      this.$alert('<img src=' + row.image + '>', '', {
+      this.$alert('<img src=' + row.image + ' width="100%" height="100%">', '', {
         dangerouslyUseHTMLString: true,
         showConfirmButton: false
       })

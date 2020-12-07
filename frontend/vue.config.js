@@ -38,6 +38,15 @@ module.exports = {
       warnings: false,
       errors: true
     },
+    proxy: {
+      '/images/*': {
+        target: server,
+        changeOrigin: true,
+        pathReWtire: {
+          '^/images/*': ''
+        }
+      }
+    },
     // proxy:{
     //   '/user/*': {
     //     target: server,

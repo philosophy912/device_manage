@@ -23,12 +23,12 @@
       </el-table-column>
       <el-table-column :label="$t('employee.sex')" width="110px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.sex }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ handleSex(row.sex) }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('employee.department')" width="110px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.departmentName }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.departmentName }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('department.date')" width="150px" align="center">
@@ -56,7 +56,7 @@
           <el-input v-model="temp.name" />
         </el-form-item>
         <el-form-item :label="$t('employee.sex')" prop="sex">
-          <el-switch v-model="temp.sex" active-text="女" inactive-text="男" />
+          <el-switch v-model="temp.sex" active-text="男" inactive-text="女" />
         </el-form-item>
         <el-form-item :label="$t('employee.department')" prop="department">
           <el-select v-model="temp.departmentId" placeholder="请选择">
@@ -336,6 +336,9 @@ export default {
     getSortClass: function(key) {
       const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
+    },
+    handleSex(sex) {
+      return sex ? '男' : '女'
     }
   }
 }

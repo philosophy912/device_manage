@@ -31,7 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         EmployeeVo vo = new EmployeeVo();
         vo.setId(employee.getId());
         vo.setName(employee.getName());
-        vo.setSex(employee.getSex() ? Constant.MAN : Constant.WOMEN);
+        vo.setSex(employee.getSex());
         vo.setTimestamp(employee.getCreateDate());
         vo.setDepartmentId(employee.getDepartment().getId());
         vo.setDepartmentName(employee.getDepartment().getName());
@@ -49,7 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (type.equalsIgnoreCase(Constant.CREATE)) {
             employee.setCreateDate(vo.getTimestamp());
         }
-        employee.setSex(vo.getSex().equalsIgnoreCase(Constant.MAN));
+        employee.setSex(vo.getSex());
         Optional<Department> optionalDepartment = departmentDao.findById(vo.getDepartmentId());
         employee.setDepartment(optionalDepartment.orElseGet(employee::getDepartment));
         return employee;

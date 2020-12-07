@@ -27,12 +27,12 @@ spring:
       resolve-lazily: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/device?setUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
-    username: root
-    password: root
-    # url: jdbc:mysql://10.100.193.82:9999/device?setUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    # url: jdbc:mysql://127.0.0.1:3306/device?setUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
     # username: root
-    # password: chinatsp
+    # password: root
+    url: jdbc:mysql://10.100.193.82:9999/device?setUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: chinatsp
   jpa:
     show-sql: false
     hibernate:
@@ -41,8 +41,8 @@ spring:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
     database: mysql
 
-# upload_file: D:/Workspace/github/device_manage/backend/upload_file/
-upload_file: E:/Work/device_manage/backend/upload_file/
+upload_file: D:/Workspace/github/device_manage/backend/upload_file/
+# upload_file: E:/Work/device_manage/backend/upload_file/
 
 swagger:
   enable: false

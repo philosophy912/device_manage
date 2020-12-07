@@ -1,9 +1,6 @@
 package com.chinatsp.device.service;
 
-import com.chinatsp.device.entity.po.Department;
-import com.chinatsp.device.entity.po.Employee;
 import com.chinatsp.device.entity.vo.EmployeeVo;
-import com.chinatsp.device.utils.Constant;
 import com.philosophy.base.util.NumericUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -12,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -35,7 +31,7 @@ class EmployeeServiceTest {
             EmployeeVo vo = new EmployeeVo();
             vo.setName("员工" + (i + 1));
             vo.setTimestamp(System.currentTimeMillis());
-            vo.setSex(i % 2 == 0 ? Constant.MAN : Constant.WOMEN);
+            vo.setSex(i % 2 == 0);
             vo.setDepartmentId(NumericUtils.randomInteger(1, 50));
             service.addEmployee(vo);
         }
