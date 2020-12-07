@@ -8,6 +8,22 @@ export function fetchGoodsList(query) {
   })
 }
 
+export function fetchGoodsRecipientsList(query) {
+  return request({
+    url: '/goods/list/recipients',
+    method: 'get',
+    params: query
+  })
+}
+
+export function fetchGoodsNonRecipientsList(query) {
+  return request({
+    url: '/goods/list/none/Recipients',
+    method: 'get',
+    params: query
+  })
+}
+
 export function fetchGoodsName(data) {
   return request({
     url: '/goods/findName',

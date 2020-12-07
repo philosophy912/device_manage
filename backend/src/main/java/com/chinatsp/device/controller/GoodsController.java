@@ -71,6 +71,81 @@ public class GoodsController {
         return response;
     }
 
+    @RequestMapping(value = "/list/recipients", method = RequestMethod.GET)
+    @ApiOperation(value = "查找所有设备")
+    public PageResponse fetchRecipients(@ApiParam(value = "页数", required = true, example = "1") @RequestParam int page,
+                                        @ApiParam(value = "每页数量", required = true, example = "10") @RequestParam int limit,
+                                        @ApiParam(value = "查询的名字", example = "电脑") @RequestParam(required = false) String name,
+                                        @ApiParam(value = "排序方式", example = "+id/-id") @RequestParam(required = false) String sort) {
+        PageResponse response = new PageResponse();
+        Pageable pageable;
+        if (Strings.isNotEmpty(sort)) {
+            if (sort.equalsIgnoreCase(Constant.DESC)) {
+                pageable = PageRequest.of(page - 1, limit, Sort.Direction.DESC, "id");
+            } else {
+                pageable = PageRequest.of(page - 1, limit, Sort.Direction.ASC, "id");
+            }
+        } else {
+            pageable = PageRequest.of(page - 1, limit, Sort.Direction.ASC, "id");
+        }
+        try {
+            List<GoodsVo> goodsVos = goodsService.findRecipientsGoods(pageable, name);
+            long count;
+            if (StringsUtils.isEmpty(name)) {
+                count = goodsService.findRecipientsGoodsCount();
+            } else {
+                count = goodsService.findRecipientsGoodsCountByName("%" + name + "%");
+            }
+            response.setMessage("查询成功");
+            response.setData(goodsVos);
+            response.setPageSize(pageable.getPageSize());
+            response.setTotalRows((int) count);
+            response.setTotalPages(PageUtils.get(count, pageable.getPageSize()));
+        } catch (Exception e) {
+            response.setCode(Constant.NOK);
+            response.setMessage("查询失败");
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/list/none/Recipients", method = RequestMethod.GET)
+    @ApiOperation(value = "查找所有设备")
+    public PageResponse fetchNonRecipients(@ApiParam(value = "页数", required = true, example = "1") @RequestParam int page,
+                                           @ApiParam(value = "每页数量", required = true, example = "10") @RequestParam int limit,
+                                           @ApiParam(value = "查询的名字", example = "电脑") @RequestParam(required = false) String name,
+                                           @ApiParam(value = "排序方式", example = "+id/-id") @RequestParam(required = false) String sort) {
+        PageResponse response = new PageResponse();
+        Pageable pageable;
+        if (Strings.isNotEmpty(sort)) {
+            if (sort.equalsIgnoreCase(Constant.DESC)) {
+                pageable = PageRequest.of(page - 1, limit, Sort.Direction.DESC, "id");
+            } else {
+                pageable = PageRequest.of(page - 1, limit, Sort.Direction.ASC, "id");
+            }
+        } else {
+            pageable = PageRequest.of(page - 1, limit, Sort.Direction.ASC, "id");
+        }
+        try {
+            List<GoodsVo> goodsVos = goodsService.findNoneRecipientsGoods(pageable, name);
+            long count;
+            if (StringsUtils.isEmpty(name)) {
+                count = goodsService.findNonRecipientsGoodsCount();
+            } else {
+                count = goodsService.findNonRecipientsGoodsCountByName("%" + name + "%");
+            }
+            response.setMessage("查询成功");
+            response.setData(goodsVos);
+            response.setPageSize(pageable.getPageSize());
+            response.setTotalRows((int) count);
+            response.setTotalPages(PageUtils.get(count, pageable.getPageSize()));
+        } catch (Exception e) {
+            response.setCode(Constant.NOK);
+            response.setMessage("查询失败");
+        }
+        return response;
+    }
+
+
     @RequestMapping(value = "/findName", method = RequestMethod.POST)
     @ApiOperation(value = "根据名字查找设备", notes = "根据名字查找设备goodsVo中的name必填")
     public Response fetchName(@RequestBody GoodsVo goodsVo) {

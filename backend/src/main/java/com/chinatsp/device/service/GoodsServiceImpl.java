@@ -101,7 +101,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
         if (null != vo.getRecipientsStatus()) {
             goods.setRecipientsStatus(vo.getRecipientsStatus());
-        }else{
+        } else {
             goods.setRecipientsStatus(false);
         }
         if (null != vo.getGoodsStatus()) {
@@ -217,4 +217,51 @@ public class GoodsServiceImpl implements GoodsService {
             return null;
         }
     }
+
+    @Override
+    public List<GoodsVo> findRecipientsGoods(Pageable pageable, String name) {
+        List<GoodsVo> goodsVos = new ArrayList<>();
+        Page<Goods> goodsList;
+        if (StringsUtils.isNotEmpty(name)) {
+            goodsList = goodsDao.findByRecipientsStatusIsTrueAndNameLike(pageable, "%" + name + "%");
+        } else {
+            goodsList = goodsDao.findByRecipientsStatusIsTrue(pageable);
+        }
+        goodsList.forEach(goods -> goodsVos.add(convert(goods)));
+        return goodsVos;
+    }
+
+    @Override
+    public List<GoodsVo> findNoneRecipientsGoods(Pageable pageable, String name) {
+        List<GoodsVo> goodsVos = new ArrayList<>();
+        Page<Goods> goodsList;
+        if (StringsUtils.isNotEmpty(name)) {
+            goodsList = goodsDao.findByRecipientsStatusIsFalseAndNameLike(pageable, "%" + name + "%");
+        } else {
+            goodsList = goodsDao.findByRecipientsStatusIsFalse(pageable);
+        }
+        goodsList.forEach(goods -> goodsVos.add(convert(goods)));
+        return goodsVos;
+    }
+
+    @Override
+    public int findRecipientsGoodsCount() {
+        return goodsDao.findByRecipientsStatusIsTrue().size();
+    }
+
+    @Override
+    public int findRecipientsGoodsCountByName(String name) {
+        return goodsDao.findByRecipientsStatusIsTrueAndNameLike(name).size();
+    }
+
+    @Override
+    public int findNonRecipientsGoodsCount() {
+        return goodsDao.findByRecipientsStatusIsFalse().size();
+    }
+
+    @Override
+    public int findNonRecipientsGoodsCountByName(String name) {
+        return goodsDao.findByRecipientsStatusIsFalseAndNameLike(name).size();
+    }
+
 }

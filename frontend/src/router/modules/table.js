@@ -59,6 +59,18 @@ const tableRouter = {
       component: () => import('@/views/table/goods-table'),
       name: 'GoodsTable',
       meta: { title: '物品管理' }
+    },
+    {
+      path: 'recipients-table',
+      component: () => import('@/views/table/recipients-table'),
+      name: 'RecipientsTable',
+      meta: { title: '领用物品管理' }
+    },
+    {
+      path: 'non-Recipients-table',
+      component: () => import('@/views/table/non-recipients-table'),
+      name: 'NonRecipientsTable',
+      meta: { title: '未领用物品管理' }
     }
   ]
 }
