@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.chinatsp</groupId>
     <artifactId>device</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>device</name>
     <description>Demo project for Spring Boot</description>
 

@@ -124,6 +124,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
             if (registrations != null) {
                 for (InterceptorRegistration interceptorRegistration : registrations) {
                     interceptorRegistration
+                            .excludePathPatterns("/index.html")
+                            .excludePathPatterns("/static/**")
                             .excludePathPatterns("/swagger**/**")
                             .excludePathPatterns("/webjars/**")
                             .excludePathPatterns("/v3/**")
