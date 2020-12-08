@@ -16,34 +16,34 @@
       </el-table-column>
       <el-table-column :label="$t('goods.name')" min-width="100px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.name }}</span>
+          <span>{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.code')" min-width="200px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.code }}</span>
+          <span>{{ row.code }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.employee')" min-width="70px" align="center">
         <template slot-scope="{row}">
-          <span v-if="row.employeeName" class="link-type">{{ row.employeeName }}</span>
-          <span v-if="!row.employeeName" class="link-type">无</span>
+          <span v-if="row.employeeName">{{ row.employeeName }}</span>
+          <span v-if="!row.employeeName">无</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.project')" min-width="100px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.projectName }}</span>
+          <span>{{ row.projectName }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.image')" min-width="120px" align="center">
         <template slot-scope="{row}">
-          <img v-if="row.image" :src="row.image" alt="" class="link-type" width="100%" height="100%" @click="handleShowImage(row)"><img>
-          <span v-if="!row.image" class="link-type">无</span>
+          <img v-if="row.image" :src="row.image" alt="" width="100%" height="100%" @click="handleShowImage(row)"><img>
+          <span v-if="!row.image">无</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.goods_status')" min-width="50px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ handleGoodsStatus(row.goodsStatus) }}</span>
+          <span>{{ handleGoodsStatus(row.goodsStatus) }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('goods.return_time')" width="150px" align="center">

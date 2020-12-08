@@ -1,6 +1,7 @@
 package com.chinatsp.device.config;
 
 import io.swagger.models.auth.In;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +38,7 @@ import java.util.Set;
 
 @EnableOpenApi
 @Configuration
+@Slf4j
 public class WebMvcConfig implements WebMvcConfigurer {
     @Value(("${upload_file}"))
     private String upload_images;
@@ -165,7 +167,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     // 静态资源处理
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        String upload_images = "D:\\Workspace\\github\\device_manage\\backend\\upload_file\\";
+        log.debug("upload_images = {}", upload_images);
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("file:" + upload_images);
         WebMvcConfigurer.super.addResourceHandlers(registry);

@@ -32,25 +32,28 @@ public class WebLogAspect {
     public void doBefore(JoinPoint joinPoint) throws Throwable {
         // 接收到请求，记录请求内容
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-        // 记录下请求内容
-        log.info("请求地址 : " + request.getRequestURL().toString());
-        log.info("HTTP METHOD : " + request.getMethod());
-        log.info("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "."
-                + joinPoint.getSignature().getName());
-        log.info("参数 : " + Arrays.toString(joinPoint.getArgs()));
+        if (null != attributes) {
+            HttpServletRequest request = attributes.getRequest();
+            // 记录下请求内容
+            log.debug("请求地址 : " + request.getRequestURL().toString());
+            log.debug("HTTP METHOD : " + request.getMethod());
+            log.debug("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "."
+                    + joinPoint.getSignature().getName());
+            log.debug("参数 : " + Arrays.toString(joinPoint.getArgs()));
+        }
+
     }
 
     @AfterReturning(returning = "ret", pointcut = "logPointCut()")// returning的值和doAfterReturning的参数名一致
     public void doAfterReturning(Object ret) throws Throwable {
-        log.info("返回值 : " + ret);
+        log.debug("返回值 : " + ret);
     }
 
     @Around("logPointCut()")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
         long startTime = System.currentTimeMillis();
         Object ob = pjp.proceed();// ob 为方法的返回值
-        log.info("耗时 : " + (System.currentTimeMillis() - startTime));
+        log.debug("耗时 : " + (System.currentTimeMillis() - startTime));
         return ob;
     }
 }

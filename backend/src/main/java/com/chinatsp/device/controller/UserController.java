@@ -40,7 +40,7 @@ public class UserController {
     @ApiOperation(value = "登陆")
     public Response login(@RequestBody UserVo userVo) {
         Response response = new Response();
-        log.info("user[{}] try to login", userVo.getUsername());
+        log.debug("user[{}] try to login", userVo.getUsername());
         response.setMessage("登陆成功");
         Map<String, String> map = new HashMap<>();
         map.put(USERNAME, userVo.getUsername());
@@ -56,7 +56,7 @@ public class UserController {
     public Response info(@RequestParam String token) {
         Response response = new Response();
         try {
-            log.info("token is{}", token);
+            log.debug("token is{}", token);
             DecodedJWT decodedJWT = JwtTokenUtil.verify(token);
             RolesVo rolesVo = new RolesVo();
             rolesVo.setRoles(Collections.singletonList("admin"));
