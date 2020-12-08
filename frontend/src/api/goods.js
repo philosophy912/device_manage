@@ -55,3 +55,19 @@ export function deleteGoods(data) {
     data
   })
 }
+
+export function recipientsGoods(data) {
+  return request({
+    url: '/goods/recipients',
+    method: 'post',
+    data
+  })
+}
+
+export function returnGoods(data) {
+  return request({
+    url: '/goods/return',
+    method: 'post',
+    data
+  })
+}

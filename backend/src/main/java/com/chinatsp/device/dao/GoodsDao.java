@@ -33,4 +33,6 @@ public interface GoodsDao extends JpaRepository<Goods, Integer>, JpaSpecificatio
 
     List<Goods> findByRecipientsStatusIsFalse();
 
+    Goods findByCode(String code);
+
 }

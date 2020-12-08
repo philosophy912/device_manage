@@ -59,14 +59,15 @@ public class EmployeeController {
             } else {
                 count = employeeService.findEmployeeCountByName("%" + name + "%");
             }
-            response.setMessage("query success");
+            response.setMessage("查询成功");
             response.setData(employeeVos);
             response.setPageSize(pageable.getPageSize());
             response.setTotalRows((int) count);
             response.setTotalPages(PageUtils.get(count, pageable.getPageSize()));
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("query failed");
+            response.setMessage("查询失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -82,6 +83,7 @@ public class EmployeeController {
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("查询失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -98,6 +100,7 @@ public class EmployeeController {
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("查询失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -110,14 +113,15 @@ public class EmployeeController {
             EmployeeVo vo = employeeService.addEmployee(employeeVo);
             if (vo != null) {
                 response.setData(Collections.singletonList(vo));
-                response.setMessage("create success");
+                response.setMessage("创建成功");
             } else {
                 response.setCode(Constant.NOK);
                 response.setMessage(employeeVo.getName() + "is already in database, so create failed");
             }
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("create failed");
+            response.setMessage("创建失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -130,14 +134,15 @@ public class EmployeeController {
             EmployeeVo vo = employeeService.updateEmployee(employeeVo);
             if (vo != null) {
                 response.setData(Collections.singletonList(vo));
-                response.setMessage("update success");
+                response.setMessage("更新成功");
             } else {
                 response.setCode(Constant.NOK);
                 response.setMessage(employeeVo.getName() + "is not in database, so update failed");
             }
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("update failed");
+            response.setMessage("更新失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -153,11 +158,12 @@ public class EmployeeController {
                 response.setMessage("update success");
             } else {
                 response.setCode(Constant.NOK);
-                response.setMessage(employeeVo.getName() + "is not in database, so delete failed");
+                response.setMessage(employeeVo.getName() + "不存在");
             }
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("update failed, reason is " + e.getMessage());
+            response.setMessage("删除失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }

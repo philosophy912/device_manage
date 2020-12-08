@@ -193,15 +193,11 @@ public class GoodsServiceImpl implements GoodsService {
     public GoodsVo updateGoods(GoodsVo goodsVo) {
         Goods goods = convert(goodsVo, Constant.UPDATE);
         Optional<Goods> optionalGoods = goodsDao.findById(goodsVo.getId());
-        if (optionalGoods.isPresent()) {
-            Goods dpt = optionalGoods.get();
-            ObjectUtils.copyFiledValue(goods, dpt);
-            log.debug("dpt is {}", dpt);
-            goodsDao.saveAndFlush(dpt);
-            return goodsVo;
-        } else {
-            return null;
-        }
+        Goods dpt = optionalGoods.orElseGet(optionalGoods::get);
+        ObjectUtils.copyFiledValue(goods, dpt);
+        log.debug("dpt is {}", dpt);
+        goodsDao.saveAndFlush(dpt);
+        return goodsVo;
     }
 
     @Override
@@ -209,13 +205,9 @@ public class GoodsServiceImpl implements GoodsService {
         int id = goodsVo.getId();
         log.debug("department id = " + id);
         Optional<Goods> optionalGoods = goodsDao.findById(id);
-        if (optionalGoods.isPresent()) {
-            Goods dpt = optionalGoods.get();
-            goodsDao.delete(dpt);
-            return goodsVo;
-        } else {
-            return null;
-        }
+        Goods dpt = optionalGoods.orElseGet(optionalGoods::get);
+        goodsDao.delete(dpt);
+        return goodsVo;
     }
 
     @Override
@@ -263,5 +255,29 @@ public class GoodsServiceImpl implements GoodsService {
     public int findNonRecipientsGoodsCountByName(String name) {
         return goodsDao.findByRecipientsStatusIsFalseAndNameLike(name).size();
     }
+
+    @Override
+    public GoodsVo recipientsGoods(GoodsVo vo) {
+        Goods origin = convert(vo, Constant.UPDATE);
+        Goods goods = goodsDao.findByCode(vo.getCode());
+        ObjectUtils.copyFiledValue(origin, goods);
+        goods.setRecipientsStatus(true);
+        goods.setRecipientsTime(System.currentTimeMillis());
+        goodsDao.saveAndFlush(goods);
+        return vo;
+    }
+
+    @Override
+    public GoodsVo returnGoods(GoodsVo vo) {
+        Goods origin = convert(vo, Constant.UPDATE);
+        Goods goods = goodsDao.findByCode(vo.getCode());
+        ObjectUtils.copyFiledValue(origin, goods);
+        goods.setRecipientsStatus(false);
+        goods.setRecipientsTime(null);
+        goods.setReturnTime(System.currentTimeMillis());
+        goodsDao.saveAndFlush(goods);
+        return vo;
+    }
+
 
 }

@@ -196,13 +196,14 @@ export default {
     in_time: '入库时间',
     project: '项目名称',
     recipients_time: '领用时间',
-    return_time: '归还时间',
+    return_time: '上次归还时间',
     recipients_status: '领用状态',
     goods_status: '物品状态',
     image: '缩略图',
     code: '物品编号',
     count: '数量',
     recipients: '领用',
-    return: '归还'
+    return: '归还',
+    description: '描述'
   }
 }

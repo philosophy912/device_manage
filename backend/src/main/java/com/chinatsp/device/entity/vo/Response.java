@@ -24,6 +24,8 @@ public class Response {
     private String message;
     @ApiModelProperty(value = "响应内容", example = "返回结果的数组")
     private Object data;
+    @ApiModelProperty(value = "错误信息", example = "返回错误的信息")
+    private String errorInfo;
 
 
 }

@@ -14,23 +14,23 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.name')" min-width="100px">
+      <el-table-column :label="$t('goods.name')" min-width="100px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.code')" min-width="200px">
+      <el-table-column :label="$t('goods.code')" min-width="200px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.code }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.employee')" min-width="70px">
+      <el-table-column :label="$t('goods.employee')" min-width="70px" align="center">
         <template slot-scope="{row}">
           <span v-if="row.employeeName" class="link-type">{{ row.employeeName }}</span>
           <span v-if="!row.employeeName" class="link-type">无</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.project')" min-width="100px">
+      <el-table-column :label="$t('goods.project')" min-width="100px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.projectName }}</span>
         </template>
@@ -41,25 +41,20 @@
           <span v-if="!row.image" class="link-type">无</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.recipients_status')" min-width="70px">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ handleRecipientsStatus(row.recipientsStatus) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('goods.goods_status')" min-width="50px">
+      <el-table-column :label="$t('goods.goods_status')" min-width="50px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ handleGoodsStatus(row.goodsStatus) }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.in_time')" width="100px" align="center">
+      <el-table-column :label="$t('goods.return_time')" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.inTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ row.returnTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row, $index)">
-            {{ $t('goods.return') }}
+          <el-button type="primary" size="mini" @click="handleRecipients(row, $index)">
+            {{ $t('goods.recipients') }}
           </el-button>
         </template>
       </el-table-column>
@@ -69,35 +64,11 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 400px; margin-left:50px;">
-        <!-- <el-form-item :label="$t('goods.name')" prop="name">
-          <el-input v-model="temp.name" />
+        <el-form-item :label="$t('goods.name')" prop="name">
+          <el-input v-model="temp.name" :disabled="true" />
         </el-form-item>
-        <el-form-item :label="$t('goods.image')" prop="image">
-          <el-upload
-            ref="upload"
-            class="avatar-uploader"
-            drag
-            action="http://127.0.0.1:8080/upload"
-            list-type="picture"
-            accept="image/png, image/jpeg, image/gif, image/bmp"
-            :show-file-list="false"
-            :file-list="temp.images"
-            :limit="1"
-            :on-success="handleOnSuccess"
-          >
-            <img v-if="temp.image" width="100%" height="100%" :src="temp.image" class="avatar" @click="clearFiles">
-            <div v-else>
-              <i class="el-icon-upload" />
-              <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-            </div>
-          </el-upload>
-        </el-form-item>
-        <el-form-item :label="$t('goods.goods_status')" prop="goodsStatus">
-          <el-switch v-model="temp.goodsStatus" active-text="好" inactive-text="坏" />
-        </el-form-item> -->
         <el-form-item :label="$t('goods.employee')" prop="employeeName">
-          <el-select v-model="temp.employeeId" placeholder="请选择">
-            <!-- label是文字，value是值 -->
+          <el-select v-model="temp.employeeId" filterable placeholder="请选择">
             <el-option v-for="item in employees" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
@@ -109,7 +80,7 @@
         <el-button @click="dialogFormVisible = false">
           {{ $t('table.cancel') }}
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button type="primary" @click="updateRecipients()">
           {{ $t('table.confirm') }}
         </el-button>
       </div>
@@ -128,7 +99,7 @@
 </template>
 
 <script>
-import { fetchGoodsNonRecipientsList, createGoods, updateGoods, deleteGoods } from '@/api/goods'
+import { fetchGoodsNonRecipientsList, recipientsGoods } from '@/api/goods'
 // import { fetchAllProject } from '@/api/project'
 import { fetchAllEmployee } from '@/api/employee'
 import waves from '@/directive/waves' // waves directive
@@ -136,8 +107,8 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import Logger from 'chivy'
 
-const log = new Logger('views/table/good-table')
-const testUrl = 'http://127.0.0.1:8080'
+const log = new Logger('views/table/non-recipients-table')
+// const testUrl = 'http://127.0.0.1:8080'
 
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
@@ -210,7 +181,8 @@ export default {
       dialogStatus: '',
       textMap: {
         update: '编辑',
-        create: '添加'
+        create: '添加',
+        select: '选择'
       },
       dialogPvVisible: false,
       pvData: [],
@@ -262,133 +234,10 @@ export default {
       }
       this.handleFilter()
     },
-    resetTemp() {
-      this.temp = {
-        id: undefined,
-        name: '',
-        code: '',
-        image: '',
-        images: [],
-        employeeId: undefined,
-        projectId: undefined,
-        count: '',
-        recipients_status: false,
-        goodsStatus: true,
-        inTime: new Date()
-      }
-    },
-    handleCreate() {
-      this.resetTemp()
-      this.getProjectAndEmployee()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
     getProjectAndEmployee() {
       fetchAllEmployee().then(response => {
         this.employees = response.data
-      })
-    },
-    createData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          this.temp.inTime = +new Date(this.temp.inTime) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          createGoods(this.temp).then(() => {
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
-            this.getList()
-          })
-        }
-      })
-    },
-    handleUpdate(row) {
-      this.getProjectAndEmployee()
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.inTime = +new Date(this.temp.inTime)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        log.debug('validate is successed')
-        if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          // todo 特殊处理
-          if (tempData.image !== null) {
-            log.info('tempData.image is not null and value is' + JSON.stringify(tempData.image))
-            tempData.image = tempData.image.replace(testUrl, '')
-          }
-          log.info('tempData = ' + JSON.stringify(tempData))
-          updateGoods(tempData).then(() => {
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
-            })
-            this.getList()
-          })
-        }
-      })
-    },
-    handleDelete(row, index) {
-      this.$confirm('此操作将永久删除部门【' + row.name + '】, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        const data = {
-          'id': row.id,
-          'name': row.name
-        }
-        deleteGoods(data).then(() => {
-          this.$notify({
-            title: '成功',
-            message: '删除成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.getList()
-        }).catch(() => {
-          this.$notify({
-            title: '失败',
-            message: '删除失败',
-            type: 'error',
-            duration: 2000
-          })
-        })
-      }).catch(() => {
-      })
-    },
-    handleFetchPv(pv) {
-      // fetchPv(pv).then(response => {
-      //   this.pvData = response.data.pvData
-      //   this.dialogPvVisible = true
-      // })
-    },
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-        const data = this.formatJson(filterVal)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: 'table-list'
-        })
-        this.downloadLoading = false
+        log.debug('this.employees = ' + JSON.stringify(this.employees))
       })
     },
     formatJson(filterVal) {
@@ -411,22 +260,37 @@ export default {
         showConfirmButton: false
       })
     },
-    handleOnSuccess(response, file, fileList) {
-      this.temp.images = fileList
-      log.debug('file = ' + JSON.stringify(file))
-      log.debug('fileList = ' + JSON.stringify(fileList))
-      log.debug('response = ' + JSON.stringify(response))
-      log.debug('images = ' + JSON.stringify(this.temp.images))
-      this.temp.image = testUrl + response.data
-    },
-    clearFiles() {
-      this.$refs.upload.clearFiles()
-    },
     handleGoodsStatus(status) {
       return status ? '好' : '坏'
     },
-    handleRecipientsStatus(status) {
-      return status ? '已领用' : '未领用'
+    handleRecipients(row, index) {
+      log.info('row = ' + JSON.stringify(row))
+      this.getProjectAndEmployee()
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogStatus = 'select'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    updateRecipients() {
+      log.info('temp = ' + JSON.stringify(this.temp))
+      // 查询出来employeeName
+      this.employees.forEach(employee => {
+        if (this.temp.employeeId === employee.id) {
+          this.temp.employeeName = employee.name
+        }
+      })
+      recipientsGoods(this.temp).then(response => {
+        this.dialogFormVisible = false
+        this.$notify({
+          title: '成功',
+          message: '设备[' + this.temp.name + ']被[' + this.temp.employeeName + ']借出',
+          type: 'success',
+          duration: 2000
+        })
+        this.getList()
+      })
     }
   }
 }

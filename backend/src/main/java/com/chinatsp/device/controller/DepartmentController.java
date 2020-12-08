@@ -50,6 +50,7 @@ public class DepartmentController {
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("查询失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -66,6 +67,7 @@ public class DepartmentController {
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("查询失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -104,6 +106,7 @@ public class DepartmentController {
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("查询失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -117,7 +120,7 @@ public class DepartmentController {
             DepartmentVo vo = departmentService.addDepartment(departmentVo);
             if (vo != null) {
                 response.setData(Collections.singletonList(vo));
-                response.setMessage("create success");
+                response.setMessage("创建成功");
             } else {
                 response.setCode(Constant.NOK);
                 response.setMessage(name + "已经在数据库中存在，无法添加");
@@ -125,6 +128,7 @@ public class DepartmentController {
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("创建失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -146,6 +150,7 @@ public class DepartmentController {
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("更新失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -167,9 +172,11 @@ public class DepartmentController {
         } catch (DataIntegrityViolationException e) {
             response.setCode(Constant.NOK);
             response.setMessage("删除失败，部门" + name + "中仍然存在员工");
+            response.setErrorInfo(e.getMessage());
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("删除失败, 原因是" + e.getMessage());
+            response.setMessage("删除失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }

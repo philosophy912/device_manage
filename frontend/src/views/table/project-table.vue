@@ -55,16 +55,6 @@
         </el-button>
       </div>
     </el-dialog>
-
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -144,8 +134,6 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        // type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         name: [{ required: true, trigger: 'blur', validator: isProjectNameValid }]
       },
       downloadLoading: false
@@ -207,11 +195,8 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          // this.temp.author = 'vue-element-admin'
           this.temp.timestamp = +new Date(this.temp.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           createProject(this.temp).then(() => {
-            // this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -226,7 +211,6 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      // this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -238,8 +222,6 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           updateProject(tempData).then(() => {
-            // const index = this.list.findIndex(v => v.id === this.temp.id)
-            // this.list.splice(index, 1, this.temp)
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -279,26 +261,6 @@ export default {
           })
         })
       }).catch(() => {
-      })
-    },
-    handleFetchPv(pv) {
-      // fetchPv(pv).then(response => {
-      //   this.pvData = response.data.pvData
-      //   this.dialogPvVisible = true
-      // })
-    },
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-        const data = this.formatJson(filterVal)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: 'table-list'
-        })
-        this.downloadLoading = false
       })
     },
     formatJson(filterVal) {

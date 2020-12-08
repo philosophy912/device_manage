@@ -64,7 +64,7 @@ const tableRouter = {
       path: 'recipients-table',
       component: () => import('@/views/table/recipients-table'),
       name: 'RecipientsTable',
-      meta: { title: '领用物品管理' }
+      meta: { title: '已领用物品管理' }
     },
     {
       path: 'non-Recipients-table',

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.List;
 
 public interface GoodsService {
+
     List<GoodsVo> findGoods(Pageable pageable, String name);
 
     long findAllGoodsCount();
@@ -33,4 +34,8 @@ public interface GoodsService {
     int findNonRecipientsGoodsCount();
 
     int findNonRecipientsGoodsCountByName(String name);
+
+    GoodsVo recipientsGoods(GoodsVo goodsVo);
+
+    GoodsVo returnGoods(GoodsVo goodsVo);
 }

@@ -46,6 +46,7 @@ class GoodsServiceTest {
             goodsVo.setCount(NumericUtils.randomInteger(1, 5));
             if (i % 2 == 0) {
                 goodsVo.setEmployeeId(NumericUtils.randomInteger(1, 30));
+                goodsVo.setRecipientsTime(System.currentTimeMillis());
             }
             goodsService.addGoods(goodsVo);
         }

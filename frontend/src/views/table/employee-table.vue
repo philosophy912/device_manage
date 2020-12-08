@@ -90,6 +90,7 @@
 <script>
 import { fetchEmployeeList, createEmployee, updateEmployee, deleteEmployee } from '@/api/employee'
 import { fetchAllDepartment } from '@/api/department'
+import { isEmployeeNameValid } from '@/utils/validates'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -163,9 +164,10 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        department: [{ type: 'array', required: true, message: '必须选择部门', trigger: 'change' }],
-        sex: [{ required: true, message: 'sex is required', trigger: 'change' }],
-        title: [{ required: true, message: '姓名不能为空', trigger: 'blur' }]
+        name: [{ required: true, trigger: 'blur', validator: isEmployeeNameValid }]
+        // department: [{ type: 'array', required: true, message: '必须选择部门', trigger: 'change' }],
+        // sex: [{ required: true, message: 'sex is required', trigger: 'change' }],
+        // title: [{ required: true, message: '姓名不能为空', trigger: 'blur' }]
       },
       downloadLoading: false
     }

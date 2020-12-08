@@ -16,23 +16,18 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.name')" min-width="100px">
+      <el-table-column :label="$t('goods.name')" min-width="100px" align="center">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.code')" min-width="200px">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.code }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('goods.employee')" min-width="70px">
+      <el-table-column :label="$t('goods.employee')" min-width="70px" align="center">
         <template slot-scope="{row}">
           <span v-if="row.employeeName" class="link-type" @click="handleUpdate(row)">{{ row.employeeName }}</span>
           <span v-if="!row.employeeName" class="link-type" @click="handleUpdate(row)">无</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.project')" min-width="100px">
+      <el-table-column :label="$t('goods.project')" min-width="100px" align="center">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.projectName }}</span>
         </template>
@@ -43,31 +38,26 @@
           <span v-if="!row.image" class="link-type" @click="handleUpdate(row)">无</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.recipients_status')" min-width="70px">
+      <el-table-column :label="$t('goods.recipients_status')" min-width="70px" align="center">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ handleRecipientsStatus(row.recipientsStatus) }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.goods_status')" min-width="50px">
+      <el-table-column :label="$t('goods.goods_status')" min-width="50px" align="center">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ handleGoodsStatus(row.goodsStatus) }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('goods.in_time')" width="100px" align="center">
+      <el-table-column :label="$t('goods.description')" min-width="100px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type" @click="handleUpdate(row)">{{ row.description }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('goods.in_time')" width="150px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.inTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column :label="$t('goods.recipients_time')" width="100px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.recipientsTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('goods.return_time')" width="100px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.returnTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column> -->
       <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
@@ -99,6 +89,7 @@
             :file-list="temp.images"
             :limit="1"
             :on-success="handleOnSuccess"
+            :before-upload="beforeUpload"
           >
             <img v-if="temp.image" width="100%" height="100%" :src="temp.image" class="avatar" @click="clearFiles">
             <div v-else>
@@ -110,11 +101,6 @@
         <el-form-item :label="$t('goods.goods_status')" prop="goodsStatus">
           <el-switch v-model="temp.goodsStatus" active-text="好" inactive-text="坏" />
         </el-form-item>
-        <!-- <el-form-item :label="$t('goods.employee')" prop="employeeName">
-          <el-select v-model="temp.employeeId" placeholder="请选择">
-            <el-option v-for="item in employees" :key="item.id" :label="item.name" :value="item.id" />
-          </el-select>
-        </el-form-item> -->
         <el-form-item :label="$t('goods.project')" prop="projectName">
           <el-select v-model="temp.projectId" placeholder="请选择">
             <!-- label是文字，value是值 -->
@@ -123,6 +109,9 @@
         </el-form-item>
         <el-form-item v-if="dialogStatus==='create'" :label="$t('goods.count')" prop="count">
           <el-input v-model="temp.count" />
+        </el-form-item>
+        <el-form-item :label="$t('goods.description')" prop="description">
+          <el-input v-model="temp.description" :rows="5" type="textarea" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -134,7 +123,6 @@
         </el-button>
       </div>
     </el-dialog>
-
     <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
       <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
         <el-table-column prop="key" label="Channel" />
@@ -150,14 +138,12 @@
 <script>
 import { fetchGoodsList, createGoods, updateGoods, deleteGoods } from '@/api/goods'
 import { fetchAllProject } from '@/api/project'
-// import { fetchAllEmployee } from '@/api/employee'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import Logger from 'chivy'
 
 const log = new Logger('views/table/good-table')
-const testUrl = 'http://127.0.0.1:8080'
 
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
@@ -224,7 +210,8 @@ export default {
         count: '',
         recipients_status: false,
         goodsStatus: true,
-        inTime: new Date()
+        inTime: new Date(),
+        description: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -294,7 +281,8 @@ export default {
         count: '',
         recipients_status: false,
         goodsStatus: true,
-        inTime: new Date()
+        inTime: new Date(),
+        description: ''
       }
     },
     handleCreate() {
@@ -346,12 +334,7 @@ export default {
         log.debug('validate is successed')
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          // todo 特殊处理
-          if (tempData.image !== null) {
-            log.info('tempData.image is not null and value is' + JSON.stringify(tempData.image))
-            tempData.image = tempData.image.replace(testUrl, '')
-          }
-          log.info('tempData = ' + JSON.stringify(tempData))
+          log.debug('tempData = ' + JSON.stringify(tempData))
           updateGoods(tempData).then(() => {
             this.dialogFormVisible = false
             this.$notify({
@@ -440,7 +423,19 @@ export default {
       log.debug('fileList = ' + JSON.stringify(fileList))
       log.debug('response = ' + JSON.stringify(response))
       log.debug('images = ' + JSON.stringify(this.temp.images))
-      this.temp.image = testUrl + response.data
+      this.temp.image = response.data
+    },
+    beforeUpload(file) {
+      // 文件大于10M
+      if (file.size > 10 * 1024 * 1024) {
+        this.$notify({
+          title: '文件过大',
+          message: '文件过大，只允许10M以下的文件',
+          type: 'error',
+          duration: 2000
+        })
+        return false
+      }
     },
     clearFiles() {
       this.$refs.upload.clearFiles()

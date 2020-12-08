@@ -67,6 +67,7 @@ public class GoodsController {
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("查询失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -104,6 +105,7 @@ public class GoodsController {
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("查询失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -141,6 +143,7 @@ public class GoodsController {
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("查询失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -157,6 +160,7 @@ public class GoodsController {
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("查询失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -170,15 +174,16 @@ public class GoodsController {
             List<GoodsVo> goodsVos = goodsService.addGoods(goodsVo);
             if (goodsVos != null) {
                 response.setData(goodsVos);
-                response.setMessage("create success");
+                response.setMessage("创建成功");
             } else {
                 response.setCode(Constant.NOK);
-                response.setMessage("create failed, reason is " + goodsVo.getName() + " exist");
+                response.setMessage("创建失败，" + goodsVo.getName() + "已存在");
             }
         } catch (Exception e) {
             e.printStackTrace();
             response.setCode(Constant.NOK);
-            response.setMessage("create failed, reason is " + e.getMessage());
+            response.setMessage("创建失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -191,14 +196,15 @@ public class GoodsController {
             GoodsVo vo = goodsService.updateGoods(goodsVo);
             if (vo != null) {
                 response.setData(Collections.singletonList(vo));
-                response.setMessage("update success");
+                response.setMessage("更新成功");
             } else {
                 response.setCode(Constant.NOK);
                 response.setMessage(goodsVo.getName() + "is not in database, so update failed");
             }
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("update failed");
+            response.setMessage("更新失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -211,14 +217,47 @@ public class GoodsController {
             GoodsVo vo = goodsService.deleteGoods(goodsVo);
             if (vo != null) {
                 response.setData(Collections.singletonList(vo));
-                response.setMessage("update success");
+                response.setMessage("删除成功");
             } else {
                 response.setCode(Constant.NOK);
-                response.setMessage(goodsVo.getName() + "is not in database, so delete failed");
+                response.setMessage(goodsVo.getName() + "不存在，无法删除");
             }
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("update failed, reason is " + e.getMessage());
+            response.setMessage("删除失败, " + goodsVo.getName() + "仍然在使用，请检查");
+            response.setErrorInfo(e.getMessage());
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/recipients", method = RequestMethod.POST)
+    @ApiOperation(value = "借出设备", notes = "根据设备Code借出设备")
+    public Response recipients(@RequestBody GoodsVo goodsVo) {
+        Response response = new Response();
+        try {
+            GoodsVo vo = goodsService.recipientsGoods(goodsVo);
+            response.setData(Collections.singletonList(vo));
+            response.setMessage("借出成功");
+        } catch (Exception e) {
+            response.setCode(Constant.NOK);
+            response.setMessage("借出失败");
+            response.setErrorInfo(e.getMessage());
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/return", method = RequestMethod.POST)
+    @ApiOperation(value = "归还设备", notes = "根据设备Code归还设备")
+    public Response returnGoods(@RequestBody GoodsVo goodsVo) {
+        Response response = new Response();
+        try {
+            GoodsVo vo = goodsService.returnGoods(goodsVo);
+            response.setData(Collections.singletonList(vo));
+            response.setMessage("归还成功");
+        } catch (Exception e) {
+            response.setCode(Constant.NOK);
+            response.setMessage("归还失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }

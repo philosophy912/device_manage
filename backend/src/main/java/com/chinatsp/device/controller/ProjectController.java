@@ -64,14 +64,15 @@ public class ProjectController {
             } else {
                 count = projectService.findProjectCountByName("%" + name + "%");
             }
-            response.setMessage("query success");
+            response.setMessage("查询成功");
             response.setData(projectVos);
             response.setPageSize(pageable.getPageSize());
             response.setTotalRows((int) count);
             response.setTotalPages(PageUtils.get(count, pageable.getPageSize()));
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("query failed");
+            response.setMessage("查询失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -86,6 +87,7 @@ public class ProjectController {
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("查询失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -100,6 +102,7 @@ public class ProjectController {
         } catch (Exception e) {
             response.setCode(Constant.NOK);
             response.setMessage("查询失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -111,14 +114,15 @@ public class ProjectController {
             ProjectVo vo = projectService.addProject(projectVo);
             if (vo != null) {
                 response.setData(Collections.singletonList(vo));
-                response.setMessage("create success");
+                response.setMessage("创建成功");
             } else {
                 response.setCode(Constant.NOK);
-                response.setMessage(projectVo.getName() + "is already in database, so create failed");
+                response.setMessage(projectVo.getName() + "已存在，无法创建");
             }
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("create failed");
+            response.setMessage("创建失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -130,14 +134,15 @@ public class ProjectController {
             ProjectVo vo = projectService.updateProject(projectVo);
             if (vo != null) {
                 response.setData(Collections.singletonList(vo));
-                response.setMessage("update success");
+                response.setMessage("更新成功");
             } else {
                 response.setCode(Constant.NOK);
-                response.setMessage(projectVo.getName() + "is not in database, so update failed");
+                response.setMessage(projectVo.getName() + "不在数据库，无法删除");
             }
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("update failed");
+            response.setMessage("更新失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }
@@ -149,14 +154,15 @@ public class ProjectController {
             ProjectVo vo = projectService.deleteProject(projectVo);
             if (vo != null) {
                 response.setData(Collections.singletonList(vo));
-                response.setMessage("update success");
+                response.setMessage("删除成功");
             } else {
                 response.setCode(Constant.NOK);
-                response.setMessage(projectVo.getName() + "is not in database, so delete failed");
+                response.setMessage(projectVo.getName() + "在数据库中不存在，请检查");
             }
         } catch (Exception e) {
             response.setCode(Constant.NOK);
-            response.setMessage("update failed , reason is " + e.getMessage());
+            response.setMessage("删除失败");
+            response.setErrorInfo(e.getMessage());
         }
         return response;
     }

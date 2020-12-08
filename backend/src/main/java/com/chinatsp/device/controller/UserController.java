@@ -41,7 +41,7 @@ public class UserController {
     public Response login(@RequestBody UserVo userVo) {
         Response response = new Response();
         log.info("user[{}] try to login", userVo.getUsername());
-        response.setMessage("login success");
+        response.setMessage("登陆成功");
         Map<String, String> map = new HashMap<>();
         map.put(USERNAME, userVo.getUsername());
         map.put(ID, String.valueOf(userVo.getId() == null ? 1 : userVo.getId()));
@@ -79,12 +79,12 @@ public class UserController {
         String username = decodedJWT.getClaims().get(USERNAME).asString();
         if (username != null) {
             // 移出session中的登录标记
-            response.setMessage("logout success");
+            response.setMessage("注销成功");
             response.setData("success");
         }else{
             response.setCode(Constant.NOK);
-            response.setMessage("logout success");
-            response.setData("success");
+            response.setMessage("注销失败");
+            response.setData("fail");
         }
         return response;
     }

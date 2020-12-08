@@ -142,10 +142,7 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        // type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         name: [{ required: true, trigger: 'blur', validator: isDepartmentNameValid }]
-        // title: [{ required: true, message: '部门名称必须填写', trigger: 'blur', validator: isDepartmentNameValid}]
       },
       downloadLoading: false
     }
