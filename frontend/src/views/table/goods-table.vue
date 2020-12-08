@@ -138,6 +138,7 @@
 <script>
 import { fetchGoodsList, createGoods, updateGoods, deleteGoods } from '@/api/goods'
 import { fetchAllProject } from '@/api/project'
+import { notEmpty, isGoodsNameValid } from '@/utils/validates'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -222,12 +223,9 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        // image: [{ required: false, message: 'sex is required', trigger: 'change' }],
-        // goodsStatus: [{ required: false, message: 'type is required', trigger: 'change' }],
-        // employeeName: [{ type: 'date', required: false, message: 'timestamp is required', trigger: 'change' }],
-        // projectName: [{ type: 'date', required: false, message: 'timestamp is required', trigger: 'change' }],
-        // name: [{ required: false, message: 'title is required', trigger: 'blur' }],
-        // count: [{ required: false, message: '数量不能为空', trigger: 'blur' }]
+        goodsStatus: [{ required: true }],
+        projectName: [{ required: true, validate: notEmpty, trigger: 'change' }],
+        name: [{ required: true, validate: isGoodsNameValid, trigger: 'blur' }]
       },
       downloadLoading: false
     }

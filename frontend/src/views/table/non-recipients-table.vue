@@ -72,9 +72,6 @@
             <el-option v-for="item in employees" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='create'" :label="$t('goods.count')" prop="count">
-          <el-input v-model="temp.count" />
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
@@ -186,14 +183,7 @@ export default {
       },
       dialogPvVisible: false,
       pvData: [],
-      rules: {
-        // image: [{ required: false, message: 'sex is required', trigger: 'change' }],
-        // goodsStatus: [{ required: false, message: 'type is required', trigger: 'change' }],
-        // employeeName: [{ type: 'date', required: false, message: 'timestamp is required', trigger: 'change' }],
-        // projectName: [{ type: 'date', required: false, message: 'timestamp is required', trigger: 'change' }],
-        // name: [{ required: false, message: 'title is required', trigger: 'blur' }],
-        // count: [{ required: false, message: '数量不能为空', trigger: 'blur' }]
-      },
+      rules: {},
       downloadLoading: false
     }
   },
@@ -264,7 +254,7 @@ export default {
       return status ? '好' : '坏'
     },
     handleRecipients(row, index) {
-      log.info('row = ' + JSON.stringify(row))
+      log.debug('row = ' + JSON.stringify(row))
       this.getProjectAndEmployee()
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'select'
@@ -274,7 +264,7 @@ export default {
       })
     },
     updateRecipients() {
-      log.info('temp = ' + JSON.stringify(this.temp))
+      log.debug('temp = ' + JSON.stringify(this.temp))
       // 查询出来employeeName
       this.employees.forEach(employee => {
         if (this.temp.employeeId === employee.id) {

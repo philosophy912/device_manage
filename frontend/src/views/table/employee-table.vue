@@ -52,7 +52,7 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('employee.name')" prop="title">
+        <el-form-item :label="$t('employee.name')" prop="name">
           <el-input v-model="temp.name" />
         </el-form-item>
         <el-form-item :label="$t('employee.sex')" prop="sex">
@@ -90,7 +90,7 @@
 <script>
 import { fetchEmployeeList, createEmployee, updateEmployee, deleteEmployee } from '@/api/employee'
 import { fetchAllDepartment } from '@/api/department'
-import { isEmployeeNameValid } from '@/utils/validates'
+import { isEmployeeNameValid, notEmpty } from '@/utils/validates'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -164,7 +164,9 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        name: [{ required: true, trigger: 'blur', validator: isEmployeeNameValid }]
+        name: [{ required: true, trigger: 'blur', validator: isEmployeeNameValid }],
+        sex: [{ required: true }],
+        department: [{ required: true, trigger: 'change', validator: notEmpty }]
         // department: [{ type: 'array', required: true, message: '必须选择部门', trigger: 'change' }],
         // sex: [{ required: true, message: 'sex is required', trigger: 'change' }],
         // title: [{ required: true, message: '姓名不能为空', trigger: 'blur' }]
