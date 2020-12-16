@@ -1,5 +1,7 @@
 server:
   port: 8080
+  tomcat:
+    basedir: D:\Temp\images
 
 
 logging:
@@ -42,6 +44,8 @@ spring:
       naming:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
     database: mysql
+
+
 
 upload_file: D:/Workspace/github/device_manage/backend/upload_file/
 # upload_file: E:/Work/device_manage/backend/upload_file/
