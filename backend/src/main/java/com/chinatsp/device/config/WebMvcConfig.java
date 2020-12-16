@@ -127,6 +127,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 for (InterceptorRegistration interceptorRegistration : registrations) {
                     interceptorRegistration
                             .excludePathPatterns("/index.html")
+                            .excludePathPatterns("/images/**")
                             .excludePathPatterns("/static/**")
                             .excludePathPatterns("/swagger**/**")
                             .excludePathPatterns("/webjars/**")
@@ -167,7 +168,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     // 静态资源处理
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        log.debug("upload_images = {}", upload_images);
+        log.info("upload_images = {}", upload_images);
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("file:" + upload_images);
         WebMvcConfigurer.super.addResourceHandlers(registry);
