@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.name" :placeholder="$t('table.title')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.name" clearable :placeholder="$t('table.title')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" @clear="clearName" />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
       </el-button>
@@ -82,7 +82,7 @@
             ref="upload"
             class="avatar-uploader"
             drag
-            action="/upload"
+            action="/device/upload"
             list-type="picture"
             accept="image/png, image/jpeg, image/gif, image/bmp"
             :show-file-list="false"
@@ -224,8 +224,8 @@ export default {
       pvData: [],
       rules: {
         goodsStatus: [{ required: true }],
-        projectName: [{ required: true, validate: notEmpty, trigger: 'change' }],
-        name: [{ required: true, validate: isGoodsNameValid, trigger: 'blur' }]
+        projectName: [{ required: true, validator: notEmpty, trigger: 'change' }],
+        name: [{ required: true, validator: isGoodsNameValid, trigger: 'blur' }]
       },
       downloadLoading: false
     }
@@ -443,6 +443,10 @@ export default {
     },
     handleRecipientsStatus(status) {
       return status ? '已领用' : '未领用'
+    },
+    clearName() {
+      this.listQuery.name = undefined
+      this.getList()
     }
   }
 }

@@ -76,7 +76,7 @@ export const isProjectNameValid = (rule, value, callback) => {
 }
 
 export const notEmpty = (rule, value, callback) => {
-  log.debug('notEmpty value = ' + JSON.stringify(value))
+  log.info('notEmpty value = ' + JSON.stringify(value))
   if (value === '') {
     callback(new Error('请选择至少一项'))
   } else {

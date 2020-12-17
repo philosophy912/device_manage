@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.name" :placeholder="$t('employee.name')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.name" clearable :placeholder="$t('employee.name')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" @clear="clearName" />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ $t('table.search') }}
       </el-button>
@@ -343,6 +343,10 @@ export default {
     },
     handleSex(sex) {
       return sex ? '男' : '女'
+    },
+    clearName() {
+      this.listQuery.name = undefined
+      this.getList()
     }
   }
 }
