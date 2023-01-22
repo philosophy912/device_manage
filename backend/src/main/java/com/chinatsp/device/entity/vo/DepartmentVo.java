@@ -1,3 +1,7 @@
+/**
+ * @author lizhe
+ * @date 2020/11/26 9:40
+ **/
 package com.chinatsp.device.entity.vo;
 
 import io.swagger.annotations.ApiModel;
@@ -8,10 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
-/**
- * @author lizhe
- * @date 2020/11/26 9:40
- **/
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

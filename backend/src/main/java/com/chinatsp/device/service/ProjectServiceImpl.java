@@ -1,3 +1,7 @@
+/**
+ * @author lizhe
+ * @date 2020/11/27 16:08
+ **/
 package com.chinatsp.device.service;
 
 import com.chinatsp.device.dao.ProjectDao;
@@ -21,10 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author lizhe
- * @date 2020/11/27 16:08
- **/
+
 @Service
 public class ProjectServiceImpl implements ProjectService {
     @Resource

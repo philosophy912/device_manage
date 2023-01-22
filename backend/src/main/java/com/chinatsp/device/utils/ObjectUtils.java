@@ -1,13 +1,14 @@
+/**
+ * @author lizhe
+ * @date 2020/12/3 17:49
+ **/
 package com.chinatsp.device.utils;
 
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
 
-/**
- * @author lizhe
- * @date 2020/12/3 17:49
- **/
+
 public final class ObjectUtils {
     /**
      * 把origin的非null的值拷贝的哦target中

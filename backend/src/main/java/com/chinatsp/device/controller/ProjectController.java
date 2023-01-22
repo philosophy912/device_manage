@@ -1,6 +1,9 @@
+/**
+ * @author lizhe
+ * @date 2020/11/27 16:05
+ **/
 package com.chinatsp.device.controller;
 
-import com.chinatsp.device.entity.vo.EmployeeVo;
 import com.chinatsp.device.entity.vo.PageResponse;
 import com.chinatsp.device.entity.vo.ProjectVo;
 import com.chinatsp.device.entity.vo.Response;
@@ -26,10 +29,7 @@ import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author lizhe
- * @date 2020/11/27 16:05
- **/
+
 @RestController
 @RequestMapping("/project")
 @Slf4j

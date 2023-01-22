@@ -1,6 +1,11 @@
+/**
+ * 商品
+ *
+ * @author lizhe
+ * @date 2020/11/19 17:51
+ **/
 package com.chinatsp.device.entity.po;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -19,12 +24,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-/**
- * 商品
- *
- * @author lizhe
- * @date 2020/11/19 17:51
- **/
+
 @Setter
 @Getter
 @NoArgsConstructor

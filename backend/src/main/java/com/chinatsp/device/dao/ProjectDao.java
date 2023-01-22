@@ -1,3 +1,7 @@
+/**
+ * @author lizhe
+ * @date 2020/11/19 18:04
+ **/
 package com.chinatsp.device.dao;
 
 import com.chinatsp.device.entity.po.Project;
@@ -9,10 +13,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-/**
- * @author lizhe
- * @date 2020/11/19 18:04
- **/
+
 public interface ProjectDao extends JpaRepository<Project, Integer>, JpaSpecificationExecutor<Project> {
     @NotNull
     Page<Project> findAll(@NotNull Pageable pageable);

@@ -1,3 +1,7 @@
+/**
+ * @author lizhe
+ * @date 2020/12/1 18:01
+ **/
 package com.chinatsp.device.config;
 
 import lombok.Getter;
@@ -5,10 +9,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-/**
- * @author lizhe
- * @date 2020/12/1 18:01
- **/
+
 @Component
 @ConfigurationProperties("swagger")
 @Setter

@@ -1,3 +1,7 @@
+/**
+ * @author lizhe
+ * @date 2020/11/26 9:58
+ **/
 package com.chinatsp.device.controller;
 
 import com.chinatsp.device.entity.vo.DepartmentVo;
@@ -26,10 +30,7 @@ import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author lizhe
- * @date 2020/11/26 9:58
- **/
+
 @RestController
 @RequestMapping("/department")
 @Slf4j

@@ -1,3 +1,7 @@
+/**
+ * @author lizhe
+ * @date 2020/11/19 18:02
+ **/
 package com.chinatsp.device.dao;
 
 import com.chinatsp.device.entity.po.Department;
@@ -11,10 +15,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 
-/**
- * @author lizhe
- * @date 2020/11/19 18:02
- **/
+
 @Transactional
 public interface DepartmentDao extends JpaRepository<Department, Integer>, JpaSpecificationExecutor<Department> {
 

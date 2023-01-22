@@ -1,6 +1,11 @@
+/**
+ * 所属的小组
+ *
+ * @author lizhe
+ * @date 2020/11/19 17:56
+ **/
 package com.chinatsp.device.entity.po;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -21,12 +26,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * 所属的小组
- *
- * @author lizhe
- * @date 2020/11/19 17:56
- **/
+
 @Setter
 @Getter
 @NoArgsConstructor

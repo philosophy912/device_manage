@@ -1,3 +1,7 @@
+/**
+ * @author lizhe
+ * @date 2020/12/8 11:13
+ **/
 package com.chinatsp.device.exception;
 
 import com.chinatsp.device.entity.vo.Response;
@@ -10,10 +14,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * @author lizhe
- * @date 2020/12/8 11:13
- **/
+
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionAdvice {

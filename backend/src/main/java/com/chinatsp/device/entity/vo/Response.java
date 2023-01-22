@@ -1,3 +1,7 @@
+/**
+ * @author lizhe
+ * @date 2020/11/20 14:57
+ **/
 package com.chinatsp.device.entity.vo;
 
 import com.chinatsp.device.utils.Constant;
@@ -8,10 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-/**
- * @author lizhe
- * @date 2020/11/20 14:57
- **/
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

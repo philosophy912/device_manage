@@ -1,10 +1,11 @@
-package com.chinatsp.device.utils;
-
-
 /**
  * @author lizhe
  * @date 2020/11/26 11:08
  **/
+package com.chinatsp.device.utils;
+
+
+
 public final class PageUtils {
 
     // totalPages

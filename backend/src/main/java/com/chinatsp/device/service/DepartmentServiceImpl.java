@@ -1,3 +1,7 @@
+/**
+ * @author lizhe
+ * @date 2020/11/26 9:43
+ **/
 package com.chinatsp.device.service;
 
 import com.chinatsp.device.dao.DepartmentDao;
@@ -18,10 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author lizhe
- * @date 2020/11/26 9:43
- **/
+
 @Service
 @Slf4j
 public class DepartmentServiceImpl implements DepartmentService {
